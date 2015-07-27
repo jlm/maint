@@ -30,3 +30,15 @@ These have to be linked to the right places in the deployment structure:
 * ln -s /home/deploy/maint-secrets/secrets.yml /var/www/maint/shared/config/
 $ createdb maint_production
 Apparently that step isn't automated.
+
+The nginx configuration file is not altered automatically to add the new application, so you have to manually edit /opt/nginx/conf/nginx.conf to add a section for the new app,
+in the existing `server` section after the `root` line.
+Mine looked like this:
+`        location ~ ^/maint(/.|$) {
+                alias /var/www/maint/current/public$1;
+                passenger_base_uri /maint;
+                passenger_app_root /var/www/maint/current;
+                passenger_document_root /var/www/maint/current/public;
+                passenger_enabled on;
+        }
+`
