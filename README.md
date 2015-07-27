@@ -1,19 +1,20 @@
 Introduction
 ============
 
+This is an attempt to convert the 802.1 Maintenance Database into a web application.  The old database was formed from a single Excel workbook with magic
+formulae to generate static HTML output.  It was difficult to maintain and keep error-free.
+
 
 Creating the App and deploying it with Capistrano
 =================================================
 
-This Ruby on Rails app is set up to deploy to a server using Capistrano.  The server setup is described in various
-web tutorials and not detailed here.  My setup is based on an Ubuntu virtual machine running Nginx and Passenger, similarly
-to that [described here](https://www.digitalocean.com/community/tutorials/how-to-automate-ruby-on-rails-application-deployments-using-capistrano)
+This Ruby on Rails app is set up to deploy to a server using Capistrano.  For instructions and background, see https://gorails.com/deploy/ubuntu/14.04, 
+[also described here](https://www.digitalocean.com/community/tutorials/how-to-automate-ruby-on-rails-application-deployments-using-capistrano), and http://capistranorb.com/.
+My setup is based on an Ubuntu virtual machine running Nginx and Passenger.
 
 The interesting bits really are the Gemfile, the Capfile, the config/deploy.rb and config/deploy/* scripts and the 
 lib/capistrano/tasks/* scripts.
 
-For instructions and background, see https://gorails.com/deploy/ubuntu/14.04 and 
-http://capistranorb.com/.
 
 The main setup stages were:
 ```
