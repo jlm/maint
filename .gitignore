@@ -18,6 +18,7 @@ config/initializers/secret_token.rb
 # Ignore linked files for rails (JLM 150513)
 config/database.yml
 config/secrets.yml
+.env
 
 ## Environment normalisation:
 /.bundle
