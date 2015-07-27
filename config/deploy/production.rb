@@ -21,7 +21,9 @@ server 'www.802-1.org', user: 'deploy', roles: %w{app db web}
 # role :app, %w{deploy@example.com}, my_property: :my_value
 # role :web, %w{user1@primary.com user2@additional.com}, other_property: :other_value
 # role :db,  %w{deploy@example.com}
-
+role :app, %w{deploy@www.802-1.org}
+role :web, %w{deploy@www.802-1.org}
+role :db, %w{deploy@www.802-1.org}
 
 
 # Configuration
