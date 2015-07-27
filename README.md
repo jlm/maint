@@ -8,6 +8,9 @@ lib/capistrano/tasks/* scripts.
 For instructions and background, see https://gorails.com/deploy/ubuntu/14.04 and 
 http://capistranorb.com/.
 
+Creating the App and deploying it with Capistrano
+=================================================
+
 The main setup stages were:
 ```
     $ rails _4.2.3_ new maint -d postgresql
