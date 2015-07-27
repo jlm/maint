@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Number:</strong>
+  <%= @item.number %>
+</p>
+
+<p>
+  <strong>Date:</strong>
+  <%= @item.date %>
+</p>
+
+<p>
+  <strong>Standard:</strong>
+  <%= @item.standard %>
+</p>
+
+<p>
+  <strong>Clause:</strong>
+  <%= @item.clause %>
+</p>
+
+<p>
+  <strong>Subject:</strong>
+  <%= @item.subject %>
+</p>
+
+<p>
+  <strong>Draft:</strong>
+  <%= @item.draft %>
+</p>
+
+<%= link_to 'Edit', edit_item_path(@item) %> |
+<%= link_to 'Back', items_path %>
