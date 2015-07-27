@@ -1,15 +1,19 @@
 Introduction
 ============
 
-This is a trivial Ruby on Rails application set up to deploy to a server using Capistrano.
+
+Creating the App and deploying it with Capistrano
+=================================================
+
+This Ruby on Rails app is set up to deploy to a server using Capistrano.  The server setup is described in various
+web tutorials and not detailed here.  My setup is based on an Ubuntu virtual machine running Nginx and Passenger, similarly
+to that [described here](https://www.digitalocean.com/community/tutorials/how-to-automate-ruby-on-rails-application-deployments-using-capistrano)
+
 The interesting bits really are the Gemfile, the Capfile, the config/deploy.rb and config/deploy/* scripts and the 
 lib/capistrano/tasks/* scripts.
 
 For instructions and background, see https://gorails.com/deploy/ubuntu/14.04 and 
 http://capistranorb.com/.
-
-Creating the App and deploying it with Capistrano
-=================================================
 
 The main setup stages were:
 ```
