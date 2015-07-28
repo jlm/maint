@@ -1,4 +1,4 @@
-<%= form_for(@item) do |f| %>
+<%= simple_form_for(@item) do |f| %>
   <% if @item.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@item.errors.count, "error") %> prohibited this item from being saved:</h2>
@@ -11,31 +11,12 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :number %><br>
-    <%= f.text_field :number %>
-  </div>
-  <div class="field">
-    <%= f.label :date %><br>
-    <%= f.date_select :date %>
-  </div>
-  <div class="field">
-    <%= f.label :standard %><br>
-    <%= f.text_field :standard %>
-  </div>
-  <div class="field">
-    <%= f.label :clause %><br>
-    <%= f.text_field :clause %>
-  </div>
-  <div class="field">
-    <%= f.label :subject %><br>
-    <%= f.text_area :subject %>
-  </div>
-  <div class="field">
-    <%= f.label :draft %><br>
-    <%= f.text_field :draft %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+  <%= f.input :number %>
+  <%= f.input :date %>
+  <%= f.input :standard %>
+  <%= f.input :clause %>
+  <%= f.input :subject %>
+  <%= f.input :draft %>
+  <%= f.button :submit %>
+  
 <% end %>
