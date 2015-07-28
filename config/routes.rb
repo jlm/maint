@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'static_pages/home'
+
+  get 'static_pages/help'
+
   devise_for :users
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   resources :items
@@ -7,7 +11,10 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # See app/controllers/application_controller.rb for the definition of the function called here:
-  root 'application#hello'
+  root 'static_pages#home'
+
+  get 'static_pages/home'
+  get 'static_pages/help'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
