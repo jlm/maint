@@ -10,6 +10,8 @@ class ItemsController < ApplicationController
   # GET /items/1
   # GET /items/1.json
   def show
+    fred = TempMailer::tagged_message()
+    print "Hello from show, fred = #{fred}\n"
   end
 
   # GET /items/new
