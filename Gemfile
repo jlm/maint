@@ -38,6 +38,9 @@ gem 'cancan'
 # Use Unicorn as the app server
 # gem 'unicorn'
 
+# Send emails with Postmark
+gem 'postmark-rails'
+
 #group :production do
 	gem 'passenger'
 

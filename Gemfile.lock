@@ -128,6 +128,12 @@ GEM
       rack
       rake (>= 0.8.1)
     pg (0.18.2)
+    postmark (1.2.0)
+      json
+      rake
+    postmark-rails (0.7.0)
+      actionmailer (>= 3.0.0)
+      postmark (~> 1.2.0)
     rack (1.6.4)
     rack-pjax (0.8.0)
       nokogiri (~> 1.5)
@@ -240,6 +246,7 @@ DEPENDENCIES
   jquery-rails
   passenger
   pg
+  postmark-rails
   rails (= 4.2.3)
   rails_admin
   sass-rails (~> 5.0)
