@@ -42,6 +42,12 @@ class ImportsController < ApplicationController
       master = book.worksheet 'Master'
       minutes = book.worksheet 'Minutes'
       
+      #
+      # Process the MASTER tab
+      #
+
+      # Read the second row, containing the meeting names, and create Meeting objects for them.
+      # Associate the column numbers with the Meeting objects.
       meetings = []
       meetnamerow = master.row(1)
       meetnamerow[(i=6)..meetnamerow.count-1].each do |mtgname|
@@ -56,6 +62,8 @@ class ImportsController < ApplicationController
         i += 1
       end
 
+      # Read each row of the MASTER tab starting at the third row.  Identift rows with a valid item number
+      # and create Items for each.
       i = 0
       puts "There are #{master.rows.count} rows altogether"
       master.each 2 do |itemrow|  # the 2 says skip the first two rows.
@@ -72,6 +80,8 @@ class ImportsController < ApplicationController
         item.subject = itemrow[4]
         item.draft = itemrow[5]
 
+        # Iterate over the columns (starting at the 7th) in the row and create a Minute entry per column.
+        # Record the status and the Meeting in the minutes entry.  
         itemrow[(j=6)..itemrow.count-1].each do |sts|
           j += 1
           next if sts == "-"
@@ -83,9 +93,50 @@ class ImportsController < ApplicationController
         end
 
         item.save!
-        break if i > 5
+        #break if i > 5
       end
 
+      #
+      # Process the MINUTES tab
+      #
+
+      # Rows in the MINUTES tab come in sets of three, starting with the second row in the tab.
+      # 1. Contains the item number and for each meeting, the date of the minutes entry.
+      # 2. For each meeting, contains the text of the minutes.
+      # 3. Contains nothing of use.
+      rowno = 1
+      while (inum = minutes.row(rowno)[1]) =~ /\d\d\d\d/
+        item = Item.where(:number => inum).first
+        die if item.nil?
+        datesrow = minutes.row(rowno)
+        textrow  = minutes.row(rowno+1)
+        j = 3
+        while j < datesrow.count do
+          mindate = datesrow[j]
+          puts "Minute date #{mindate}"
+          mtgtitle = minutes.row(0)[j]
+          mtgtitlebits = mtgtitle.split(": ")
+          puts "Meeting title date X#{mtgtitlebits[1]}X"
+          month,year = mtgtitlebits[1].split("-")
+          year = year.to_i
+          year = year + 2000 if year < 100
+          date = (year.to_s + "-" + month + "-01").to_date
+          puts "Meeting title converted date #{date}"
+          min = item.minutes.joins(:meetings).where("meetings.date = ?", date).first
+          if min.nil?
+            j += 1
+            next
+          else
+            min.date = mindate
+            min.text = textrow[j]
+            puts "#{min.inspect}"
+            min.save!
+          end
+          j += 1
+        end
+        rowno += 3
+        #break if rowno > 8
+      end
     else
       puts "#{filepath}: not an Excel spreadsheet"
     end
