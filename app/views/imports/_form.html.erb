@@ -1,0 +1,12 @@
+<%= simple_form_for(@import, html: {multipart: true}) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :filename, as: :file %>
+    <%= f.input :imported %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>
