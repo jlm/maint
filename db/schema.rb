@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150729141606) do
+ActiveRecord::Schema.define(version: 20150729185750) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,8 @@ ActiveRecord::Schema.define(version: 20150729141606) do
     t.string   "minuteable_type"
   end
 
+  add_index "items", ["minuteable_id"], name: "index_items_on_minuteable_id", using: :btree
+
   create_table "meetings", force: :cascade do |t|
     t.date     "date"
     t.string   "meetingtype"
@@ -45,6 +47,16 @@ ActiveRecord::Schema.define(version: 20150729141606) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
   end
+
+  add_index "meetings", ["minuteable_id"], name: "index_meetings_on_minuteable_id", using: :btree
+
+  create_table "meetings_minutes", id: false, force: :cascade do |t|
+    t.integer "meeting_id"
+    t.integer "minute_id"
+  end
+
+  add_index "meetings_minutes", ["meeting_id", "minute_id"], name: "index_meetings_minutes_on_meeting_id_and_minute_id", using: :btree
+  add_index "meetings_minutes", ["minute_id"], name: "index_meetings_minutes_on_minute_id", using: :btree
 
   create_table "minutes", force: :cascade do |t|
     t.date     "date"

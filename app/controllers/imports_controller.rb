@@ -42,18 +42,20 @@ class ImportsController < ApplicationController
       master = book.worksheet 'Master'
       minutes = book.worksheet 'Minutes'
       
-      meetingnames = []
+      meetings = []
       meetnamerow = master.row(1)
-      i = 6
-      while meetnamerow[i].length > 1 do
-        meetingnames << meetnamerow[i]
+      meetnamerow[(i=6)..meetnamerow.count-1].each do |mtgname|
+        break unless mtgname.length > 1
         meeting = Meeting.new
-        titlewords = meetnamerow[i].split("\s")
+        titlewords = mtgname.split("\s")
+        #byebug
         meeting.date = "1 " + titlewords[0] + " " + titlewords[1]
         meeting.meetingtype = titlewords[2]
         meeting.save!
+        meetings[i] = { :name => mtgname, :mtg => meeting }
         i += 1
       end
+
       i = 0
       puts "There are #{master.rows.count} rows altogether"
       master.each 2 do |itemrow|  # the 2 says skip the first two rows.
@@ -69,8 +71,19 @@ class ImportsController < ApplicationController
         item.clause = itemrow[3]
         item.subject = itemrow[4]
         item.draft = itemrow[5]
+
+        itemrow[(j=6)..itemrow.count-1].each do |sts|
+          j += 1
+          next if sts == "-"
+          break if sts == "#"
+          #byebug
+          min = item.minutes.new
+          min.status = sts
+          min.meetings << meetings[j-1][:mtg]
+        end
+
         item.save!
-        # break if i > 5
+        break if i > 5
       end
 
     else
