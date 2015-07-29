@@ -47,6 +47,11 @@ class ImportsController < ApplicationController
       i = 6
       while meetnamerow[i].length > 1 do
         meetingnames << meetnamerow[i]
+        meeting = Meeting.new
+        titlewords = meetnamerow[i].split("\s")
+        meeting.date = "1 " + titlewords[0] + " " + titlewords[1]
+        meeting.meetingtype = titlewords[2]
+        meeting.save!
         i += 1
       end
       i = 0

@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :meetings
+  resources :minutes
   resources :imports
   get 'static_pages/home'
 

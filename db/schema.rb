@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150729083806) do
+ActiveRecord::Schema.define(version: 20150729141606) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,9 +30,33 @@ ActiveRecord::Schema.define(version: 20150729083806) do
     t.string   "clause"
     t.text     "subject"
     t.string   "draft"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.integer  "minuteable_id"
+    t.string   "minuteable_type"
   end
+
+  create_table "meetings", force: :cascade do |t|
+    t.date     "date"
+    t.string   "meetingtype"
+    t.string   "location"
+    t.integer  "minuteable_id"
+    t.string   "minuteable_type"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  create_table "minutes", force: :cascade do |t|
+    t.date     "date"
+    t.text     "text"
+    t.string   "status"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.integer  "minuteable_id"
+    t.string   "minuteable_type"
+  end
+
+  add_index "minutes", ["minuteable_type", "minuteable_id"], name: "index_minutes_on_minuteable_type_and_minuteable_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false

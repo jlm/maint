@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Date:</strong>
+  <%= @minute.date %>
+</p>
+
+<p>
+  <strong>Text:</strong>
+  <%= @minute.text %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @minute.status %>
+</p>
+
+<%= link_to 'Edit', edit_minute_path(@minute) %> |
+<%= link_to 'Back', minutes_path %>
