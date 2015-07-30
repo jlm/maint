@@ -1,12 +1,24 @@
-    <header class="navbar navbar-default navbar-static-top navbar-inverse">
-      <div class="container">
-        <%= link_to "802.1 Maintenance Database", '#', id: "logo" %>
-        <nav>
-          <ul class="nav navbar-nav navbar-right">
-            <li><%= link_to "Home",   '#' %></li>
-            <li><%= link_to "Help",   '#' %></li>
-            <li><%= link_to "Log in", '#' %></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
+<header class="navbar navbar-default navbar-static-top navbar-inverse" role="navigation">
+<!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <%= link_to "802.1 Maintenance Database", root_path, id: "logo", class: "navbar-brand" %>
+  </div>
+
+
+   <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="nav navbar-nav navbar-right">
+      <li><%= link_to "Home", root_path %></li>
+      <li><%= link_to "Items", items_path %></li>
+      <li><%= link_to "Import", imports_path %></li>
+      <li><%= link_to "Help", help_path %></li>
+      <li><%= link_to "Admin", '/admin' %></li>
+    </ul>
+  </div>
+</header>

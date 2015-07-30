@@ -1,0 +1,10 @@
+      <tr>
+        <td><%= minute.date %></td>
+        <td><%= minute.text %></td>
+        <td><%= minute.status %></td>
+        <td><%#= link_to 'Show', minute, class: "btn btn-default" %></td>
+        <% if can? :manage, minute %>
+            <td><%= link_to 'Edit', edit_minute_path(minute), class: "btn btn-warning" %></td>
+            <td><%= link_to 'Destroy', minute, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+      </tr>

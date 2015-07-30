@@ -4,7 +4,7 @@ class MinutesController < ApplicationController
   # GET /minutes
   # GET /minutes.json
   def index
-    @minutes = Minute.all
+    @minutes = Minute.order(:date).paginate(page: params[:page], per_page: 10)
   end
 
   # GET /minutes/1

@@ -1,37 +1,29 @@
+<% provide(:title, "Items") %>
+<h1>Items</h1>
 <p id="notice"><%= notice %></p>
 
-<h1>Listing Items</h1>
 
-<table>
+<table class="table table-hover">
   <thead>
     <tr>
-      <th>Number</th>
-      <th>Date</th>
-      <th>Standard</th>
-      <th>Clause</th>
+      <th><%= sortable "number" %></th>
+      <th><%= sortable "date", "Submitted" %></th>
+      <th><%= sortable "standard" %></th>
+      <th><%= sortable "clause" %></th>
       <th>Subject</th>
-      <th>Draft</th>
+      <th><%= sortable "draft" %></th>
       <th colspan="3"></th>
     </tr>
   </thead>
 
   <tbody>
     <% @items.each do |item| %>
-      <tr>
-        <td><%= item.number %></td>
-        <td><%= item.date %></td>
-        <td><%= item.standard %></td>
-        <td><%= item.clause %></td>
-        <td><%= item.subject %></td>
-        <td><%= item.draft %></td>
-        <td><%= link_to 'Show', item %></td>
-        <td><%= link_to 'Edit', edit_item_path(item) %></td>
-        <td><%= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+      <%= render item %>
     <% end %>
   </tbody>
 </table>
+<%= will_paginate @items, renderer: BootstrapPagination::Rails %>
 
 <br>
 
-<%= link_to 'New Item', new_item_path %>
+<%= link_to 'New Item', new_item_path, class: "btn btn-default" %>

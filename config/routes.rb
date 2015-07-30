@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   devise_for :users
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   resources :items
+  match '/items',   to: 'items#index',          via: 'get'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -16,9 +17,9 @@ Rails.application.routes.draw do
   # See app/controllers/application_controller.rb for the definition of the function called here:
   root 'static_pages#home'
 
-  get 'static_pages/home'
-  get 'static_pages/help'
-
+  match '/home',    to: 'static_pages#home',    via: 'get'
+  match '/help',    to: 'static_pages#help',    via: 'get'
+  
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
