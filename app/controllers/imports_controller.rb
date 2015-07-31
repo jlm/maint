@@ -51,7 +51,7 @@ class ImportsController < ApplicationController
       meetings = []
       meetnamerow = master.row(1)
       meetnamerow[(i=6)..meetnamerow.count-1].each do |mtgname|
-        break unless mtgname.length > 1
+        break unless (not mtgname.nil?) and (mtgname.length > 1)
         meeting = Meeting.new
         titlewords = mtgname.split("\s")
         #byebug
