@@ -16,7 +16,9 @@
     <ul class="nav navbar-nav navbar-right">
       <li><%= link_to "Home", root_path %></li>
       <li><%= link_to "Items", items_path %></li>
-      <li><%= link_to "Import", imports_path %></li>
+      <% if can? :manage, Import %>
+        <li><%= link_to "Import", imports_path %></li>
+      <% end %>
       <li><%= link_to "Help", help_path %></li>
       <li><%= link_to "Admin", '/admin' %></li>
       <% if user_signed_in? %>
