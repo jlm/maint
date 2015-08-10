@@ -1,7 +1,26 @@
 class MinutesController < ApplicationController
   before_action :set_minute, only: [:show, :edit, :update, :destroy]
 
-  # GET /minutes
+  MINUTE_STATUSES = 
+    {
+      "P"  => "Published",    
+      "A"  => "Approved",
+      "B"  => "Ready for Ballot",
+      "CB" => "Complete then Ballot",
+      "CE" => "Complete then Errata",
+      "E"  => "Errata",
+      "F"  => "Failed",
+      "I"  => "Incomplete",
+      "J"  => "Rejected",
+      "P"  => "Published",
+      "R"  => "Received",
+      "S"  => "Errata Sheet Published",
+      "T"  => "Technical experts review",
+      "V"  => "Balloting",
+      "W"  => "Withdrawn"
+    }
+
+# GET /minutes
   # GET /minutes.json
   def index
     @minutes = Minute.order(:date).paginate(page: params[:page], per_page: 10)
