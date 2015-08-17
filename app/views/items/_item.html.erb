@@ -1,6 +1,6 @@
       <tr>
         <td><%= item.number %></td>
-        <td><%= minute_status_string(item.minutes.where("DATE is not null").order(:date).last) %></td>
+        <td><%= minute_status_string(item.latest_status) %></td>
         <td><%= item.date %></td>
         <td><%= item.standard %></td>
         <td><%= item.clause %></td>

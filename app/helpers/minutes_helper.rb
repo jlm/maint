@@ -1,5 +1,5 @@
 module MinutesHelper
-	def minute_status_string(minute)
-		MinutesController::MINUTE_STATUSES[minute.status]
+	def minute_status_string(status)
+		MinutesController::MINUTE_STATUSES[status]
 	end
 end
