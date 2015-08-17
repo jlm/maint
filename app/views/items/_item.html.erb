@@ -1,5 +1,10 @@
       <tr>
-        <td><%= item.number %></td>
+        <td><%= item.number %>
+            <% if item.is_closed? %>
+                <br>
+                <small class="status">Closed</small>
+            <% end %>
+        </td>
         <td><%= minute_status_string(item.latest_status) %></td>
         <td><%= item.date %></td>
         <td><%= item.standard %></td>
