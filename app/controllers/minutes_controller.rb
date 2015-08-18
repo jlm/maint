@@ -12,7 +12,6 @@ class MinutesController < ApplicationController
       "F"  => "Failed",
       "I"  => "Incomplete",
       "J"  => "Rejected",
-      "P"  => "Published",
       "R"  => "Received",
       "S"  => "Errata Sheet Published",
       "T"  => "Technical experts review",
