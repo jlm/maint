@@ -6,6 +6,8 @@ class ItemsController < ApplicationController
   # GET /items.json
   def index
     @items = Item.order(sort_column + " " + sort_direction).paginate(page: params[:page], per_page: 10)
+    @items = @items.open if params[:open].present?
+    @items = @items.closed if params[:closed].present?
   end
 
   # GET /items/1
@@ -71,7 +73,7 @@ class ItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def item_params
-      params.require(:item).permit(:number, :date, :standard, :clause, :subject, :draft)
+      params.require(:item).permit(:number, :date, :standard, :clause, :subject, :draft, :open, :closed)
     end
 
     # From http://railscasts.com/episodes/228-sortable-table-columns?autoplay=true
