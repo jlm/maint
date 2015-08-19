@@ -52,12 +52,14 @@ class ImportsController < ApplicationController
       meetnamerow = master.row(1)
       meetnamerow[(i=6)..meetnamerow.count-1].each do |mtgname|
         break unless (not mtgname.nil?) and (mtgname.length > 1)
-        meeting = Meeting.new
+        #meeting = Meeting.new
         titlewords = mtgname.split("\s")
         #byebug
-        meeting.date = "1 " + titlewords[0] + " " + titlewords[1]
-        meeting.meetingtype = titlewords[2]
-        meeting.save!
+        meetingdate = "1 " + titlewords[0] + " " + titlewords[1]
+        meeting = Meeting.where(:date => meetingdate).first_or_create do |m|
+          m.date = meetingdate
+          m.meetingtype = titlewords[2]
+        end
         meetings[i] = { :name => mtgname, :mtg => meeting }
         i += 1
       end
@@ -92,7 +94,7 @@ class ImportsController < ApplicationController
           min.meetings << meetings[j-1][:mtg]
         end
 
-        item.save!
+        item.save
         #break if i > 5
       end
 
@@ -113,15 +115,15 @@ class ImportsController < ApplicationController
         j = 3
         while j < datesrow.count do
           mindate = datesrow[j]
-          puts "Minute date #{mindate}"
+          #puts "Minute date #{mindate}"
           mtgtitle = minutes.row(0)[j]
           mtgtitlebits = mtgtitle.split(": ")
-          puts "Meeting title date X#{mtgtitlebits[1]}X"
+          #puts "Meeting title date X#{mtgtitlebits[1]}X"
           month,year = mtgtitlebits[1].split("-")
           year = year.to_i
           year = year + 2000 if year < 100
           date = (year.to_s + "-" + month + "-01").to_date
-          puts "Meeting title converted date #{date}"
+          #puts "Meeting title converted date #{date}"
           min = item.minutes.joins(:meetings).where("meetings.date = ?", date).first
           if min.nil?
             j += 1
@@ -129,13 +131,18 @@ class ImportsController < ApplicationController
           else
             min.date = mindate
             min.text = textrow[j]
-            puts "#{min.inspect}"
-            min.save!
+            #puts "#{min.inspect}"
+            min.save
           end
           j += 1
         end
         rowno += 3
         #break if rowno > 8
+      end
+
+      # Annoyingly, we have to go through all the items and save them, so that the latest_status gets updated.
+      Item.all.each do |i|
+        i.save
       end
     else
       puts "#{filepath}: not an Excel spreadsheet"
