@@ -1,6 +1,6 @@
 module ApplicationHelper
  def full_title(page_title)
-  base_title = "802.1 Maintenance Database"
+  base_title = ENV["COMMITTEE"] + " Maintenance Database"
   if page_title.empty?
     base_title
   else
@@ -17,6 +17,6 @@ module ApplicationHelper
   end
 
   def itemlink(num)
-  	link_to "#{num}", "http://www.ieee802.org/1/files/public/maint/requests/maint_#{num}.pdf"
+  	link_to "#{num}", ENV["REQ_URL"]
   end
 end

@@ -1,6 +1,6 @@
 RailsAdmin.config do |config|
 
-  config.main_app_name = ["802.1", "Maintenance Database"]
+  config.main_app_name = [ENV["COMMITTEE"], "Maintenance Database"]
 
   ### Popular gems integration
 
