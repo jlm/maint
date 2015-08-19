@@ -6,4 +6,16 @@ class ApplicationController < ActionController::Base
   def hello
   	render text: "Hello, World!"
   end
+
+  protected
+
+  def after_sign_in_path_for(resource)
+    # return the path based on resource
+    root_path + "home"
+  end
+
+  def after_sign_out_path_for(resource)
+    # return the path based on resource
+    root_path + "home"
+  end
 end
