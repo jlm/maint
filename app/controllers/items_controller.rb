@@ -5,7 +5,7 @@ class ItemsController < ApplicationController
   # GET /items
   # GET /items.json
   def index
-    byebug
+    #byebug
     @items = Item.order(sort_column + " " + sort_direction).paginate(page: params[:page], per_page: 10)
     @items = @items.open if params[:open].present?
     @items = @items.closed if params[:closed].present?
