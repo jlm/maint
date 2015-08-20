@@ -17,6 +17,6 @@ module ApplicationHelper
   end
 
   def itemlink(num)
-  	link_to "#{num}", ENV["REQ_URL"]
+	link_to "#{num}", ENV["REQ_URL"] % num
   end
 end
