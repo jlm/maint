@@ -9,6 +9,13 @@ class ItemsController < ApplicationController
     @items = Item.order(sort_column + " " + sort_direction).paginate(page: params[:page], per_page: 10)
     @items = @items.open if params[:open].present?
     @items = @items.closed if params[:closed].present?
+    if params[:open].present?
+      @qualifier = "Open"
+    elsif params[:closed].present?
+      @qualifier = "Closed"
+    else
+      @qualifier = "All"
+    end
   end
 
   # GET /items/1
