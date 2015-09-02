@@ -1,4 +1,4 @@
-require 'spreadsheet'
+#require 'spreadsheet'
 
 class ImportsController < ApplicationController
   before_action :set_import, only: [:show, :edit, :update, :destroy]
@@ -32,16 +32,16 @@ class ImportsController < ApplicationController
     filepath = Rails.root.join('public', 'uploads', uploaded_io.original_filename)
     @import.filename = filepath
     @import.content_type = uploaded_io.content_type
-    if @import.content_type == "application/vnd.ms-excel"
+    if @import.content_type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
       File.open(filepath, 'wb') do |file|
         file.write(uploaded_io.read)
       end
-      book = Spreadsheet.open filepath
+      book = RubyXL::Parser.parse filepath
       #book.worksheets.each do |w|
         #puts w.name
       #end
-      master = book.worksheet 'Master'
-      minutes = book.worksheet 'Minutes'
+      master = book['Master']
+      minutes = book['Minutes']
       
       #
       # Process the MASTER tab
@@ -50,8 +50,9 @@ class ImportsController < ApplicationController
       # Read the second row, containing the meeting names, and create Meeting objects for them.
       # Associate the column numbers with the Meeting objects.
       meetings = []
-      meetnamerow = master.row(1)
-      meetnamerow[(i=6)..meetnamerow.count-1].each do |mtgname|
+      meetnamerow = master[1]
+      meetnamerow[(i=6)..meetnamerow.size-1].each do |mtgcell|
+        mtgname = mtgcell.value
         break unless (not mtgname.nil?) and (mtgname.length > 1)
         #meeting = Meeting.new
         titlewords = mtgname.split("\s")
@@ -65,28 +66,30 @@ class ImportsController < ApplicationController
         i += 1
       end
 
-      # Read each row of the MASTER tab starting at the third row.  Identift rows with a valid item number
+      #byebug
+      # Read each row of the MASTER tab starting at the third row.  Identify rows with a valid item number
       # and create Items for each.
       i = 0
       #puts "There are #{master.rows.count} rows altogether"
-      master.each 2 do |itemrow|  # the 2 says skip the first two rows.
+      master.to_a[2..-1].each do |itemrow|  # the 2 says skip the first two rows.
         i += 1
-        next unless itemrow[0] =~ /\d\d\d\d/
+        next unless itemrow[0].value =~ /\d\d\d\d/
         item = Item.new
-        item.number = itemrow[0]
-        day,month,year = itemrow[1].split('-')
+        item.number = itemrow[0].value
+        day,month,year = itemrow[1].value.split('-')
         year = year.to_i
         year = year + 2000 if year < 100
         item.date = day.to_s + month.to_s + year.to_s
-        item.standard = itemrow[2]
-        item.clause = itemrow[3]
-        item.subject = itemrow[4]
-        item.draft = itemrow[5]
+        item.standard = itemrow[2].value
+        item.clause = itemrow[3].value
+        item.subject = itemrow[4].value
+        item.draft = itemrow[5].value
 
         # Iterate over the columns (starting at the 7th) in the row and create a Minute entry per column.
         # Record the status and the Meeting in the minutes entry.  
-        itemrow[(j=6)..itemrow.count-1].each do |sts|
+        itemrow[(j=6)..itemrow.cells.count-1].each do |stscell|
           j += 1
+          sts = stscell.value
           next if sts == "-"
           break if sts == "#"
           #byebug
@@ -108,16 +111,20 @@ class ImportsController < ApplicationController
       # 2. For each meeting, contains the text of the minutes.
       # 3. Contains nothing of use.
       rowno = 1
-      while (inum = minutes.row(rowno)[1]) =~ /\d\d\d\d/
+      while (inum = minutes[rowno][1].value) =~ /\d\d\d\d/
         item = Item.where(:number => inum).first
         die if item.nil?
-        datesrow = minutes.row(rowno)
-        textrow  = minutes.row(rowno+1)
+        datesrow = minutes[rowno]
+        textrow  = minutes[rowno+1]
         j = 3
-        while j < datesrow.count do
-          mindate = datesrow[j]
+        while j < datesrow.cells.count do
+          if datesrow[j].nil? or minutes[0][j].nil?
+            j += 1
+            next
+          end
+          mindate = datesrow[j].value
           #puts "Minute date #{mindate}"
-          mtgtitle = minutes.row(0)[j]
+          mtgtitle = minutes[0][j].value
           mtgtitlebits = mtgtitle.split(": ")
           #puts "Meeting title date X#{mtgtitlebits[1]}X"
           month,year = mtgtitlebits[1].split("-")
@@ -131,7 +138,7 @@ class ImportsController < ApplicationController
             next
           else
             min.date = mindate
-            min.text = textrow[j]
+            min.text = textrow[j].value unless textrow[j].nil?
             #puts "#{min.inspect}"
             min.save
           end
@@ -147,12 +154,14 @@ class ImportsController < ApplicationController
       end
       @import.imported = true
     else
-      puts "#{filepath}: not an Excel spreadsheet"
+      @import.errors.add(:imports, "must be an Excel spreadsheet (not #{@import.content_type})")
+      flash[:error] = @import.errors.full_messages.to_sentence
+      puts "#{filepath}: not an Excel spreadsheet (#{@import.content_type})"
     end
 
 
     respond_to do |format|
-      if @import.save
+      if @import.errors.count == 0 and @import.save
         format.html { redirect_to @import, notice: 'File was successfully imported.' }
         format.json { render :show, status: :created, location: @import }
       else
@@ -170,24 +179,23 @@ class ImportsController < ApplicationController
     outfname = bs + "-out." + ext
     #byebug
 
-    book = Spreadsheet.open(fname)
-    book.worksheets.each do |ws|
-      ws.row(0)[0] = ws.row(0)[0]
-    end
-    instructions = book.worksheet 'Instructions'
-    instructions.row(0)[0] = ""               # Attempt to work around Spreadsheet bug where each sheet must be written to.
-    master = book.worksheet 'Master'
-    minutes = book.worksheet 'Minutes'
-    meetnamerow = master.row(1)
+    book = RubyXL::Parser.parse(fname)
+    master = book['Master']
+    minutes = book['Minutes']
+    meetnamerow = master[1]
     col = 6
 
     Meeting.order(:date).each do |mtg|
       #byebug
-      raise SyntaxError, "Missing prepared column in Master column, row 2, column #{col}" if master.row(2)[col].nil?
-      meetnamerow[col] = mtg.date.strftime("%B %Y ") + mtg.meetingtype + " Meeting" if meetnamerow[col].nil? or meetnamerow[col].length <= 1
-      # Put actual code here.
+      raise SyntaxError, "Missing prepared column in Master column, row 2, column #{col}" if master[2][col].nil? or master[2][col].value.nil?
+      if meetnamerow[col].nil? or meetnamerow[col].value.nil? or meetnamerow[col].value.length <= 1
+        meetnamerow[col].change_contents(mtg.date.strftime("%B %Y ") + mtg.meetingtype + " Meeting")
+        meetnamerow[col].style_index = meetnamerow[col-1].style_index # copy previous cell's style
+        #byebug
+      end
       col += 1
     end
+    # Put actual code here.
 
     book.write(outfname)
 
