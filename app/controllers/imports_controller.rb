@@ -28,17 +28,18 @@ class ImportsController < ApplicationController
   def create
     @import = Import.new(import_params)
     uploaded_io = params[:import][:filename]
-    puts "Uploaded file #{uploaded_io.original_filename}"
+    #puts "Uploaded file #{uploaded_io.original_filename}"
     filepath = Rails.root.join('public', 'uploads', uploaded_io.original_filename)
     @import.filename = filepath
-    if uploaded_io.content_type == "application/vnd.ms-excel"
+    @import.content_type = uploaded_io.content_type
+    if @import.content_type == "application/vnd.ms-excel"
       File.open(filepath, 'wb') do |file|
         file.write(uploaded_io.read)
       end
       book = Spreadsheet.open filepath
-      book.worksheets.each do |w|
-        puts w.name
-      end
+      #book.worksheets.each do |w|
+        #puts w.name
+      #end
       master = book.worksheet 'Master'
       minutes = book.worksheet 'Minutes'
       
@@ -67,7 +68,7 @@ class ImportsController < ApplicationController
       # Read each row of the MASTER tab starting at the third row.  Identift rows with a valid item number
       # and create Items for each.
       i = 0
-      puts "There are #{master.rows.count} rows altogether"
+      #puts "There are #{master.rows.count} rows altogether"
       master.each 2 do |itemrow|  # the 2 says skip the first two rows.
         i += 1
         next unless itemrow[0] =~ /\d\d\d\d/
@@ -141,9 +142,10 @@ class ImportsController < ApplicationController
       end
 
       # Annoyingly, we have to go through all the items and save them, so that the latest_status gets updated.
-      Item.all.each do |i|
-        i.save
+      Item.all.each do |it|
+        it.save
       end
+      @import.imported = true
     else
       puts "#{filepath}: not an Excel spreadsheet"
     end
@@ -151,7 +153,7 @@ class ImportsController < ApplicationController
 
     respond_to do |format|
       if @import.save
-        format.html { redirect_to @import, notice: 'Import was successfully created.' }
+        format.html { redirect_to @import, notice: 'File was successfully imported.' }
         format.json { render :show, status: :created, location: @import }
       else
         format.html { render :new }
@@ -163,14 +165,40 @@ class ImportsController < ApplicationController
   # PATCH/PUT /imports/1
   # PATCH/PUT /imports/1.json
   def update
+    fname = @import.filename
+    bs,_,ext = fname.rpartition(".")
+    outfname = bs + "-out." + ext
+    #byebug
+
+    book = Spreadsheet.open(fname)
+    book.worksheets.each do |ws|
+      ws.row(0)[0] = ws.row(0)[0]
+    end
+    instructions = book.worksheet 'Instructions'
+    instructions.row(0)[0] = ""               # Attempt to work around Spreadsheet bug where each sheet must be written to.
+    master = book.worksheet 'Master'
+    minutes = book.worksheet 'Minutes'
+    meetnamerow = master.row(1)
+    col = 6
+
+    Meeting.order(:date).each do |mtg|
+      #byebug
+      raise SyntaxError, "Missing prepared column in Master column, row 2, column #{col}" if master.row(2)[col].nil?
+      meetnamerow[col] = mtg.date.strftime("%B %Y ") + mtg.meetingtype + " Meeting" if meetnamerow[col].nil? or meetnamerow[col].length <= 1
+      # Put actual code here.
+      col += 1
+    end
+
+    book.write(outfname)
+
     respond_to do |format|
-      if @import.update(import_params)
-        format.html { redirect_to @import, notice: 'Import was successfully updated.' }
-        format.json { render :show, status: :ok, location: @import }
-      else
-        format.html { render :edit }
-        format.json { render json: @import.errors, status: :unprocessable_entity }
-      end
+      format.html {
+        # redirect_to @import, notice: 'Import was successfully updated.'
+        response.headers["Content-Length"] = File.size(outfname).to_s
+        send_file(outfname, type: @import.content_type, x_sendfile: true)
+        return
+      }
+      format.json { render :show, status: :ok, location: @import }
     end
   end
 

@@ -1,10 +1,11 @@
 class MeetingsController < ApplicationController
   before_action :set_meeting, only: [:show, :edit, :update, :destroy]
+  helper_method :sort_column, :sort_direction
 
   # GET /meetings
   # GET /meetings.json
   def index
-    @meetings = Meeting.all
+    @meetings = Meeting.order(sort_column + " " + sort_direction).paginate(page: params[:page], per_page: 10)
   end
 
   # GET /meetings/1
@@ -71,4 +72,14 @@ class MeetingsController < ApplicationController
     def meeting_params
       params.require(:meeting).permit(:date, :meetingtype, :location, :minuteable_id, :minuteable_type)
     end
+
+    # From http://railscasts.com/episodes/228-sortable-table-columns?autoplay=true
+    def sort_column
+      Item.column_names.include?(params[:sort]) ? params[:sort] : "date"
+    end
+
+    def sort_direction
+      %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+    end
+
 end

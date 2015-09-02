@@ -1,6 +1,12 @@
-<h1>Editing Import</h1>
+<h1>Export modified file</h1>
 
-<%= render 'form' %>
+<%= simple_form_for(@import, html: {multipart: true}) do |f| %>
+  <%= f.error_notification %>
 
-<%= link_to 'Show', @import %> |
-<%= link_to 'Back', imports_path %>
+  <p><strong>Filename: </strong><%= @import.filename %></p>
+  <div class="form-actions">
+    <%= f.submit "Export", class: "btn btn-warning" %>
+  </div>
+<% end %>
+
+<%= link_to 'Back', imports_path, class: "btn btn-default" %>

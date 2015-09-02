@@ -31,6 +31,7 @@ class ItemsController < ApplicationController
 
   # GET /items/1/edit
   def edit
+      #byebug
   end
 
   # POST /items

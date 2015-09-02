@@ -18,6 +18,7 @@
         <td><%= import.filename %></td>
         <td><%= import.imported %></td>
         <% if can? :manage, import %>
+            <td><%= link_to 'Export', edit_import_path(import), class: "btn btn-warning" %></td>
             <td><%= link_to 'Destroy', import, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
       </tr>

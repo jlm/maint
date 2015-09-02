@@ -15,15 +15,5 @@
   <%= @meeting.location %>
 </p>
 
-<p>
-  <strong>Minuteable:</strong>
-  <%= @meeting.minuteable_id %>
-</p>
-
-<p>
-  <strong>Minuteable type:</strong>
-  <%= @meeting.minuteable_type %>
-</p>
-
-<%= link_to 'Edit', edit_meeting_path(@meeting) %> |
-<%= link_to 'Back', meetings_path %>
+<%= link_to 'Edit', edit_meeting_path(@meeting), class: "btn btn-warning" %>
+<%= link_to 'Back', meetings_path, class: "btn btn-default" %>

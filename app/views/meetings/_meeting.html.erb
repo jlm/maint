@@ -1,0 +1,11 @@
+<tr>
+	<td><%= meeting.date %></td>
+	<td><%= meeting.meetingtype %></td>
+	<td><%= make_meeting_name(meeting) %></td>
+	<td><%= meeting.location %></td>
+	<td><%= link_to 'Show', meeting, class: "btn btn-default" %></td>
+	<% if can? :manage, meeting %>
+		<td><%= link_to 'Edit', edit_meeting_path(meeting), class: "btn btn-warning" %></td>
+		<td><%= link_to 'Destroy', meeting, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+	<% end %>
+</tr>
