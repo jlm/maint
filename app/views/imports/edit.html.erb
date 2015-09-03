@@ -2,6 +2,7 @@
 
 <%= simple_form_for(@import, html: {multipart: true}) do |f| %>
   <%= f.error_notification %>
+  <%= f.full_error :import %>
 
   <p><strong>Filename: </strong><%= @import.filename %></p>
   <div class="form-actions">

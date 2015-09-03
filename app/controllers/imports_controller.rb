@@ -171,6 +171,20 @@ class ImportsController < ApplicationController
     end
   end
 
+  # Update method: this is what I am using for Export of the database into a previously imported XLSX file.
+  # I recognise that this is a bit of a perversion of the real meaning of UPDATE.
+  # The originally imported file is re-read from disk into a RubyXL model, and that model is then updated using the
+  # information in the Rails database.  Then, the file is sent to the browser (downloaded, with a modified filename) for
+  # progression into the old spreadsheet-based Maintenance process.  The structure of the uploaded file must be complete
+  # and provide room for expansion. That is, there must already be pre-populated columns for new meetings, and rows for
+  # new maintenance items.  This is because this program does not change the structure of the file or add new formulae
+  # anywhere - it just writes values into the Master and Minutes tabs in the appropriate places.
+  # Is it best to just patch a few values into the spreadsheet where they are known to have changed, or is it best to rewrite
+  # all the values in big blocks of the spreadsheet?  The former seems more conservative, but the latter would be more likely
+  # to ensure consistency.
+
+  # The Masters sheet has no formulae, just manually entered data and # signs to populate unused cells
+
   # PATCH/PUT /imports/1
   # PATCH/PUT /imports/1.json
   def update
@@ -182,31 +196,106 @@ class ImportsController < ApplicationController
     book = RubyXL::Parser.parse(fname)
     master = book['Master']
     minutes = book['Minutes']
+
+    ##
+    ## Write out meeting names onto Master sheet
+    ##
+    # Old algorithm: In the Master sheet of the imported spreadsheet, check the row containing meeting names.  Count them off against
+    # a list of meetings taken from the database.  If there are any extras at the end of the database's list, change cells in
+    # the spreadsheet to incorporate additional meetings.
+    # New algorithm: just write the meeting names of the meetings into the spreadsheet, and never mind what was there before.
+    # Copy the style settings (e.g., rotate text up) from the previous cell.
     meetnamerow = master[1]
     col = 6
+    mtgcols = {}
 
     Meeting.order(:date).each do |mtg|
-      #byebug
-      raise SyntaxError, "Missing prepared column in Master column, row 2, column #{col}" if master[2][col].nil? or master[2][col].value.nil?
-      if meetnamerow[col].nil? or meetnamerow[col].value.nil? or meetnamerow[col].value.length <= 1
-        meetnamerow[col].change_contents(mtg.date.strftime("%B %Y ") + mtg.meetingtype + " Meeting")
-        meetnamerow[col].style_index = meetnamerow[col-1].style_index # copy previous cell's style
-        #byebug
+      @import.errors.add(:import, "Master sheet doesn't have enough meeting columns: cell #{RubyXL::Reference.ind2ref(2,col)} is blank") if master[2][col].nil? or master[2][col].value.nil?
+      mtgcols[mtg.id] = col          # Associate meeting IDs with column numbers, for use when writing status entries per Item below.
+      mtgname = mtg.date.strftime("%B %Y ") + mtg.meetingtype + " Meeting"
+      if meetnamerow[col].nil?
+        master.add_cell(1, col, mtgname)
+      else
+        meetnamerow[col].change_contents(mtgname)
       end
+      meetnamerow[col].style_index = meetnamerow[col-1].style_index if col>6 # copy previous cell's style
       col += 1
     end
+
+    # Dates: 
+    # dt = Date.parse("January 20, 2011")
+    # cell.change_contents(dt.strftime("%d-%b-%y"))
+    # cell.set_number_format("d-mmm-yy")
+    # cell.is_date? is still false :( but never mind.
+    # When written out to an .xlsx file, that cell looks like a date in Excel and calculates like a date.
+
+    def chg_or_create_cell(sheet,row,col,value,numfmt = nil)
+      sheet.insert_row(row) if sheet[row].nil?
+      if sheet[row][col].nil?
+        sheet.add_cell(row, col, value)
+      else
+        sheet[row][col].change_contents(value) unless sheet[row][col].value == value
+      end
+      sheet[row][col].set_number_format(numfmt) unless numfmt.nil?
+      sheet[row][col]
+    end
+
+    ##
+    ## Write out each item onto a row
+    ##
+    # Order the Items in the database by number. For each item, write a row.
+    rowno = 2
+    Item.order(:number).each do |item|
+      chg_or_create_cell(master, rowno, 0, item.number.to_s)
+      chg_or_create_cell(master, rowno, 1, item.date.strftime("%-d-%b-%y"), "d-mmm-yy")
+      chg_or_create_cell(master, rowno, 2, item.standard)
+      chg_or_create_cell(master, rowno, 3, item.clause)
+      chg_or_create_cell(master, rowno, 4, item.subject)
+      chg_or_create_cell(master, rowno, 5, item.draft)
+      ordd = item.minutes.joins(:meetings).order("meetings.DATE")
+      firstcol = mtgcols[ordd.first.meetings.first.id]
+      (6..firstcol).each do |unusedcol|
+        chg_or_create_cell(master, rowno, unusedcol, "-")
+      end
+      ordd.each do |min|
+        chg_or_create_cell(master, rowno, mtgcols[min.meetings.first.id], min.status) unless min.meetings.first.nil?
+      end
+      rowno += 1
+    end
+    # byebug
+    # Blank out the remaining rows, in case we deleted an item
+    (rowno..(master.count-1)).each do |unusedrow|
+      [0,2,3,4,5].each do |coltoblank|
+        master[unusedrow][coltoblank].change_contents(nil)
+      end
+      master[unusedrow][1].change_contents('#') unless master[unusedrow][1].value == '#'
+      (6..(master[unusedrow].size-1)).each do |coltohash|
+        next if master[unusedrow][coltohash].nil?
+        master[unusedrow][coltohash].change_contents('#') unless master[unusedrow][coltohash].value == '#'
+      end
+    end
+
+    # State of play: Master sheet writes out quite nicely.  But new meetings don't have copies of the previous meeting's status
+    # entries in their column, so that needs to be added somehow, even where there's no minute for that meeting.
+    # Once that's done then the Minutes tab needs to be written out.
+
     # Put actual code here.
 
     book.write(outfname)
 
     respond_to do |format|
-      format.html {
-        # redirect_to @import, notice: 'Import was successfully updated.'
-        response.headers["Content-Length"] = File.size(outfname).to_s
-        send_file(outfname, type: @import.content_type, x_sendfile: true)
-        return
-      }
-      format.json { render :show, status: :ok, location: @import }
+      if @import.errors.count == 0 
+        format.html {
+          # redirect_to @import, notice: 'Import was successfully updated.'
+          response.headers["Content-Length"] = File.size(outfname).to_s
+          send_file(outfname, type: @import.content_type, x_sendfile: true)
+          return
+        }
+        format.json { render :show, status: :ok, location: @import }
+      else
+        format.html { render :edit }
+        format.json { render json: @import.errors, status: :unprocessable_entity }
+      end
     end
   end
 
