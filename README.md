@@ -40,9 +40,64 @@ Clone the source code from GitHub and install the required gems for the developm
     $ git clone https://github.com/jlm/maint.git
     $ cd maint
     $ bundle install
+    $ mkdir public/uploads
 ```
 Create .env, config/database.yml, config/secrets.yml based on the examples in the repository named "example-...".  The title of the site
 is configured using the COMMITTEE environment variable in the .env file
+
+Set up Postgresql for the development environment
+=================================================
+These instructions assume that the name of the Postgres user (called a "role") is "deploy".  Also, that your UN*X username is "deploy".
+If those assumptions are invalid, the PostgreSQL setup can be more complicated.  It's much simpler if the UN*X username and the PostgreSQL
+role name are the same.
+```
+    $ sudo su - postgres
+    $ psql
+    postgres# create role deploy with createdb login password 'somepassword';
+    postgres# \q
+    $ createdb -O deploy maint_development          # actually this step should not be necessary, as rake db:setup does it.
+    $ exit
+
+    $ rake db:setup
+```
+
+Try it out
+==========
+At this point you should be able to start the server and connect to it using your web browser at http://localhost:3000/users/sign_in.
+```
+    $ rails server
+```
+Click on "sign up".  Follow the instructions.  For this to work, your development machine has to have a way to send emails, and the "devise"
+gem has to be able to use it.  This is configured in config/environments/development.rb (see the config.action_mailer.delivery_method entry).
+If you don't have this set up, you can find the link for the sign-up configuration in the debug output in the terminal window,
+and enter it directly into the browser.  Then, log in to the application using your new username and password.
+
+Here's the hacky bit: the app has no way to create an administrator user, so you have to hack this manually.  After creating your user and
+logging in, stop the server and do the following, substituting the newly created user's email address:
+```
+    $ rails console
+    irb(main):001:0> u = User.where(email: "user@example.com").first
+    ...
+    irb(main):001:0> u.admin=true
+    => true
+    irb(main):002:0> u.save
+    ...
+    => true
+    irb(main):003:0> quit
+    $ rails server
+```
+Now, when logging in to the app or refreshing the page, you should see Administrator options in the top header.
+
+The first real step is to import an existing maintenance database spreadsheet using the Import menu.  Then use the Items menu to look at the
+maintenance database entries.
+
+Preparing the Import file
+=========================
+Importing Excel files into other environments can be a tricky business, because the variety of things that can be in an Excel file
+is vast.  Some files will not import without preparatory clean-up.  I have come across two classes of problems: hyperlinks on the
+Master and Minutes tabs (which should no longer present a problem) and illegal characters in Document Properties.  For the latter,
+save a copy of the spreadsheet in Excel and then do File->Info->Inspect Workbook->Document Properties and Personal Information (just
+that category).  Click "Remove", then save the copy and import it into the app.
 
 
 Deploying with Capistrano
