@@ -1,12 +1,43 @@
 Introduction
 ============
 
-This is an attempt to convert the 802.1 Maintenance Database into a web application.  The old database was formed from a single Excel workbook with magic
-formulae to generate static HTML output.  It was difficult to maintain and keep error-free.
+This is an attempt to convert the 802.1 Maintenance Database into a web application.  The old database
+was formed from a single Excel workbook with magic formulae to generate static HTML output.  It was difficult to maintain and keep error-free.
 
+Installing Rbenv and Ruby
+=========================
+These commands are for Ubuntu.  For other setups see https://github.com/sstephenson/rbenv.
+```
+    $ git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
+    $ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+    $ echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+    $ git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+```
+Restart the shell and enter "type rbenv" to verify that rbenv is a function.
+Then install Ruby:
+```
+    $ sudo apt-get install libreadline-dev
+    $ rbenv install 2.2.2
+    $ rbenv global 2.2.2
+```
+However, due to problems with Readline, I found I had to use this incantation to install Ruby:
+```
+    $ RUBY_CONFIGURE_OPTS=--with-readline-dir="/usr/include/readline" rbenv install 2.2.2
+```
+Other prerequisites
+===================
+Install the bundler gem and other prerequisites:
+```
+    $ gem install bundler
+    $ sudo apt-get install postgresql postgresql-client libpq-dev
+    $ sudo apt-get install build-essential
+```
 
 Creating the App and deploying it with Capistrano
 =================================================
+
+Note: this section is mostly of interest only to people writing their own Ruby on Rails application for deployment
+with Capistrano.  These steps are not necessary (and would interfere with) just using or modifying the "maint" app.
 
 This Ruby on Rails app is set up to deploy to a server using Capistrano.  For instructions and background, see https://gorails.com/deploy/ubuntu/14.04, 
 [also described here](https://www.digitalocean.com/community/tutorials/how-to-automate-ruby-on-rails-application-deployments-using-capistrano), and http://capistranorb.com/.
