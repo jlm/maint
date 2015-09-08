@@ -8,6 +8,10 @@ class ApplicationController < ActionController::Base
 
     rescue_from SyntaxError, with: :syntax_error
 
+    rescue_from CanCan::AccessDenied do |exception|
+    	redirect_to main_app.home_url, :alert => exception.message
+	end
+
   protected
 
 	def syntax_error(exception)

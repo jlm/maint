@@ -24,6 +24,6 @@
 
 <br>
 
-<% if can? :manage, @meetings %>
+<% if can? :create, @meetings %>
   <%= link_to 'New Meeting', new_meeting_path, class: "btn btn-warning" %>
 <% end %>

@@ -45,5 +45,5 @@
 
 <br>
 
-<%= link_to 'Edit', edit_item_path(@item), class: "btn btn-warning" if can? :manage, @item %>
+<%= link_to 'Edit', edit_item_path(@item), class: "btn btn-warning" if can? :update, @item %>
 <%= link_to 'Back', items_path, class: "btn btn-default" %>

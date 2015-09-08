@@ -27,4 +27,4 @@
 
 <br>
 
-<%= link_to 'New Item', new_item_path, class: "btn btn-default" if can? :manage, Item %>
+<%= link_to 'New Item', new_item_path, class: "btn btn-default" if can? :create, Item %>

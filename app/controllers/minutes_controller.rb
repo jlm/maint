@@ -1,4 +1,5 @@
 class MinutesController < ApplicationController
+  load_and_authorize_resource
   before_action :set_minute, only: [:show, :edit, :update, :destroy]
 
   MINUTE_STATUSES = 

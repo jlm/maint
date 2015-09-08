@@ -4,8 +4,10 @@
         <td><%= minute.text %></td>
         <td><%= minute_status_string(minute.status) %></td>
         <td><%#= link_to 'Show', minute, class: "btn btn-default" %></td>
-        <% if can? :manage, minute %>
+        <% if can? :update, minute %>
             <td><%= link_to 'Edit', edit_minute_path(minute), class: "btn btn-warning" %></td>
+        <% end %>
+        <% if can? :destroy, minute %>
             <td><%= link_to 'Destroy', minute, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
       </tr>
