@@ -11,6 +11,7 @@ class MeetingsController < ApplicationController
   # GET /meetings/1
   # GET /meetings/1.json
   def show
+    @items = Item.joins('INNER JOIN minutes on minutes.minuteable_id = items.id').where("minutes.date is not null").joins('INNER JOIN "meetings_minutes" ON "meetings_minutes"."minute_id" = minutes.id').where("meetings_minutes.minute_id = minutes.id").joins('INNER JOIN meetings on meetings.id = meetings_minutes.meeting_id').where("meetings.date = ?", @meeting.date).order(sort_column + " " + sort_direction).paginate(page: params[:page], per_page: 10)
   end
 
   # GET /meetings/new

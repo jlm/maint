@@ -24,6 +24,7 @@
           <li><%= link_to "Closed", items_path + "?closed=true" %></li>
         </ul>
       </li>
+      <li><%= link_to "Meetings", meetings_path %></li>
       <% if can? :manage, Import %>
         <li><%= link_to "Import", imports_path %></li>
       <% end %>
