@@ -13,6 +13,17 @@
 
    <!-- Collect the nav links, forms, and other content for toggling -->
   <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="nav navbar-nav navbar-left">
+      <li>
+        <!-- Search form -->
+        <%= form_tag(items_path, method: :get, class: "navbar-form navbar-left", role: "search", id: "search-form") do %>
+          <div class="form-group">
+            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Items" %>
+          </div>
+          <%= submit_tag "Search", class: "btn btn-default" %>
+        <% end %>
+      </li>
+    </ul>
     <ul class="nav navbar-nav navbar-right">
       <li><%= link_to "Home", home_path %></li>
       <li class="dropdown">
