@@ -19,6 +19,8 @@
         <%= form_tag(items_path, method: :get, class: "navbar-form navbar-left", role: "search", id: "search-form") do %>
           <div class="form-group">
             <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Items" %>
+            <%= check_box_tag(:open) %>
+            <%= label_tag(:open, "Open only", class: "btn btn-default") %>
           </div>
           <%= submit_tag "Search", class: "btn btn-default" %>
         <% end %>
