@@ -3,4 +3,6 @@
 <%= render 'form' %>
 
 <% backitem = Item.joins('INNER JOIN minutes on minutes.minuteable_id = items.id').where("minutes.date is not null").joins('INNER JOIN "meetings_minutes" ON "meetings_minutes"."minute_id" = minutes.id').where("meetings_minutes.minute_id = minutes.id").joins('INNER JOIN meetings on meetings.id = meetings_minutes.meeting_id').where("minutes.id = ?", @minute.id).first %>
-<%= link_to 'Back', item_path(backitem), class: "btn btn-default" %>
+<% unless backitem.nil? %>
+	<%= link_to 'Back', item_path(backitem), class: "btn btn-default" %>
+<% end %>

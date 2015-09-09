@@ -44,6 +44,7 @@ class MinutesController < ApplicationController
   # POST /minutes.json
   def create
     @minute = Minute.new(minute_params)
+    @minute.status = MINUTE_STATUSES.invert[minute_params[:status]]
 
     respond_to do |format|
       if @minute.save
@@ -59,6 +60,7 @@ class MinutesController < ApplicationController
   # PATCH/PUT /minutes/1
   # PATCH/PUT /minutes/1.json
   def update
+    @minute.status = MINUTE_STATUSES.invert[minute_params[:status]]
     respond_to do |format|
       if @minute.update(minute_params)
         format.html { redirect_to @minute, notice: 'Minute was successfully updated.' }
