@@ -3,26 +3,16 @@
     <%= itemlink(@item.number)%>: <%= @item.subject%></h1>
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Date:</strong>
-  <%= @item.date %>
-</p>
-
-<p>
-  <strong>Standard:</strong>
-  <%= @item.standard %>
-</p>
-
-<p>
-  <strong>Clause:</strong>
-  <%= @item.clause %>
-</p>
-
-<p>
-  <strong>Draft:</strong>
-  <%= @item.draft %>
-</p>
-
+<table class="table table-hover">
+  <tbody>
+    <tr>
+      <td><strong>Standard:</strong> <%= @item.standard %></td>
+      <td><strong>Clause:</strong> <%= @item.clause %></td>
+      <td><strong>Draft with fix:</strong> <%= @item.draft %></td>
+      <td><strong>Submitted:</strong> <%= @item.date %></td>
+    </tr>
+  </tbody>
+</table>
 
 <table class="table table-hover">
   <thead>
