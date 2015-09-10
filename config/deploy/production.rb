@@ -64,3 +64,11 @@ set :ssh_options, {
 #     auth_methods: %w(publickey password)
 #     # password: 'please use keys'
 #   }
+server 'localhost', {
+	user: 'deploy',
+	roles: %w{app db web},
+	ssh_options: {
+		port: '8022',
+		forward_agent: true
+	}
+}
