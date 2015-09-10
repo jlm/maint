@@ -1,0 +1,23 @@
+<% provide(:title, "Status") %>
+<div class="center jumbotron">
+	<h1><%= ENV["COMMITTEE"] %> Maintenance Status</h1>
+
+	<table class="table table-hover">
+		<thead>
+	    	<tr>
+    			<th>Category</th>
+				<th>Count</th>
+			</tr>
+		</thead>
+
+		<tbody>
+    		<% @sts.each do |cat| %>
+    			<tr>
+    				<td><%= link_to(cat[1][0], items_path(cat: cat[0])) %></td>
+    				<td><%= cat[1][1] %></td>
+    			</tr>
+    		<% end %>
+		</tbody>
+	</table>
+</div>
+

@@ -10,6 +10,7 @@ class ItemsController < ApplicationController
     @items = Item.order(sort_column + " " + sort_direction).paginate(page: params[:page], per_page: 10)
     @items = @items.open if params[:open].present?
     @items = @items.closed if params[:closed].present?
+    @items = @items.where(latest_status: params[:cat]) if params[:cat].present?
 
     # Search for items using OR: http://stackoverflow.com/questions/3639656/activerecord-or-query
     if params[:search].present?
@@ -95,7 +96,7 @@ class ItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def item_params
-      params.require(:item).permit(:number, :date, :standard, :clause, :subject, :draft, :open, :closed, :search)
+      params.require(:item).permit(:number, :date, :standard, :clause, :subject, :draft, :open, :closed, :search, :cat)
     end
 
     # From http://railscasts.com/episodes/228-sortable-table-columns?autoplay=true
