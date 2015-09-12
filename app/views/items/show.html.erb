@@ -1,6 +1,6 @@
 <% provide(:title, "Item #{@item.number}") %>
 <h1>Minutes for 
-    <%= itemlink(@item.number)%>: <%= @item.subject%></h1>
+    <%= itemlink(@item.number)%>: <%= @item.subject %></h1>
 <p id="notice"><%= notice %></p>
 
 <table class="table table-hover">
@@ -35,5 +35,6 @@
 
 <br>
 
+<%= link_to 'New Minute', new_item_minute_path(@item), class: "btn btn-warning" if can? :update, @item %>
 <%= link_to 'Edit', edit_item_path(@item), class: "btn btn-warning" if can? :update, @item %>
 <%= link_to 'Back', items_path, class: "btn btn-default" %>

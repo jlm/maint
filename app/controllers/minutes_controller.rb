@@ -23,33 +23,41 @@ class MinutesController < ApplicationController
 # GET /minutes
   # GET /minutes.json
   def index
-    @minutes = Minute.order(:date).paginate(page: params[:page], per_page: 10)
-  end
+    @item = Item.find(params[:item_id])
+    @minutes = @item.minutes.order(:date).paginate(page: params[:page], per_page: 10)
+end
 
   # GET /minutes/1
   # GET /minutes/1.json
   def show
+    @item = Item.find(params[:item_id])
+    #byebug
+    @minute = @item.minutes.find(params[:id])
   end
 
   # GET /minutes/new
   def new
-    @minute = Minute.new
+    @item = Item.find(params[:item_id])
+    @minute = @item.minutes.build
+    @meetings = Meeting.all
   end
 
   # GET /minutes/1/edit
   def edit
+    @item = Item.find(params[:item_id])
   end
 
   # POST /minutes
   # POST /minutes.json
   def create
-    @minute = Minute.new(minute_params)
+    @item = Item.find(params[:item_id])
+    @minute = @item.minutes.build(minute_params)
     @minute.status = MINUTE_STATUSES.invert[minute_params[:status]]
 
     respond_to do |format|
       if @minute.save
-        format.html { redirect_to @minute, notice: 'Minute was successfully created.' }
-        format.json { render :show, status: :created, location: @minute }
+        format.html { redirect_to item_minute_url(@item, @minute), notice: 'Minute was successfully created.' }
+        format.json { render :show, status: :created, location: item_minute_path(@item, @minute) }
       else
         format.html { render :new }
         format.json { render json: @minute.errors, status: :unprocessable_entity }
@@ -60,10 +68,11 @@ class MinutesController < ApplicationController
   # PATCH/PUT /minutes/1
   # PATCH/PUT /minutes/1.json
   def update
+    @item = Item.find(params[:item_id])
     @minute.status = MINUTE_STATUSES.invert[minute_params[:status]]
     respond_to do |format|
       if @minute.update(minute_params)
-        format.html { redirect_to @minute, notice: 'Minute was successfully updated.' }
+        format.html { redirect_to item_minutes_index_url, notice: 'Minute was successfully updated.' }
         format.json { render :show, status: :ok, location: @minute }
       else
         format.html { render :edit }
@@ -77,7 +86,7 @@ class MinutesController < ApplicationController
   def destroy
     @minute.destroy
     respond_to do |format|
-      format.html { redirect_to minutes_url, notice: 'Minute was successfully destroyed.' }
+      format.html { redirect_to item_minutes_index_url, notice: 'Minute was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -90,6 +99,6 @@ class MinutesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def minute_params
-      params.require(:minute).permit(:date, :text, :status)
+      params.require(:minute).permit(:date, :text, :status, :minute_id, :item_id, :meeting_id)
     end
 end

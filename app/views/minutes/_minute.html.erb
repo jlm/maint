@@ -5,9 +5,9 @@
         <td><%= minute_status_string(minute.status) %></td>
         <td><%#= link_to 'Show', minute, class: "btn btn-default" %></td>
         <% if can? :update, minute %>
-            <td><%= link_to 'Edit', edit_minute_path(minute), class: "btn btn-warning" %></td>
+            <td><%= link_to 'Edit', edit_item_minute_path(@item, minute), class: "btn btn-warning" %></td>
         <% end %>
         <% if can? :destroy, minute %>
-            <td><%= link_to 'Destroy', minute, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td><%= link_to 'Destroy', item_minute_path(@item, minute), class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
       </tr>

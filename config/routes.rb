@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   resources :meetings
-  resources :minutes
   resources :imports
   get 'static_pages/home'
 
@@ -10,7 +9,10 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { registrations: "registrations" }
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
-  resources :items
+  resources :items do
+    resources :minutes
+  end
+
   match '/items',   to: 'items#index',          via: 'get'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
