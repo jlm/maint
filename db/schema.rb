@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150908054104) do
+ActiveRecord::Schema.define(version: 20150912051101) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,46 +31,31 @@ ActiveRecord::Schema.define(version: 20150908054104) do
     t.string   "clause"
     t.text     "subject"
     t.string   "draft"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-    t.integer  "minuteable_id"
-    t.string   "minuteable_type"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
     t.string   "latest_status"
   end
-
-  add_index "items", ["minuteable_id"], name: "index_items_on_minuteable_id", using: :btree
 
   create_table "meetings", force: :cascade do |t|
     t.date     "date"
     t.string   "meetingtype"
     t.string   "location"
-    t.integer  "minuteable_id"
-    t.string   "minuteable_type"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
-
-  add_index "meetings", ["minuteable_id"], name: "index_meetings_on_minuteable_id", using: :btree
-
-  create_table "meetings_minutes", id: false, force: :cascade do |t|
-    t.integer "meeting_id"
-    t.integer "minute_id"
-  end
-
-  add_index "meetings_minutes", ["meeting_id", "minute_id"], name: "index_meetings_minutes_on_meeting_id_and_minute_id", using: :btree
-  add_index "meetings_minutes", ["minute_id"], name: "index_meetings_minutes_on_minute_id", using: :btree
 
   create_table "minutes", force: :cascade do |t|
     t.date     "date"
     t.text     "text"
     t.string   "status"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-    t.integer  "minuteable_id"
-    t.string   "minuteable_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "item_id"
+    t.integer  "meeting_id"
   end
 
-  add_index "minutes", ["minuteable_type", "minuteable_id"], name: "index_minutes_on_minuteable_type_and_minuteable_id", using: :btree
+  add_index "minutes", ["item_id"], name: "index_minutes_on_item_id", using: :btree
+  add_index "minutes", ["meeting_id"], name: "index_minutes_on_meeting_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -100,4 +85,6 @@ ActiveRecord::Schema.define(version: 20150908054104) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "minutes", "items"
+  add_foreign_key "minutes", "meetings"
 end

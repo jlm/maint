@@ -1,6 +1,6 @@
       <tr>
         <td><%= minute.date %></td>
-        <td><%= make_meeting_name(minute.meetings.first) %></td>
+        <td><%= make_meeting_name(minute.meeting) %></td>
         <td><%= minute.text %></td>
         <td><%= minute_status_string(minute.status) %></td>
         <td><%#= link_to 'Show', minute, class: "btn btn-default" %></td>

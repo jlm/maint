@@ -35,7 +35,8 @@ class ItemsController < ApplicationController
   # GET /items/1
   # GET /items/1.json
   def show
-    @minutes = @item.minutes.where("minutes.DATE is not null").joins(:meetings).order("meetings.DATE").paginate(page: params[:page], per_page: 10)
+    #@minutes = @item.minutes.where("minutes.DATE is not null").joins(:meetings).order("meetings.DATE").paginate(page: params[:page], per_page: 10)
+    @minutes = @item.minutes.where("minutes.DATE is not null").joins(:meeting).order("meetings.date").paginate(page: params[:page], per_page: 10)
   end
 
   # GET /items/new

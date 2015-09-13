@@ -27,6 +27,7 @@ class ImportsController < ApplicationController
   # POST /imports
   # POST /imports.json
   def create
+    Rails.application.config.importing = true
     @import = Import.new(import_params)
     uploaded_io = params[:import][:filename]
     #puts "Uploaded file #{uploaded_io.original_filename}"
@@ -75,6 +76,10 @@ class ImportsController < ApplicationController
       master.to_a[2..-1].each do |itemrow|  # the 2 says skip the first two rows.
         i += 1
         next unless itemrow[0].value =~ /\d\d\d\d/
+        if Item.where(number: itemrow[0].value).count > 0
+          puts "Duplicate row label in imported file, or pre-existing record with number #{itemrow[0].value}"
+          byebug
+        end
         item = Item.new
         item.number = itemrow[0].value
         day,month,year = itemrow[1].value.split('-')
@@ -86,6 +91,7 @@ class ImportsController < ApplicationController
         item.subject = itemrow[4].value
         item.draft = itemrow[5].value
 
+        #byebug
         # Iterate over the columns (starting at the 7th) in the row and create a Minute entry per column.
         # Record the status and the Meeting in the minutes entry.  
         itemrow[(j=6)..itemrow.cells.count-1].each do |stscell|
@@ -96,13 +102,26 @@ class ImportsController < ApplicationController
           #byebug
           min = item.minutes.new
           min.status = sts
-          min.meetings << meetings[j-1][:mtg]
+          #min.meetings << meetings[j-1][:mtg]
+          min.meeting = meetings[j-1][:mtg]
+          unless min.save
+            min.errors.full_messages.each do |e|
+              puts e
+            end
+            raise "Can't save minute"
+          end
         end
 
-        item.save
+        unless item.save
+          item.errors.full_messages.each do |e|
+            puts e
+          end
+          raise "Can't save item"
+        end
+        #byebug
         #break if i > 5
       end
-
+      #byebug
       #
       # Process the MINUTES tab
       #
@@ -133,7 +152,9 @@ class ImportsController < ApplicationController
           year = year + 2000 if year < 100
           date = (year.to_s + "-" + month + "-01").to_date
           #puts "Meeting title converted date #{date}"
-          min = item.minutes.joins(:meetings).where("meetings.date = ?", date).first
+          
+          min = item.minutes.joins(:meeting).where("meetings.date = ?", date).first
+          #byebug
           if min.nil?
             j += 1
             next
@@ -141,7 +162,7 @@ class ImportsController < ApplicationController
             min.date = mindate
             min.text = textrow[j].value unless textrow[j].nil?
             #puts "#{min.inspect}"
-            min.save
+            die unless min.save
           end
           j += 1
         end
@@ -159,6 +180,7 @@ class ImportsController < ApplicationController
       flash[:error] = @import.errors.full_messages.to_sentence
       puts "#{filepath}: not an Excel spreadsheet (#{@import.content_type})"
     end
+    Rails.application.config.importing = false
 
 
     respond_to do |format|
