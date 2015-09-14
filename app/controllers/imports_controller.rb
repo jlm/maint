@@ -27,7 +27,7 @@ class ImportsController < ApplicationController
   # POST /imports
   # POST /imports.json
   def create
-    Rails.application.config.importing = true
+    Rails.application.config.importing = true   # Supress validation checks for Minutes during import.
     @import = Import.new(import_params)
     uploaded_io = params[:import][:filename]
     #puts "Uploaded file #{uploaded_io.original_filename}"
@@ -58,7 +58,6 @@ class ImportsController < ApplicationController
         break unless (not mtgname.nil?) and (mtgname.length > 1)
         #meeting = Meeting.new
         titlewords = mtgname.split("\s")
-        #byebug
         meetingdate = "1 " + titlewords[0] + " " + titlewords[1]
         meeting = Meeting.where(:date => meetingdate).first_or_create do |m|
           m.date = meetingdate
@@ -68,7 +67,6 @@ class ImportsController < ApplicationController
         i += 1
       end
 
-      #byebug
       # Read each row of the MASTER tab starting at the third row.  Identify rows with a valid item number
       # and create Items for each.
       i = 0
@@ -77,8 +75,7 @@ class ImportsController < ApplicationController
         i += 1
         next unless itemrow[0].value =~ /\d\d\d\d/
         if Item.where(number: itemrow[0].value).count > 0
-          puts "Duplicate row label in imported file, or pre-existing record with number #{itemrow[0].value}"
-          byebug
+          raise "Duplicate row label in imported file, or pre-existing record with number #{itemrow[0].value}"
         end
         item = Item.new
         item.number = itemrow[0].value
@@ -91,7 +88,6 @@ class ImportsController < ApplicationController
         item.subject = itemrow[4].value
         item.draft = itemrow[5].value
 
-        #byebug
         # Iterate over the columns (starting at the 7th) in the row and create a Minute entry per column.
         # Record the status and the Meeting in the minutes entry.  
         itemrow[(j=6)..itemrow.cells.count-1].each do |stscell|
@@ -99,7 +95,6 @@ class ImportsController < ApplicationController
           sts = stscell.value
           next if sts == "-"
           break if sts == "#"
-          #byebug
           min = item.minutes.new
           min.status = sts
           #min.meetings << meetings[j-1][:mtg]
@@ -118,10 +113,8 @@ class ImportsController < ApplicationController
           end
           raise "Can't save item"
         end
-        #byebug
         #break if i > 5
       end
-      #byebug
       #
       # Process the MINUTES tab
       #
@@ -154,7 +147,6 @@ class ImportsController < ApplicationController
           #puts "Meeting title converted date #{date}"
           
           min = item.minutes.joins(:meeting).where("meetings.date = ?", date).first
-          #byebug
           if min.nil?
             j += 1
             next
@@ -162,7 +154,12 @@ class ImportsController < ApplicationController
             min.date = mindate
             min.text = textrow[j].value unless textrow[j].nil?
             #puts "#{min.inspect}"
-            die unless min.save
+            unless min.save
+              min.errors.full_messages.each do |e|
+                puts e
+              end
+              raise "Can't save minute"
+            end
           end
           j += 1
         end
@@ -200,7 +197,6 @@ class ImportsController < ApplicationController
     fname = @import.filename
     bs,_,ext = fname.rpartition(".")
     outfname = bs + "-out." + ext
-    #byebug
 
     book = RubyXL::Parser.parse(fname)
     master = book['Master']
@@ -209,12 +205,10 @@ class ImportsController < ApplicationController
     col = 6
 
     Meeting.order(:date).each do |mtg|
-      #byebug
       raise SyntaxError, "Missing prepared column in Master column, row 2, column #{col}" if master[2][col].nil? or master[2][col].value.nil?
       if meetnamerow[col].nil? or meetnamerow[col].value.nil? or meetnamerow[col].value.length <= 1
         meetnamerow[col].change_contents(mtg.date.strftime("%B %Y ") + mtg.meetingtype + " Meeting")
         meetnamerow[col].style_index = meetnamerow[col-1].style_index # copy previous cell's style
-        #byebug
       end
       col += 1
     end
