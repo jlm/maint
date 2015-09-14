@@ -45,6 +45,7 @@ namespace :deploy do
       # within release_path do
       #   execute :rake, 'cache:clear'
       # end
+	  run "touch #{current_path}/tmp/restart.txt"
     end
   end
 
