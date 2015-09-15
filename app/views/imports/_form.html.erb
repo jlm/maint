@@ -2,11 +2,11 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
+    <%= f.input :replace, label: "Replace existing data? ", as: :fakebool, hint: "If selected, all data will first be destroyed!" %>
     <%= f.input :filename, as: :file %>
-    <%= f.input :imported %>
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit %>
+    <%= f.button :submit, data: { confirm: "If you select 'Destroy', all Maintenance data will first be destroyed!  This will take a while."} %>
   </div>
 <% end %>

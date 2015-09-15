@@ -27,6 +27,17 @@ class ImportsController < ApplicationController
   # POST /imports
   # POST /imports.json
   def create
+    unless params[:import].present?
+      flash[:error] = "A file must be selected for upload."
+      redirect_to imports_path
+      return
+    end
+    if params[:replace].present?
+      Minute.destroy_all
+      Item.destroy_all
+      Meeting.destroy_all
+      Import.destroy_all
+    end
     Rails.application.config.importing = true   # Supress validation checks for Minutes during import.
     @import = Import.new(import_params)
     uploaded_io = params[:import][:filename]
@@ -53,40 +64,37 @@ class ImportsController < ApplicationController
       # Associate the column numbers with the Meeting objects.
       meetings = []
       meetnamerow = master[1]
-      meetnamerow[(i=6)..meetnamerow.size-1].each do |mtgcell|
+      meetnamerow[(j=6)..meetnamerow.size-1].each do |mtgcell|
         mtgname = mtgcell.value
-        break unless (not mtgname.nil?) and (mtgname.length > 1)
-        #meeting = Meeting.new
+        break if mtgname.nil? or mtgname.length <= 1
         titlewords = mtgname.split("\s")
         meetingdate = "1 " + titlewords[0] + " " + titlewords[1]
-        meeting = Meeting.where(:date => meetingdate).first_or_create do |m|
+        meeting = Meeting.find_or_create_by(date: meetingdate) do |m|
           m.date = meetingdate
           m.meetingtype = titlewords[2]
         end
-        meetings[i] = { :name => mtgname, :mtg => meeting }
-        i += 1
+        meetings[j] = { :name => mtgname, :mtg => meeting }
+        j += 1
       end
 
       # Read each row of the MASTER tab starting at the third row.  Identify rows with a valid item number
-      # and create Items for each.
+      # and create (or find) Items for each.
       i = 0
       #puts "There are #{master.rows.count} rows altogether"
       master.to_a[2..-1].each do |itemrow|  # the 2 says skip the first two rows.
         i += 1
         next unless itemrow[0].value =~ /\d\d\d\d/
-        if Item.where(number: itemrow[0].value).count > 0
-          raise "Duplicate row label in imported file, or pre-existing record with number #{itemrow[0].value}"
+        item = Item.find_or_create_by!(number: itemrow[0].value) do |it|
+          it.number = itemrow[0].value
+          day,month,year = itemrow[1].value.split('-')
+          year = year.to_i
+          year = year + 2000 if year < 100
+          it.date = day.to_s + month.to_s + year.to_s
+          it.standard = itemrow[2].value
+          it.clause = itemrow[3].value
+          it.subject = itemrow[4].value
+          it.draft = itemrow[5].value
         end
-        item = Item.new
-        item.number = itemrow[0].value
-        day,month,year = itemrow[1].value.split('-')
-        year = year.to_i
-        year = year + 2000 if year < 100
-        item.date = day.to_s + month.to_s + year.to_s
-        item.standard = itemrow[2].value
-        item.clause = itemrow[3].value
-        item.subject = itemrow[4].value
-        item.draft = itemrow[5].value
 
         # Iterate over the columns (starting at the 7th) in the row and create a Minute entry per column.
         # Record the status and the Meeting in the minutes entry.  
@@ -95,10 +103,12 @@ class ImportsController < ApplicationController
           sts = stscell.value
           next if sts == "-"
           break if sts == "#"
-          min = item.minutes.new
-          min.status = sts
-          #min.meetings << meetings[j-1][:mtg]
-          min.meeting = meetings[j-1][:mtg]
+          min = item.minutes.find_or_initialize_by(meeting_id: meetings[j-1][:mtg].id) do |m|
+            m.status = sts
+            m.meeting = meetings[j-1][:mtg]
+          end
+          #byebug
+          item.minutes << min if min.new_record?
           unless min.save
             min.errors.full_messages.each do |e|
               puts e
@@ -126,7 +136,7 @@ class ImportsController < ApplicationController
       rowno = 1
       while (inum = minutes[rowno][1].value) =~ /\d\d\d\d/
         item = Item.where(:number => inum).first
-        die if item.nil?
+        raise "Missing entry on Master sheet for item #{inum} from Minutes tab" if item.nil?
         datesrow = minutes[rowno]
         textrow  = minutes[rowno+1]
         j = 3
@@ -136,31 +146,30 @@ class ImportsController < ApplicationController
             next
           end
           mindate = datesrow[j].value
-          #puts "Minute date #{mindate}"
-          mtgtitle = minutes[0][j].value
-          mtgtitlebits = mtgtitle.split(": ")
-          #puts "Meeting title date X#{mtgtitlebits[1]}X"
-          month,year = mtgtitlebits[1].split("-")
-          year = year.to_i
-          year = year + 2000 if year < 100
-          date = (year.to_s + "-" + month + "-01").to_date
-          #puts "Meeting title converted date #{date}"
-          
-          min = item.minutes.joins(:meeting).where("meetings.date = ?", date).first
-          if min.nil?
-            j += 1
-            next
-          else
-            min.date = mindate
-            min.text = textrow[j].value unless textrow[j].nil?
-            #puts "#{min.inspect}"
-            unless min.save
-              min.errors.full_messages.each do |e|
-                puts e
-              end
-              raise "Can't save minute"
-            end
+          # If there's no existing minute entry but the spreadsheet has one, we create one
+          # This logic seems tortuous - there must be a better way to do it.
+          min = item.minutes.where(meeting_id: meetings[j+3][:mtg].id).first
+          changed = false
+          if min.nil? and (not mindate.blank? or not (textrow[j].nil? or textrow[j].value.blank?))
+            min = item.minutes.create(meeting: meetings[j+3][:mtg])
+            changed = true
           end
+          if not mindate.blank? and min.date.blank?
+              min.date = mindate
+              changed = true
+          end
+          if (not (textrow[j].nil? or textrow[j].value.blank?)) and min.text.blank?
+              min.text = textrow[j].value
+              changed = true
+          end
+
+          if changed and not min.save
+            min.errors.full_messages.each do |e|
+              puts e
+            end
+            raise "Can't save minute"
+          end
+          # If there's an existing minute entry, we don't change it even if the spreadsheet has no entry. 
           j += 1
         end
         rowno += 3
