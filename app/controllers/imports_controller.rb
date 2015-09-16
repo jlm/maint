@@ -66,12 +66,23 @@ class ImportsController < ApplicationController
       meetnamerow = master[1]
       meetnamerow[(j=6)..meetnamerow.size-1].each do |mtgcell|
         mtgname = mtgcell.value
-        break if mtgname.nil? or mtgname.length <= 1
-        titlewords = mtgname.split("\s")
-        meetingdate = "1 " + titlewords[0] + " " + titlewords[1]
+        break if mtgname.nil? or mtgname.length <= 1 or mtgname.blank?
+        # Date.parse will parse a date from the start of the string.  If of the form "Mar 2013 interim" the date will be 2013-03-01.
+        meetingdate = Date.parse(mtgname)
         meeting = Meeting.find_or_create_by(date: meetingdate) do |m|
           m.date = meetingdate
-          m.meetingtype = titlewords[2]
+          # Pick one of these words as the meeting type if present
+          mtgtype = mtgname.match(/[iI]nterim|[Pp]lenary|[tT]elecon\w*|[cC]on\w*|[cC]all/)
+          m.meetingtype = mtgtype && mtgtype[0].capitalize
+          # Otherwise, go for the word after the word containing the year
+          if mtgtype.nil?
+            words = mtgname.split("\s")
+            pos = words.index { |word| word =~ /\d{4}/ }
+            if pos
+              word = words[pos+1]
+              m.meetingtype = word.capitalize if word
+            end
+          end
         end
         meetings[j] = { :name => mtgname, :mtg => meeting }
         j += 1
@@ -86,10 +97,7 @@ class ImportsController < ApplicationController
         next unless itemrow[0].value =~ /\d\d\d\d/
         item = Item.find_or_create_by!(number: itemrow[0].value) do |it|
           it.number = itemrow[0].value
-          day,month,year = itemrow[1].value.split('-')
-          year = year.to_i
-          year = year + 2000 if year < 100
-          it.date = day.to_s + month.to_s + year.to_s
+          it.date = Date.parse(itemrow[1].value)
           it.standard = itemrow[2].value
           it.clause = itemrow[3].value
           it.subject = itemrow[4].value
@@ -215,10 +223,14 @@ class ImportsController < ApplicationController
 
     Meeting.order(:date).each do |mtg|
       raise SyntaxError, "Missing prepared column in Master column, row 2, column #{col}" if master[2][col].nil? or master[2][col].value.nil?
-      if meetnamerow[col].nil? or meetnamerow[col].value.nil? or meetnamerow[col].value.length <= 1
-        meetnamerow[col].change_contents(mtg.date.strftime("%B %Y ") + mtg.meetingtype + " Meeting")
-        meetnamerow[col].style_index = meetnamerow[col-1].style_index # copy previous cell's style
+      # Overwrite existing information with the information from the database
+      if mtg.date.day == 1
+        fmt = "%B %Y "
+      else
+        fmt = "%-d %B %Y "
       end
+      meetnamerow[col].change_contents(mtg.date.strftime(fmt) + mtg.meetingtype + " Meeting")
+      meetnamerow[col].style_index = meetnamerow[col-1].style_index if col>6 # copy previous cell's style
       col += 1
     end
     # Put actual code here.
