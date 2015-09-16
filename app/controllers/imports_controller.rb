@@ -80,7 +80,6 @@ class ImportsController < ApplicationController
       # Read each row of the MASTER tab starting at the third row.  Identify rows with a valid item number
       # and create (or find) Items for each.
       i = 0
-      #puts "There are #{master.rows.count} rows altogether"
       master.to_a[2..-1].each do |itemrow|  # the 2 says skip the first two rows.
         i += 1
         next unless itemrow[0].value =~ /\d\d\d\d/
@@ -210,16 +209,35 @@ class ImportsController < ApplicationController
     book = RubyXL::Parser.parse(fname)
     master = book['Master']
     minutes = book['Minutes']
+    
+    # Write out the meeting names unconditionally into Excel row 2 of the Master tab
     meetnamerow = master[1]
     col = 6
-
     Meeting.order(:date).each do |mtg|
-      raise SyntaxError, "Missing prepared column in Master column, row 2, column #{col}" if master[2][col].nil? or master[2][col].value.nil?
+      raise SyntaxError, "Missing prepared column in Master column, row 2, column #{col+1}" if master[2][col].nil? or master[2][col].value.nil?
       if meetnamerow[col].nil? or meetnamerow[col].value.nil? or meetnamerow[col].value.length <= 1
         meetnamerow[col].change_contents(mtg.date.strftime("%B %Y ") + mtg.meetingtype + " Meeting")
         meetnamerow[col].style_index = meetnamerow[col-1].style_index # copy previous cell's style
       end
       col += 1
+    end
+
+    # Go through the database Items in numerical order:
+    # 1. In a row on the Master sheet, write out the item's properties and then its per-meeting statuses.
+    #    Handle missing meeting statuses including at the end of the line.
+    #    Note: With the current release of RubyXL (3.3.12), there's nothing we can do about the hyperlinks.  They are properties
+    #          of the sheet, not the cell.
+    #          RubyXL::Reference.ref2ind(master.hyperlinks.first.ref.to_s)
+    #          master.relationship_container.find_by_rid(master.hyperlinks.first.r_id)
+    # 2. Write three rows on the Minutes sheet.
+    rowno = 2
+    Item.order(:number).each do |item|
+      numcel = master[rowno][0]
+      row = master[rowno]
+      # Change_contents spoils the shared string thing, so don't write unless you have to.
+      row[0].chgifnecessary(item.number)
+      row[1].chgifnecessary()
+      byebug
     end
     # Put actual code here.
 
