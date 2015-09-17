@@ -94,14 +94,16 @@ class ImportsController < ApplicationController
       master.to_a[2..-1].each do |itemrow|  # the 2 says skip the first two rows.
         i += 1
         next unless itemrow[0].value =~ /\d\d\d\d/
+        # Note: the items inside the "do" will not be updated on a merge import.
         item = Item.find_or_create_by!(number: itemrow[0].value) do |it|
           it.number = itemrow[0].value
           it.date = Date.parse(itemrow[1].value)
           it.standard = itemrow[2].value
           it.clause = itemrow[3].value
-          it.subject = itemrow[4].value
-          it.draft = itemrow[5].value
         end
+        # These fields should be updated on a merge input.  They aren't part of the original Maintenance Request, and may have changed.
+        item.subject = itemrow[4].value
+        item.draft = itemrow[5].value
 
         # Iterate over the columns (starting at the 7th) in the row and create a Minute entry per column.
         # Record the status and the Meeting in the minutes entry.  

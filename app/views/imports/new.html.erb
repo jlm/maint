@@ -1,5 +1,10 @@
 <h1>Import Maintenance Database</h1>
 <p>The maintenance database file to be imported must be in Excel *.xlsx format.</p>
+<p>By default, existing data will be replaced with the imported data.  That means all existing maintenance items will be
+   removed before importing the file.</p>
+<p>If the "Replace" checkbox is unticked, the imported items will be merged with data already in the database.
+   This is a more complicated operation and should only be used if some items or meetings have been removed from
+   the spreadsheet to make it less unwieldy.  Use of this feature is discouraged.</p>
 <%= render 'form' %>
 
 <%= link_to 'Back', imports_path, class: "btn btn-default" %>
