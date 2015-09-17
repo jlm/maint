@@ -247,7 +247,7 @@ class ImportsController < ApplicationController
       row = master[rowno]
       # Change_contents spoils the shared string thing, so don't write unless you have to.
       row[0].chgifnecessary(item.number)
-      row[1].chgifnecessary(item.date.strftime("%-d-%b-%y"))
+      row[1].chgifnecessary(item.date.strftime("%d-%b-%y"))
       row[2].chgifnecessary(item.standard)
       row[3].chgifnecessary(item.clause)
       row[4].chgifnecessary(item.subject)
@@ -258,7 +258,7 @@ class ImportsController < ApplicationController
       colno = 6
       Meeting.order(:date).each do |mtg|
         min = item.minutes.where("minutes.meeting_id = ?", mtg.id).first
-        current_sts = min.status if min
+        current_sts = min.status if min and not min.status.blank?
         raise SyntaxError, "Missing prepared column in Master sheet, row #{rowno+1}, column #{colno+1}" if row[colno].nil? or row[colno].blank?
         row[colno].chgifnecessary(current_sts)
         colno += 1
