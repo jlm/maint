@@ -222,14 +222,14 @@ class ImportsController < ApplicationController
     meetnamerow = master[1]
     col = 6
     Meeting.order(:date).each do |mtg|
-      raise SyntaxError, "Missing prepared column in Master column, row 2, column #{col+1}" if master[2][col].nil? or master[2][col].value.nil?
+      raise SyntaxError, "Missing prepared column in Master sheet, row 2, column #{col+1}" if master[2][col].nil? or master[2][col].value.blank?
       # Overwrite existing information with the information from the database
       if mtg.date.day == 1
         fmt = "%B %Y "
       else
         fmt = "%-d %B %Y "
       end
-      meetnamerow[col].change_contents(mtg.date.strftime(fmt) + mtg.meetingtype + " Meeting")
+      meetnamerow[col].chgifnecessary(mtg.date.strftime(fmt) + mtg.meetingtype + " Meeting")
       meetnamerow[col].style_index = meetnamerow[col-1].style_index if col>6 # copy previous cell's style
       col += 1
     end
@@ -244,12 +244,26 @@ class ImportsController < ApplicationController
     # 2. Write three rows on the Minutes sheet.
     rowno = 2
     Item.order(:number).each do |item|
-      numcel = master[rowno][0]
       row = master[rowno]
       # Change_contents spoils the shared string thing, so don't write unless you have to.
       row[0].chgifnecessary(item.number)
-      row[1].chgifnecessary()
-      byebug
+      row[1].chgifnecessary(item.date.strftime("%-d-%b-%y"))
+      row[2].chgifnecessary(item.standard)
+      row[3].chgifnecessary(item.clause)
+      row[4].chgifnecessary(item.subject)
+      row[5].chgifnecessary(item.draft)
+      # There may not be a minutes entry corresponding to each meeting (=column), so keep a track of the item's current status
+      # and use that where no minutes entry exists.
+      current_sts = "-"
+      colno = 6
+      Meeting.order(:date).each do |mtg|
+        min = item.minutes.where("minutes.meeting_id = ?", mtg.id).first
+        current_sts = min.status if min
+        raise SyntaxError, "Missing prepared column in Master sheet, row #{rowno+1}, column #{colno+1}" if row[colno].nil? or row[colno].blank?
+        row[colno].chgifnecessary(current_sts)
+        colno += 1
+      end
+      rowno += 1
     end
     # Put actual code here.
 
