@@ -72,7 +72,7 @@ end
     @minute.status = MINUTE_STATUSES.invert[minute_params[:status]]
     respond_to do |format|
       if @minute.update(minute_params)
-        format.html { redirect_to item_minutes_index_url, notice: 'Minute was successfully updated.' }
+        format.html { redirect_to item_minute_url(@item, @minute), notice: 'Minute was successfully updated.' }
         format.json { render :show, status: :ok, location: @minute }
       else
         format.html { render :edit }
@@ -84,9 +84,10 @@ end
   # DELETE /minutes/1
   # DELETE /minutes/1.json
   def destroy
+    @item = Item.find(params[:item_id])
     @minute.destroy
     respond_to do |format|
-      format.html { redirect_to item_minutes_index_url, notice: 'Minute was successfully destroyed.' }
+      format.html { redirect_to item_url(@item), notice: 'Minute was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
