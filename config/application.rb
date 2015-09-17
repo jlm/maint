@@ -24,3 +24,12 @@ module Maint
     config.active_record.raise_in_transactional_callbacks = true
   end
 end
+
+module RubyXL::CellConvenienceMethods
+    def chgifnecessary(data, formula_expression = nil)
+        unless formula_expression.nil? and self.value == data
+            data = change_contents(data, formula_expression)
+        end
+        data
+    end
+end
