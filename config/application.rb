@@ -25,11 +25,24 @@ module Maint
   end
 end
 
+# The change_contents method uses raw strings, not shared strings.
+# Therefore it is better not to overwrite the contents of a cell unless it has changed.
+# In this application, it's quite likely that the value being written will be the same as the one already there.
 module RubyXL::CellConvenienceMethods
-    def chgifnecessary(data, formula_expression = nil)
+    def chg_cell(data, formula_expression = nil)
         unless formula_expression.nil? and self.value == data
             data = change_contents(data, formula_expression)
         end
         data
+    end
+end
+
+module RubyXL::WorksheetConvenienceMethods
+    def add_or_chg(row, col, data, formula_expression = nil)
+        if self[row].nil? or self[row][col].nil?
+            self.add_cell(row, col, data, formula_expression)
+        else
+            self[row][col].chg_cell(data, formula_expression)
+        end
     end
 end

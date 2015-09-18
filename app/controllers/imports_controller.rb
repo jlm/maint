@@ -64,7 +64,7 @@ class ImportsController < ApplicationController
       # Associate the column numbers with the Meeting objects.
       meetings = []
       meetnamerow = master[1]
-      meetnamerow[(j=6)..meetnamerow.size-1].each do |mtgcell|
+      meetnamerow[(j=6)..meetnamerow.cells.count-1].each do |mtgcell|
         mtgname = mtgcell.value
         break if mtgname.nil? or mtgname.length <= 1 or mtgname.blank?
         # Date.parse will parse a date from the start of the string.  If of the form "Mar 2013 interim" the date will be 2013-03-01.
@@ -218,20 +218,19 @@ class ImportsController < ApplicationController
 
     book = RubyXL::Parser.parse(fname)
     master = book['Master']
-    minutes = book['Minutes']
     
     # Write out the meeting names unconditionally into Excel row 2 of the Master tab
     meetnamerow = master[1]
     col = 6
     Meeting.order(:date).each do |mtg|
-      raise SyntaxError, "Missing prepared column in Master sheet, row 2, column #{col+1}" if master[2][col].nil? or master[2][col].value.blank?
+      flash[:error] = "Missing prepared column in Master sheet, row 3, column #{col+1}" if master[2].nil? or master[2][col].nil? or master[2][col].value.blank?
       # Overwrite existing information with the information from the database
       if mtg.date.day == 1
         fmt = "%B %Y "
       else
         fmt = "%-d %B %Y "
       end
-      meetnamerow[col].chgifnecessary(mtg.date.strftime(fmt) + mtg.meetingtype + " Meeting")
+      master.add_or_chg(1, col, mtg.date.strftime(fmt) + mtg.meetingtype + " Meeting")
       meetnamerow[col].style_index = meetnamerow[col-1].style_index if col>6 # copy previous cell's style
       col += 1
     end
@@ -246,14 +245,13 @@ class ImportsController < ApplicationController
     # 2. Write three rows on the Minutes sheet.
     rowno = 2
     Item.order(:number).each do |item|
-      row = master[rowno]
-      # Change_contents spoils the shared string thing, so don't write unless you have to.
-      row[0].chgifnecessary(item.number)
-      row[1].chgifnecessary(item.date.strftime("%d-%b-%y"))
-      row[2].chgifnecessary(item.standard)
-      row[3].chgifnecessary(item.clause)
-      row[4].chgifnecessary(item.subject)
-      row[5].chgifnecessary(item.draft)
+      # Change_contents spoils the shared string thing, so don't write unless you have to.  Anyhow, when writing, rows and columns might not exist.
+      master.add_or_chg(rowno, 0, item.number.to_s)   # Use this method to ensure that the row exists
+      master.add_or_chg(rowno, 1, item.date.strftime("%d-%b-%y"))
+      master.add_or_chg(rowno, 2, item.standard)
+      master.add_or_chg(rowno, 3, item.clause)
+      master.add_or_chg(rowno, 4, item.subject)
+      master.add_or_chg(rowno, 5, item.draft)
       # There may not be a minutes entry corresponding to each meeting (=column), so keep a track of the item's current status
       # and use that where no minutes entry exists.
       current_sts = "-"
@@ -261,13 +259,55 @@ class ImportsController < ApplicationController
       Meeting.order(:date).each do |mtg|
         min = item.minutes.where("minutes.meeting_id = ?", mtg.id).first
         current_sts = min.status if min and not min.status.blank?
-        raise SyntaxError, "Missing prepared column in Master sheet, row #{rowno+1}, column #{colno+1}" if row[colno].nil? or row[colno].blank?
-        row[colno].chgifnecessary(current_sts)
+        flash[:error] = "Missing prepared column in Master sheet, row #{rowno+1}, column #{colno+1}" if master[rowno][colno].nil? or master[rowno][colno].blank?
+        master.add_or_chg(rowno, colno, current_sts)
         colno += 1
       end
+      # Write hash signs on the remailing cells in the row
+      (colno..master[rowno].cells.count-1).each do |colcolno|
+        master[rowno][colcolno].chg_cell('#')
+      end
+      # Add a hash at the end of the row if there isn't one
+      master.add_cell(rowno, master[rowno].cells.count, '#') unless master[rowno][-1] and master[rowno][-1].value == '#'
       rowno += 1
     end
-    # Put actual code here.
+    # Fill the rest of the rows with hash signs.  Make sure there's at least one row of hashes.
+    make_master_hash_row(master, rowno) unless master[rowno] and master[rowno][1] and master[rowno][1].value == '#'
+    ((rowno+1)..(master.count-1)).each do |r|
+      make_master_hash_row(master, r)
+    end
+
+    minutes = book['Minutes']
+    rowno = 1
+    Item.order(:number).each do |item|
+      minutes.add_or_chg(rowno, 1, item.number.to_s)
+      colno = 3
+      Meeting.order(:date).each do |mtg|
+        min = item.minutes.where("minutes.meeting_id = ?", mtg.id).first
+        if min and not min.date.blank?
+          datestr = min.date.strftime("%-d-%b-%y")
+          minutes.add_or_chg(rowno, colno, datestr)
+        else
+          minutes.delete_cell(rowno, colno)
+        end
+        if min and not min.text.blank?
+          minutes.add_or_chg(rowno+1, colno, min.text)
+        else
+          minutes.delete_cell(rowno+1, colno)
+        end
+        if min and (not min.date.blank? or not min.text.blank?)
+          minutes.add_or_chg(rowno+2, colno, '#')
+        else
+          minutes.delete_cell(rowno+2, colno)
+        end
+        colno += 1
+      end
+      rowno += 3
+    end
+    # Delete the rest of the rows, making sure the last row has a single '#' in the number column.
+    # Note that delete_row pushes cells up, so we delete the same numbered row repeatedly.
+    (rowno..(minutes.count-1)).each { |r| minutes.delete_row(rowno) }
+    minutes.add_cell(rowno, 1, '#')
 
     book.write(outfname)
 
@@ -302,4 +342,12 @@ class ImportsController < ApplicationController
     def import_params
       params.require(:import).permit(:filename, :imported)
     end
+
+    def make_master_hash_row(sheet, rowno)
+      sheet.add_or_chg(rowno, 1, '#')
+      sheet.delete_cell(rowno, 0)
+      (2..5).each { |colno| sheet.delete_cell(rowno, colno) }
+      (6..sheet[1].cells.count-1).each { |colno| sheet.add_or_chg(rowno, colno, '#') }
+    end
+
 end
