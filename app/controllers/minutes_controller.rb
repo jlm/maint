@@ -25,7 +25,7 @@ class MinutesController < ApplicationController
   def index
     @item = Item.find(params[:item_id])
     @minutes = @item.minutes.order(:date).paginate(page: params[:page], per_page: 10)
-end
+  end
 
   # GET /minutes/1
   # GET /minutes/1.json
@@ -42,9 +42,11 @@ end
     @meetings = Meeting.all
   end
 
-  # GET /minutes/1/edit
+  # GET /items/:item_id/minutes/1/edit
   def edit
     @item = Item.find(params[:item_id])
+    @minute = @item.minutes.find(params[:id])
+    @minute.status = MINUTE_STATUSES[@minute.status]
   end
 
   # POST /minutes
