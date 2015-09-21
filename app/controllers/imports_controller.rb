@@ -57,7 +57,7 @@ class ImportsController < ApplicationController
       minutes = book['Minutes']
       
       #
-      # Process the MASTER tab
+      # Import from the MASTER tab
       #
 
       # Read the second row, containing the meeting names, and create Meeting objects for them.
@@ -66,7 +66,7 @@ class ImportsController < ApplicationController
       meetnamerow = master[1]
       meetnamerow[(j=6)..meetnamerow.cells.count-1].each do |mtgcell|
         mtgname = mtgcell.value
-        break if mtgname.nil? or mtgname.length <= 1 or mtgname.blank?
+        break if mtgname.nil? || mtgname.length <= 1 || mtgname.blank?
         # Date.parse will parse a date from the start of the string.  If of the form "Mar 2013 interim" the date will be 2013-03-01.
         meetingdate = Date.parse(mtgname)
         meeting = Meeting.find_or_create_by(date: meetingdate) do |m|
@@ -93,7 +93,7 @@ class ImportsController < ApplicationController
       i = 0
       master.to_a[2..-1].each do |itemrow|  # the 2 says skip the first two rows.
         i += 1
-        next unless itemrow[0].value =~ /\d\d\d\d/
+        next unless itemrow[0] && itemrow[0].value =~ /\d\d\d\d/
         # Note: the items inside the "do" will not be updated on a merge import.
         item = Item.find_or_create_by!(number: itemrow[0].value) do |it|
           it.number = itemrow[0].value
@@ -109,9 +109,11 @@ class ImportsController < ApplicationController
         # Record the status and the Meeting in the minutes entry.  
         itemrow[(j=6)..itemrow.cells.count-1].each do |stscell|
           j += 1
+          next if stscell.nil?
           sts = stscell.value
           next if sts == "-"
           break if sts == "#"
+          raise SyntaxError, "No meeting exists in Master tab corresponding to status entry #{sts} in #{RubyXL::Reference::ind2ref(stscell.row, stscell.column)}" if meetings[j-1].nil?
           min = item.minutes.find_or_initialize_by(meeting_id: meetings[j-1][:mtg].id) do |m|
             m.status = sts
             m.meeting = meetings[j-1][:mtg]
@@ -134,8 +136,9 @@ class ImportsController < ApplicationController
         end
         #break if i > 5
       end
+
       #
-      # Process the MINUTES tab
+      # Import from the MINUTES tab
       #
 
       # Rows in the MINUTES tab come in sets of three, starting with the second row in the tab.
@@ -149,30 +152,33 @@ class ImportsController < ApplicationController
         datesrow = minutes[rowno]
         textrow  = minutes[rowno+1]
         j = 3
-        while j < datesrow.cells.count do
-          if datesrow[j].nil? or minutes[0][j].nil?
-            j += 1
-            next
-          end
-          mindate = datesrow[j].value
+        while j < [datesrow.cells.count, textrow.cells.count].max do
+          #if datesrow[j].nil? || minutes[0][j].nil?   # still need to handle minutes text even if the date is missing. XXX
+          # j += 1
+          # next
+          #end
+          mindate = datesrow[j] && datesrow[j].value
           # If there's no existing minute entry but the spreadsheet has one, we create one
           # This logic seems tortuous - there must be a better way to do it.
+          raise SyntaxError, "No meeting exists on Master tab corresponding to cell #{RubyXL::Reference::ind2ref(rowno, j)} on Minutes tab" if meetings[j+3].nil?
           min = item.minutes.where(meeting_id: meetings[j+3][:mtg].id).first
           changed = false
-          if min.nil? and (not mindate.blank? or not (textrow[j].nil? or textrow[j].value.blank?))
+          #byebug if ! (textrow[j].nil? || textrow[j].value.blank?) && inum == "0005"
+          if min.nil? && (! mindate.blank? || ! (textrow[j].nil? || textrow[j].value.blank?))
             min = item.minutes.create(meeting: meetings[j+3][:mtg])
             changed = true
           end
-          if not mindate.blank? and min.date.blank?
+          if ! mindate.blank? && min.date.blank?
               min.date = mindate
               changed = true
           end
-          if (not (textrow[j].nil? or textrow[j].value.blank?)) and min.text.blank?
+          if !(textrow[j].nil? || textrow[j].value.blank?) && min.text.blank?
               min.text = textrow[j].value
+              min.date = meetings[j+3][:mtg].date if min.date.blank? && !min.text.blank?    # Fix up missing minute date where there's text.
               changed = true
           end
 
-          if changed and not min.save
+          if changed && ! min.save
             min.errors.full_messages.each do |e|
               puts e
             end
@@ -199,8 +205,8 @@ class ImportsController < ApplicationController
 
 
     respond_to do |format|
-      if @import.errors.count == 0 and @import.save
-        format.html { redirect_to @import, notice: 'File was successfully imported.' }
+      if @import.errors.count == 0 && @import.save
+        format.html { redirect_to imports_url, notice: 'File was successfully imported.' }
         format.json { render :show, status: :created, location: @import }
       else
         format.html { render :new }
@@ -223,7 +229,7 @@ class ImportsController < ApplicationController
     meetnamerow = master[1]
     col = 6
     Meeting.order(:date).each do |mtg|
-      flash[:error] = "Missing prepared column in Master sheet, row 3, column #{col+1}" if master[2].nil? or master[2][col].nil? or master[2][col].value.blank?
+      flash[:error] = "Missing prepared column in Master sheet, row 3, column #{col+1}" if master[2].nil? || master[2][col].nil? || master[2][col].value.blank?
       # Overwrite existing information with the information from the database
       if mtg.date.day == 1
         fmt = "%B %Y "
@@ -247,7 +253,7 @@ class ImportsController < ApplicationController
     Item.order(:number).each do |item|
       # Change_contents spoils the shared string thing, so don't write unless you have to.  Anyhow, when writing, rows and columns might not exist.
       master.add_or_chg(rowno, 0, item.number.to_s)   # Use this method to ensure that the row exists
-      master.add_or_chg(rowno, 1, item.date.strftime("%d-%b-%y"))
+      master.add_or_chg(rowno, 1, item.date.strftime("%d-%b-%Y"))
       master.add_or_chg(rowno, 2, item.standard)
       master.add_or_chg(rowno, 3, item.clause)
       master.add_or_chg(rowno, 4, item.subject)
@@ -258,8 +264,8 @@ class ImportsController < ApplicationController
       colno = 6
       Meeting.order(:date).each do |mtg|
         min = item.minutes.where("minutes.meeting_id = ?", mtg.id).first
-        current_sts = min.status if min and not min.status.blank?
-        flash[:error] = "Missing prepared column in Master sheet, row #{rowno+1}, column #{colno+1}" if master[rowno][colno].nil? or master[rowno][colno].blank?
+        current_sts = min.status if min && ! min.status.blank?
+        flash[:error] = "Missing prepared column in Master sheet, row #{rowno+1}, column #{colno+1}" if master[rowno][colno].nil? || master[rowno][colno].blank?
         master.add_or_chg(rowno, colno, current_sts)
         colno += 1
       end
@@ -268,11 +274,11 @@ class ImportsController < ApplicationController
         master[rowno][colcolno].chg_cell('#')
       end
       # Add a hash at the end of the row if there isn't one
-      master.add_cell(rowno, master[rowno].cells.count, '#') unless master[rowno][-1] and master[rowno][-1].value == '#'
+      master.add_cell(rowno, master[rowno].cells.count, '#') unless master[rowno][-1] && master[rowno][-1].value == '#'
       rowno += 1
     end
     # Fill the rest of the rows with hash signs.  Make sure there's at least one row of hashes.
-    make_master_hash_row(master, rowno) unless master[rowno] and master[rowno][1] and master[rowno][1].value == '#'
+    make_master_hash_row(master, rowno) unless master[rowno] && master[rowno][1] && master[rowno][1].value == '#'
     ((rowno+1)..(master.count-1)).each do |r|
       make_master_hash_row(master, r)
     end
@@ -284,18 +290,18 @@ class ImportsController < ApplicationController
       colno = 3
       Meeting.order(:date).each do |mtg|
         min = item.minutes.where("minutes.meeting_id = ?", mtg.id).first
-        if min and not min.date.blank?
-          datestr = min.date.strftime("%-d-%b-%y")
+        if min && ! min.date.blank?
+          datestr = min.date.strftime("%-d-%b-%Y")
           minutes.add_or_chg(rowno, colno, datestr)
         else
           minutes.delete_cell(rowno, colno)
         end
-        if min and not min.text.blank?
+        if min && ! min.text.blank?
           minutes.add_or_chg(rowno+1, colno, min.text)
         else
           minutes.delete_cell(rowno+1, colno)
         end
-        if min and (not min.date.blank? or not min.text.blank?)
+        if min && (! min.date.blank? || ! min.text.blank?)
           minutes.add_or_chg(rowno+2, colno, '#')
         else
           minutes.delete_cell(rowno+2, colno)
@@ -307,6 +313,7 @@ class ImportsController < ApplicationController
     # Delete the rest of the rows, making sure the last row has a single '#' in the number column.
     # Note that delete_row pushes cells up, so we delete the same numbered row repeatedly.
     (rowno..(minutes.count-1)).each { |r| minutes.delete_row(rowno) }
+    minutes.add_cell(rowno, 0, "")
     minutes.add_cell(rowno, 1, '#')
 
     book.write(outfname)

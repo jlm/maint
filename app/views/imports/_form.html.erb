@@ -1,4 +1,4 @@
-<%= simple_form_for(@import, html: {multipart: true}) do |f| %>
+<%= simple_form_for(@import, :url => imports_path, html: {multipart: true}) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
@@ -7,6 +7,6 @@
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit, "Import", class: "btn btn-warning", data: { confirm: "If you select 'Destroy', all Maintenance data will first be destroyed!  This will take a while."} %>
+    <%= f.button :submit, "Import", class: "btn btn-warning", data: { confirm: "If you select 'Replace', all Maintenance data will first be destroyed!  This will take a while."} %>
   </div>
 <% end %>
