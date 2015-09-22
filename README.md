@@ -20,7 +20,7 @@ Then install Ruby:
     $ rbenv install 2.2.2
     $ rbenv global 2.2.2
 ```
-However, due to problems with Readline, I found I had to use this incantation to install Ruby:
+However, with Ubuntu 14.04, due to problems with Readline, I found I had to use this incantation to install Ruby:
 ```
     $ RUBY_CONFIGURE_OPTS=--with-readline-dir="/usr/include/readline" rbenv install 2.2.2
 ```
