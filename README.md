@@ -16,7 +16,7 @@ These commands are for Ubuntu.  For other setups see https://github.com/sstephen
 Restart the shell and enter "type rbenv" to verify that rbenv is a function.
 Then install Ruby:
 ```
-    $ sudo apt-get install libreadline-dev
+    $ sudo apt-get install libreadline-dev libssl-dev zlib1g-dev
     $ rbenv install 2.2.2
     $ rbenv global 2.2.2
 ```
