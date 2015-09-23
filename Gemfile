@@ -37,6 +37,9 @@ gem 'cancan'
 gem 'simple_form'
 gem 'rubyXL'
 
+gem 'delayed_job_active_record'
+gem 'progress_job'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

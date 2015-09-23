@@ -24,6 +24,10 @@ class ImportsController < ApplicationController
   def edit
   end
 
+  def import_file
+    @job = Delayed::Job.enqueue ImportJob.new
+  end
+
   # POST /imports
   # POST /imports.json
   def create
@@ -32,6 +36,7 @@ class ImportsController < ApplicationController
       redirect_to imports_path
       return
     end
+
     if params[:replace].present?
       Minute.destroy_all
       Item.destroy_all
