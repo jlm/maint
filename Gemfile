@@ -36,6 +36,7 @@ gem 'cancan'
 
 gem 'simple_form'
 gem 'rubyXL'
+gem 'postmark-rails'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -43,13 +44,15 @@ gem 'rubyXL'
 # Use Unicorn as the app server
 # gem 'unicorn'
 
+# Use Puma as the webserver
+gem 'puma'
+
 #group :production do
 	# gem 'passenger'
 
 	# Use Capistrano for deployment
 	# gem 'capistrano', '~> 3.4.0'
 	# gem 'capistrano-rails'
-	# gem 'capistrano-rails', group: :development
 	# gem 'capistrano-rbenv'
 	# gem 'capistrano-passenger'
 #end
