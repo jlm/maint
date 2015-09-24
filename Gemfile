@@ -44,14 +44,14 @@ gem 'rubyXL'
 # gem 'unicorn'
 
 #group :production do
-	gem 'passenger'
+	# gem 'passenger'
 
 	# Use Capistrano for deployment
-	gem 'capistrano', '~> 3.4.0'
-	gem 'capistrano-rails'
+	# gem 'capistrano', '~> 3.4.0'
+	# gem 'capistrano-rails'
 	# gem 'capistrano-rails', group: :development
-	gem 'capistrano-rbenv'
-	gem 'capistrano-passenger'
+	# gem 'capistrano-rbenv'
+	# gem 'capistrano-passenger'
 #end
 
 group :development do
