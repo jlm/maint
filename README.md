@@ -30,8 +30,7 @@ Other prerequisites
 Install the bundler gem and other prerequisites:
 ```
     $ gem install bundler
-    $ sudo apt-get install postgresql postgresql-client libpq-dev
-    $ sudo apt-get install build-essential
+    $ sudo apt-get install postgresql postgresql-client libpq-dev git
 ```
 
 Clone the repository and add missing files
