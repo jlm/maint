@@ -23,6 +23,9 @@ module Maint
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
 
+    # Environment
+    ENV["SCRIPT_NAME"] ||= ""
+
     # Postmark
     config.action_mailer.delivery_method = :postmark
     config.action_mailer.postmark_settings = { :api_key => ENV['POSTMARK_API_KEY'] }
