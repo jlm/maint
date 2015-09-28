@@ -12,8 +12,9 @@ These commands are for Ubuntu.  For other setups see https://github.com/sstephen
     $ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
     $ echo 'eval "$(rbenv init -)"' >> ~/.bashrc
     $ git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+    $ exec -l $SHELL
 ```
-Restart the shell and enter "type rbenv" to verify that rbenv is a function.
+Then enter "type rbenv" to verify that rbenv is a function.
 Then install Ruby:
 ```
     $ sudo apt-get install libreadline-dev libssl-dev zlib1g-dev
