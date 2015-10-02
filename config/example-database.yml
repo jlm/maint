@@ -84,4 +84,7 @@ production:
   <<: *default
   database: maint_production
   username: deploy
-  password: <%= ENV['PRODUCTION_DATABASE_PASSWORD'] %>
+  username: <%= ENV['POSTGRES_USER'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
+  host:     <%= ENV['DB_SERVICE_HOST'] || ENV['DB_PORT_5432_TCP_ADDR'] %>
+  port:     <%= ENV['DB_SERVICE_PORT'] || ENV['DB_PORT_5432_TCP_PORT'] %>
