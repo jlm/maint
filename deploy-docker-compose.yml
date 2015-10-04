@@ -1,0 +1,21 @@
+# This is the docker-compose.yml for the deployment environment.
+# Instead of building the image, it's pulled from Docker Hub.
+# The current directory is not mounted.
+# Only the assets directory is mounted, and this is only to get round a problem that the asset paths
+# as served up by the app are not preceded with ENV['SCRIPT_NAME'].
+db:
+  image: postgres
+  environment:
+    POSTGRES_USER: rails
+    POSTGRES_PASSWORD: password
+web:
+  image: jmessenger/maint
+  env_file: .env
+  volumes:
+    - /var/www/assets:/myapp/public/assets
+  #command: bash -c "bundle exec rake assets:precompile && bundle exec rails s Puma -p 3100 -b '0.0.0.0'"
+  ports:
+    - "3100:3100"
+    - "3000:3000"
+  links:
+    - db

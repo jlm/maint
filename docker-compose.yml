@@ -1,0 +1,20 @@
+# These first lines deploy an unmodified Postgres container.
+db:
+  image: postgres
+# These lines are for our application.
+web:
+# The build line causes an image to be created based on the Dockerfile and directory contents.
+  build: .
+# Imort environment variable settings from the .env file in the directory compose is being run on.
+  env_file: .env
+# The command to run when the image is started.  Can use bash -c "string; of; commands"
+  command: bundle exec rails s Puma -p 3100 -b '0.0.0.0'
+  volumes:
+# When the image runs, map its /myapp file to the directory before the colon, in this case the current directory
+    - .:/myapp
+# Expose the image's port 3100 as the port 3100 on the host. Format: "HOST:CONTAINER"
+  ports:
+    - "3100:3100"
+# Link to containers in another service (the Postgres database)
+  links:
+    - db
