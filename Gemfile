@@ -44,18 +44,20 @@ gem 'postmark-rails'
 # Use Unicorn as the app server
 # gem 'unicorn'
 
-# Use Puma as the webserver
-gem 'puma'
+group :development, :docker do
+	# Use Puma as the app server
+	gem 'puma'
+end
 
-#group :production do
-	# gem 'passenger'
+group :production do
+	gem 'passenger'
 
 	# Use Capistrano for deployment
-	# gem 'capistrano', '~> 3.4.0'
-	# gem 'capistrano-rails'
-	# gem 'capistrano-rbenv'
-	# gem 'capistrano-passenger'
-#end
+	gem 'capistrano', '~> 3.4.0'
+	gem 'capistrano-rails'
+	gem 'capistrano-rbenv'
+	gem 'capistrano-passenger'
+end
 
 group :development do
 	gem 'rails-erd'
