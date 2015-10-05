@@ -47,6 +47,7 @@ gem 'postmark-rails'
 group :development, :docker do
 	# Use Puma as the app server
 	gem 'puma'
+	gem 'dalli'
 end
 
 group :production do
