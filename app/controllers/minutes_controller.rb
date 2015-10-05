@@ -74,7 +74,7 @@ class MinutesController < ApplicationController
     @minute.status = MINUTE_STATUSES.invert[minute_params[:status]]
     respond_to do |format|
       if @minute.update(minute_params)
-        format.html { redirect_to item_minute_url(@item, @minute), notice: 'Minute was successfully updated.' }
+        format.html { redirect_to item_url(@item), notice: 'Minute was successfully updated.' }
         format.json { render :show, status: :ok, location: @minute }
       else
         format.html { render :edit }
