@@ -7,8 +7,8 @@ class StaticPagesController < ApplicationController
 
   def status
   	@sts = {}
-  	MinutesController::MINUTE_STATUSES.each do |code, name|
-  		@sts[code] = [ name, Item.where(latest_status: code).count ]
+    Minst.all.each do |m|
+  		@sts[m.code] = [ m.name, Item.joins(:minst).where("minsts.code = ?", m.code).count ]
   	end
   end
 end

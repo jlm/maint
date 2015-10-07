@@ -1,6 +1,7 @@
 class Item < ActiveRecord::Base
 	has_many :minutes
 	has_many :meetings, through: :minutes
+	belongs_to :minst
 	# :number, :date, :standard, :clause, :subject, :draft
 	validates :number, presence: true, format: { with: /\A\d{4}\z/, message: "must be 4 decimal digits" }
 	validates :date, presence: true
@@ -8,12 +9,14 @@ class Item < ActiveRecord::Base
 	validates :subject, presence: true, length: { maximum: 200 }, unless: "Rails.application.config.importing"
 	before_save {
 		lastminute = self.minutes.where("minutes.DATE is not null").joins(:meeting).order("meetings.DATE").last;
-		self.latest_status = lastminute.status unless lastminute.nil?
+		self.minst = lastminute.minst unless lastminute.nil?
 	}
-	scope :closed, -> { where latest_status: ["P", "J", "W"] }
-	scope :open, ->   { where.not latest_status: ["P", "J", "W"]  }
+
+	CLOSED_CODES = ["P", "J", "W"]
+	scope :closed, -> { joins(:minst).where("minsts.code IN (?)", CLOSED_CODES) }
+	scope :open, ->   { joins(:minst).where.not("minsts.code IN (?)", CLOSED_CODES)  }
 
 	def is_closed?
-		["P", "J", "W"].include? self.latest_status
+		CLOSED_CODES.include? self.minst.code
 	end
 end

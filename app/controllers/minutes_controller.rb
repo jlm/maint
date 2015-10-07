@@ -2,24 +2,6 @@ class MinutesController < ApplicationController
   load_and_authorize_resource
   before_action :set_minute, only: [:show, :edit, :update, :destroy]
 
-  MINUTE_STATUSES = 
-    {
-      "P"  => "Published",    
-      "A"  => "Approved",
-      "B"  => "Ready for Ballot",
-      "CB" => "Complete then Ballot",
-      "CE" => "Complete then Errata",
-      "E"  => "Errata",
-      "F"  => "Failed",
-      "I"  => "Incomplete",
-      "J"  => "Rejected",
-      "R"  => "Received",
-      "S"  => "Errata Sheet Published",
-      "T"  => "Technical experts review",
-      "V"  => "Balloting",
-      "W"  => "Withdrawn"
-    }
-
 # GET /minutes
   # GET /minutes.json
   def index
@@ -46,7 +28,6 @@ class MinutesController < ApplicationController
   def edit
     @item = Item.find(params[:item_id])
     @minute = @item.minutes.find(params[:id])
-    @minute.status = MINUTE_STATUSES[@minute.status]
   end
 
   # POST /minutes
@@ -54,7 +35,6 @@ class MinutesController < ApplicationController
   def create
     @item = Item.find(params[:item_id])
     @minute = @item.minutes.build(minute_params)
-    @minute.status = MINUTE_STATUSES.invert[minute_params[:status]]
 
     respond_to do |format|
       if @minute.save
@@ -71,9 +51,8 @@ class MinutesController < ApplicationController
   # PATCH/PUT /minutes/1.json
   def update
     @item = Item.find(params[:item_id])
-    @minute.status = MINUTE_STATUSES.invert[minute_params[:status]]
     respond_to do |format|
-      if @minute.update(minute_params)
+      if @minute.update(minute_params) && @item.save
         format.html { redirect_to item_url(@item), notice: 'Minute was successfully updated.' }
         format.json { render :show, status: :ok, location: @minute }
       else
@@ -102,6 +81,6 @@ class MinutesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def minute_params
-      params.require(:minute).permit(:date, :text, :status, :minute_id, :item_id, :meeting_id)
+      params.require(:minute).permit(:date, :text, :minst_id, :minute_id, :item_id, :meeting_id)
     end
 end

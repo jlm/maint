@@ -10,7 +10,7 @@ class ItemsController < ApplicationController
     @items = Item.order(sort_column + " " + sort_direction).paginate(page: params[:page], per_page: 10)
     @items = @items.open if params[:open].present?
     @items = @items.closed if params[:closed].present?
-    @items = @items.where(latest_status: params[:cat]) if params[:cat].present?
+    @items = @items.joins(:minst).where("minsts.code = ?", params[:cat]) if params[:cat].present?
 
     # Search for items using OR: http://stackoverflow.com/questions/3639656/activerecord-or-query
     if params[:search].present?

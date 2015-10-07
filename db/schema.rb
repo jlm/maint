@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150912051101) do
+ActiveRecord::Schema.define(version: 20151007000948) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20150912051101) do
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.string   "latest_status"
+    t.integer  "minst_id"
   end
 
   create_table "meetings", force: :cascade do |t|
@@ -44,6 +45,16 @@ ActiveRecord::Schema.define(version: 20150912051101) do
     t.datetime "updated_at",  null: false
   end
 
+  create_table "minsts", force: :cascade do |t|
+    t.string   "code"
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "minsts", ["code"], name: "index_minsts_on_code", using: :btree
+  add_index "minsts", ["name"], name: "index_minsts_on_name", using: :btree
+
   create_table "minutes", force: :cascade do |t|
     t.date     "date"
     t.text     "text"
@@ -52,6 +63,7 @@ ActiveRecord::Schema.define(version: 20150912051101) do
     t.datetime "updated_at", null: false
     t.integer  "item_id"
     t.integer  "meeting_id"
+    t.integer  "minst_id"
   end
 
   add_index "minutes", ["item_id"], name: "index_minutes_on_item_id", using: :btree

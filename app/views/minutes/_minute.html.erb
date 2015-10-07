@@ -2,7 +2,7 @@
         <td><%= minute.date %></td>
         <td><%= make_meeting_name(minute.meeting) %></td>
         <td><%= minute.text %></td>
-        <td><%= minute_status_string(minute.status) %></td>
+        <td><%= minute.minst.name %></td>
         <td><%#= link_to 'Show', minute, class: "btn btn-default" %></td>
         <% if can? :update, minute %>
             <td><%= link_to 'Edit', edit_item_minute_path(@item, minute), class: "btn btn-warning" %></td>

@@ -37,6 +37,7 @@ class ImportsController < ApplicationController
       Item.destroy_all
       Meeting.destroy_all
       Import.destroy_all
+      Minst.destroy_all     # Note: initial values are seeded. Reading from a spreadsheet replaces these.
     end
     Rails.application.config.importing = true   # Supress validation checks for Minutes during import.
     @import = Import.new(import_params)
@@ -53,9 +54,25 @@ class ImportsController < ApplicationController
       #book.worksheets.each do |w|
         #puts w.name
       #end
+      totals = book['Totals']
       master = book['Master']
       minutes = book['Minutes']
-      
+
+      #
+      # Import from the TOTALS tab
+      #
+
+      # Read columns B and D, where column C is a hyphen, to populate the possible Status values
+      # of minutes (stored in minst_id) and items (stored in ??).
+      totals.each do |totalsrow|
+        next unless totalsrow && totalsrow[2] && totalsrow[2].value == "-"
+        next unless totalsrow[1] && !totalsrow[1].value.blank?
+        next unless totalsrow[3] && !totalsrow[3].value.blank?
+        Minst.find_or_create_by(code: totalsrow[1].value) do |m|
+         m.name = totalsrow[3].value.gsub(/<[bB][rR]>/, " ")
+       end
+      end
+
       #
       # Import from the MASTER tab
       #
@@ -115,7 +132,7 @@ class ImportsController < ApplicationController
           break if sts == "#"
           raise SyntaxError, "No meeting exists in Master tab corresponding to status entry #{sts} in #{RubyXL::Reference::ind2ref(stscell.row, stscell.column)}" if meetings[j-1].nil?
           min = item.minutes.find_or_initialize_by(meeting_id: meetings[j-1][:mtg].id) do |m|
-            m.status = sts
+            m.minst = Minst.where(code: sts).first
             m.meeting = meetings[j-1][:mtg]
           end
           #byebug
@@ -191,7 +208,7 @@ class ImportsController < ApplicationController
         #break if rowno > 8
       end
 
-      # Annoyingly, we have to go through all the items and save them, so that the latest_status gets updated.
+      # Annoyingly, we have to go through all the items and save them, so that the minsts gets updated.
       Item.all.each do |it|
         it.save
       end
@@ -264,7 +281,7 @@ class ImportsController < ApplicationController
       colno = 6
       Meeting.order(:date).each do |mtg|
         min = item.minutes.where("minutes.meeting_id = ?", mtg.id).first
-        current_sts = min.status if min && ! min.status.blank?
+        current_sts = min.minst.code if min && min.minst
         flash[:error] = "Missing prepared column in Master sheet, row #{rowno+1}, column #{colno+1}" if master[rowno][colno].nil? || master[rowno][colno].blank?
         master.add_or_chg(rowno, colno, current_sts)
         colno += 1
