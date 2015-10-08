@@ -137,3 +137,30 @@ Mine looked like this:
                 passenger_enabled on;
         }
 ```
+
+Deploying with Google Container Engine
+======================================
+
+Google Cloud services are generally not free, although a 90-day free trial was available at the time of writing.
+It is possible to deploy this app in a redundant configuration using either Docker or Kuberantes (the technology associated with
+Google Container Enginer).  This is a subject much too complicated to cover fully in this README.  These notes should be updated
+with at least an outline of how to do it.  Currently, [Google Container Engine](https://cloud.google.com/container-engine/) is supported using Google Compute Engine.  That service is networked using private and public IPv4 addressing.
+
+Database in the cloud
+---------------------
+
+One topic of interest in such a deployment is database persistence. It's all very well to create a database in a Docker instance
+in the cloud, but nature of such instances is to be ephemeral, and database content needs to be reliable.  There are different
+solutions to this, including persistent disk volumes mounted on the database server and using specially-designed SQL instances
+for database storage.
+
+[Google Cloud SQL](https://cloud.google.com/sql/) offers such a service, based on MySQL.  As opposed to Google Compute Engine it
+favours IPv6 addressing.  It has the facility to let a database instance go dormant which can be cheap to run.  However to
+interconnect to Kuberantes it needs an IPv4 address explicitly assigned to it, and there's a pricing issue: IPv4 addresses,
+being scarce, are charged for, and in particular there's a charge for **not using** the IPv4 address assigned to a Google Cloud
+SQL instance.  So you either pay for the SQL instance running, or you pay for the IPv4 address when it isn't.  
+
+To support MySQL in the Rails app, the following is needed:
+```
+    $ sudo apt-get install mysql-server mysql-client libmysqlclient-dev
+```
