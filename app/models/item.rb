@@ -17,6 +17,6 @@ class Item < ActiveRecord::Base
 	scope :open, ->   { joins(:minst).where.not("minsts.code IN (?)", CLOSED_CODES)  }
 
 	def is_closed?
-		CLOSED_CODES.include? self.minst.code
+		self.minst && (CLOSED_CODES.include? self.minst.code)
 	end
 end

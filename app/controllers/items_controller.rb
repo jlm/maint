@@ -2,6 +2,7 @@ class ItemsController < ApplicationController
   load_and_authorize_resource
   before_action :set_item, only: [:show, :edit, :update, :destroy]
   helper_method :sort_column, :sort_direction
+  respond_to :html, :json
 
   # GET /items
   # GET /items.json
@@ -42,27 +43,20 @@ class ItemsController < ApplicationController
   # GET /items/new
   def new
     @item = Item.new
+    respond_modal_with @item
   end
 
   # GET /items/1/edit
   def edit
-      #byebug
+    respond_modal_with @item
+    #byebug
   end
 
   # POST /items
   # POST /items.json
   def create
-    @item = Item.new(item_params)
-
-    respond_to do |format|
-      if @item.save
-        format.html { redirect_to @item, notice: 'Item was successfully created.' }
-        format.json { render :show, status: :created, location: @item }
-      else
-        format.html { render :new }
-        format.json { render json: @item.errors, status: :unprocessable_entity }
-      end
-    end
+    @item = Item.create(item_params)
+    respond_modal_with @item
   end
 
   # PATCH/PUT /items/1

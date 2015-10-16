@@ -19,6 +19,13 @@ class ApplicationController < ActionController::Base
     	redirect_to main_app.home_url, :alert => exception.message
 	end
 
+	# From: http://www.jetthoughts.com/blog/tech/2014/08/27/5-steps-to-add-remote-modals-to-your-rails-app.html
+	def respond_modal_with(*args, &blk)
+		options = args.extract_options!
+		options[:responder] = ModalResponder
+		respond_with *args, options, &blk
+	end
+
   protected
 
 	def syntax_error(exception)
