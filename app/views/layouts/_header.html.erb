@@ -15,14 +15,16 @@
   <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
     <ul class="nav navbar-nav navbar-left">
       <li>
-        <!-- Search form -->
-        <%= form_tag(items_path, method: :get, class: "navbar-form navbar-left", role: "search", id: "search-form") do %>
-          <div class="form-group">
-            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Items" %>
-            <%= check_box_tag(:open) %>
-            <%= label_tag(:open, "Open only", class: "btn btn-default") %>
-          </div>
-          <%= submit_tag "Search", class: "btn btn-default" %>
+        <% unless staticreq %>
+          <!-- Search form -->
+          <%= form_tag(items_path, method: :get, class: "navbar-form navbar-left", role: "search", id: "search-form") do  %>
+            <div class="form-group">
+              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Items" %>
+              <%= check_box_tag(:open) %>
+              <%= label_tag(:open, "Open only", class: "btn btn-default") %>
+            </div>
+            <%= submit_tag "Search", class: "btn btn-default" %>
+          <% end %>
         <% end %>
       </li>
     </ul>
@@ -44,10 +46,12 @@
       <% end %>
       <li><%= link_to "Help", help_path %></li>
       <li><%= link_to "Debug", rails_admin.dashboard_path if can? :debug, User %></li>
-      <% if user_signed_in? %>
-        <li><%= link_to "Log out", destroy_user_session_path, :method => :delete %></li>
-      <% else %>
-        <li><%= link_to "Log in", new_user_session_path %></li>
+      <% unless staticreq %>
+        <% if user_signed_in? %>
+          <li><%= link_to "Log out", destroy_user_session_path, :method => :delete %></li>
+        <% else %>
+          <li><%= link_to "Log in", new_user_session_path %></li>
+        <% end %>
       <% end %>
     </ul>
   </div>

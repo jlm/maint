@@ -33,4 +33,13 @@ module ApplicationHelper
     end
     nil
   end
+
+  # A static copy of the website can be created with the following command.  Some dynamic features don't
+  # work in the static copy, including logging in, changing content and searching.  These features are
+  # hidden by detecting the word "static" in the user-agent field sent by wget.
+  # wget -P /path/to/destination/directory/ -mpck --user-agent="static" -e robots=off --wait 1 -E https://www.example.com/
+
+  def staticreq
+    request.env['HTTP_USER_AGENT'] =~ /static/
+  end
 end
