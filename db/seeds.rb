@@ -6,6 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 User.create!(email: "jmessenger@advaoptical.com", password: "ponytail", password_confirmation: "ponytail", admin: true, debugger: true)
+# Note: initial values are seeded. Reading from a spreadsheet replaces these.
 Minst.create([
 	{ code: "P" , name: "Published" },
 	{ code: "A" , name: "Approved" },
