@@ -30,5 +30,5 @@
 <%= will_paginate @items, renderer: BootstrapPagination::Rails %>
 
 <br/>
-<%= link_to 'Edit', edit_meeting_path(@meeting), class: "btn btn-warning" if can? :update, @meeting %>
+<%= link_to 'Edit', edit_meeting_path(@meeting), class: "btn btn-warning", data: { modal: true } if can? :update, @meeting %>
 <%= link_to 'Back', meetings_path, class: "btn btn-default" %>

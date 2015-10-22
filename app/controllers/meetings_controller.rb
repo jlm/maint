@@ -2,6 +2,7 @@ class MeetingsController < ApplicationController
   load_and_authorize_resource
   before_action :set_meeting, only: [:show, :edit, :update, :destroy]
   helper_method :sort_column, :sort_direction
+  respond_to :html, :json
 
   # GET /meetings
   # GET /meetings.json
@@ -19,40 +20,26 @@ class MeetingsController < ApplicationController
   # GET /meetings/new
   def new
     @meeting = Meeting.new
+    respond_modal_with @meeting
   end
 
   # GET /meetings/1/edit
   def edit
+    respond_modal_with @meeting
   end
 
   # POST /meetings
   # POST /meetings.json
   def create
-    @meeting = Meeting.new(meeting_params)
-
-    respond_to do |format|
-      if @meeting.save
-        format.html { redirect_to @meeting, notice: 'Meeting was successfully created.' }
-        format.json { render :show, status: :created, location: @meeting }
-      else
-        format.html { render :new }
-        format.json { render json: @meeting.errors, status: :unprocessable_entity }
-      end
-    end
+    @meeting = Meeting.create(meeting_params)
+    respond_modal_with @meeting
   end
 
   # PATCH/PUT /meetings/1
   # PATCH/PUT /meetings/1.json
   def update
-    respond_to do |format|
-      if @meeting.update(meeting_params)
-        format.html { redirect_to @meeting, notice: 'Meeting was successfully updated.' }
-        format.json { render :show, status: :ok, location: @meeting }
-      else
-        format.html { render :edit }
-        format.json { render json: @meeting.errors, status: :unprocessable_entity }
-      end
-    end
+    flash[:notice] = "Meeting successfully updated" if @meeting.update(meeting_params)
+    respond_modal_with @meeting, location: meetings_url
   end
 
   # DELETE /meetings/1

@@ -5,7 +5,7 @@
 	<td><%= meeting.location %></td>
 	<td><%= link_to 'Show', meeting, class: "btn btn-default" %></td>
 	<% if can? :update, meeting %>
-		<td><%= link_to 'Edit', edit_meeting_path(meeting), class: "btn btn-warning" %></td>
+		<td><%= link_to 'Edit', edit_meeting_path(meeting), class: "btn btn-warning", data: { modal: true } %></td>
 	<% end %>
 	<% if can? :destroy, meeting %>
 		<td><%= link_to 'Destroy', meeting, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %></td>

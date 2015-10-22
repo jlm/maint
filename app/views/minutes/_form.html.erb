@@ -1,13 +1,17 @@
-<%= simple_form_for(@minute, url: item_minute_path(@item, @minute)) do |f| %>
+<!-- The array format used with form_for allows nested resources to be specified while leaving form_for
+     to work out the path etc. from the request's action.
+     See http://stackoverflow.com/questions/2034700/form-for-with-nested-resources -->
+<%= simple_form_for([@item, @minute], remote: request.xhr?, html: { data: { modal: true } }) do |f| %>
   <%= f.error_notification %>
 
-  <div class="form-inputs">
+  <div class="modal-body">
     <%= f.input :date %>
+    <%= f.association :meeting, collection: Meeting.order(date: :desc), label_method: :date, label: "Meeting", include_blank: false %>
     <%= f.input :text %>
     <%= f.association :minst, label: "Status", include_blank: false %>
   </div>
 
-  <div class="form-actions">
-    <%= f.button :submit, class: "btn btn-warning" %>
+  <div class="modal-footer">
+    <%= f.button :submit, class: "btn btn-success" %>
   </div>
 <% end %>

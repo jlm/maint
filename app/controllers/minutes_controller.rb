@@ -1,6 +1,7 @@
 class MinutesController < ApplicationController
   load_and_authorize_resource
   before_action :set_minute, only: [:show, :edit, :update, :destroy]
+  respond_to :html, :json
 
 # GET /minutes
   # GET /minutes.json
@@ -22,35 +23,31 @@ class MinutesController < ApplicationController
     @item = Item.find(params[:item_id])
     @minute = @item.minutes.build
     @meetings = Meeting.all
+    respond_modal_with @minute
   end
 
   # GET /items/:item_id/minutes/1/edit
   def edit
     @item = Item.find(params[:item_id])
     @minute = @item.minutes.find(params[:id])
+    respond_modal_with(@minute, location: item_url(@item))
   end
 
   # POST /minutes
   # POST /minutes.json
   def create
     @item = Item.find(params[:item_id])
-    @minute = @item.minutes.build(minute_params)
-
-    respond_to do |format|
-      if @minute.save
-        format.html { redirect_to item_minute_url(@item, @minute), notice: 'Minute was successfully created.' }
-        format.json { render :show, status: :created, location: item_minute_path(@item, @minute) }
-      else
-        format.html { render :new }
-        format.json { render json: @minute.errors, status: :unprocessable_entity }
-      end
-    end
+    @minute = @item.minutes.create(minute_params)
+    respond_modal_with(@minute, location: item_url(@item))
   end
 
   # PATCH/PUT /minutes/1
   # PATCH/PUT /minutes/1.json
   def update
     @item = Item.find(params[:item_id])
+    flash[:notice] = "Minute successfully updated" if @minute.update(minute_params) && @item.save
+    respond_modal_with(@minute, location: item_url(@item))
+=begin
     respond_to do |format|
       if @minute.update(minute_params) && @item.save
         format.html { redirect_to item_url(@item), notice: 'Minute was successfully updated.' }
@@ -60,6 +57,7 @@ class MinutesController < ApplicationController
         format.json { render json: @minute.errors, status: :unprocessable_entity }
       end
     end
+=end
   end
 
   # DELETE /minutes/1

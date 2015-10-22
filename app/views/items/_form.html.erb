@@ -12,12 +12,12 @@
   <% end %>
 
   <div class="modal-body">
-    <%= f.input :number %>
+    <%= f.input :number unless request.path_parameters[:action] == "edit" %>
     <%= f.input :date %>
     <%= f.input :standard %>
     <%= f.input :clause %>
     <%= f.input :subject %>
-    <%= f.input :draft %>
+    <%= f.input :draft, label: "Draft with fix" %>
   </div>
 
   <div class="modal-footer">
