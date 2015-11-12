@@ -38,6 +38,7 @@ class MinutesController < ApplicationController
   def create
     @item = Item.find(params[:item_id])
     @minute = @item.minutes.create(minute_params)
+    @item.save
     respond_modal_with(@minute, location: item_url(@item))
   end
 
