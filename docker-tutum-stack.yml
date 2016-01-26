@@ -1,0 +1,37 @@
+# This is the docker-compose.yml for the deployment environment.
+# Instead of building the image, it's pulled from Docker Hub.
+# The current directory is not mounted.
+# Only the assets directory is mounted, and this is only to get round a problem that the asset paths
+# as served up by the app are not preceded with ENV['SCRIPT_NAME'].
+db:
+  image: postgres
+  environment:
+    POSTGRES_USER: deploy
+    POSTGRES_PASSWORD: weaver7
+  volumes:
+    - /srv/docker/postgresql/data:/var/lib/postgresql/data
+web:
+  image: tutum.co/jmessenger/maint_web:latest
+  environment:
+    - SECRET_KEY_BASE=9293590943025884733232342af77e888fee9bbb042735394249355d7888d1ac858c760cfc02c6f2d058df7293944d2ba888860fa6910d72503be72ce920b8c2
+    - DEVISE_PEPPER=d23a123dd291c853d872cb4443ec19430258847332b23563bc07cb85f8084151e943718db34c8befca712516f1118b3bd09d8872707039901e5d39a8127b01f6
+    - RAILS_SERVE_STATIC_FILES=yes
+    - COMMITTEE=802.1
+    - REQ_URL="http://www.ieee802.org/1/files/public/maint/requests/maint_%s.pdf"
+    - MAIL_SENDER=maint@802-1.org
+    - SERVER_PRODUCTION=www.802-1.org
+    - SERVER_STAGING=www.802-1.org
+    - SERVER_DEVELOPMENT=www.802-1.org
+    - POSTGRES_USER=deploy
+    - POSTGRES_PASSWORD=weaver7
+    - DB_SERVICE_HOST=db-1
+    - DB_SERVICE_PORT=5432
+    - POSTMARK_API_KEY=4c536386-e77e-418d-a86f-8e3af9c88fbd
+  #volumes:
+  #  - /var/www/assets:/myapp/public/assets
+  #command: bash -c "bundle exec rake assets:precompile && bundle exec rails s Puma -p 3100 -b '0.0.0.0'"
+  command: ./init.sh
+  ports:
+    - "80:3000"
+  links:
+    - db
