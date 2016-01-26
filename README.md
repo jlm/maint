@@ -137,3 +137,14 @@ Mine looked like this:
                 passenger_enabled on;
         }
 ```
+
+Deploying with Tutum
+====================
+Another way of deploying the application is using Docker, managed with a service such as [Tutum](https://www.tutum.co).  Once debugged, this provides a very convenient deployment environment.  My setup for this involved [providing my own node](https://support.tutum.co/support/solutions/articles/5000513678) to the Tutum service.
+```
+    $ docker-compose build
+    $ docker tag -f maint_web tutum.co/yourusername/maint_web
+    $ docker push tutum.co/yourusername/maint_web
+```
+
+Then navigate to the "Stacks" tab in Tutum, and select "Create Stack" and upload example-docker-tutum-stack.yml".  Then "Deploy" it!
