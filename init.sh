@@ -1,6 +1,6 @@
 #! /bin/bash
-export SECRET_KEY_BASE=$(bundle exec rake secret)
-export DEVISE_PEPPER=$(bundle exec rake secret)
+#export SECRET_KEY_BASE=$(bundle exec rake secret)
+#export DEVISE_PEPPER=$(bundle exec rake secret)
 export RAILS_SERVE_STATIC_FILES='true'
 . /usr/src/app/secrets.sh
 
