@@ -8,13 +8,14 @@ web:
 # Imort environment variable settings from the .env file in the directory compose is being run on.
   env_file: .env
 # The command to run when the image is started.  Can use bash -c "string; of; commands"
-  command: bundle exec rails s Puma -p 3100 -b '0.0.0.0'
+#  command: bundle exec rails s Puma -p 3100 -b '0.0.0.0'
+  command: ./init.sh
   volumes:
 # When the image runs, map its /myapp file to the directory before the colon, in this case the current directory
     - .:/myapp
 # Expose the image's port 3100 as the port 3100 on the host. Format: "HOST:CONTAINER"
   ports:
-    - "3100:3100"
+    - "3000:3000"
 # Link to containers in another service (the Postgres database)
   links:
     - db
