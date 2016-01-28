@@ -2,7 +2,7 @@
 db:
   image: postgres
 # These lines are for our application.
-web:
+web3:
 # The build line causes an image to be created based on the Dockerfile and directory contents.
   build: .
 # Imort environment variable settings from the .env file in the directory compose is being run on.
