@@ -13,8 +13,9 @@ class Item < ActiveRecord::Base
 	}
 
 	CLOSED_CODES = ["P", "J", "W"]
-	scope :closed, -> { joins(:minst).where("minsts.code IN (?)", CLOSED_CODES) }
-	scope :open, ->   { joins(:minst).where.not("minsts.code IN (?)", CLOSED_CODES)  }
+	scope :closed, ->   { joins(:minst).where("minsts.code IN (?)", CLOSED_CODES) }
+	scope :open,   ->   { joins(:minst).where.not("minsts.code IN (?)", CLOSED_CODES)  }
+	scope :review, ->   { joins(:minst).where.not("minsts.code IN (?)", CLOSED_CODES + ["V"])  }
 
 	def is_closed?
 		self.minst && (CLOSED_CODES.include? self.minst.code)
