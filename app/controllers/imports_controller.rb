@@ -286,12 +286,20 @@ class ImportsController < ApplicationController
         master.add_or_chg(rowno, colno, current_sts)
         colno += 1
       end
-      # Write hash signs on the remailing cells in the row
-      (colno..master[rowno].cells.count-1).each do |colcolno|
-        master[rowno][colcolno].chg_cell('#')
+      # Write hash signs on the remaining cells in the row, adding new cells to the right if necessary.
+      # Issue #29: master[rowno].cells.count comes out as a big number (16384) for unused rows. Calculate the last column number instead.
+      # Also, if there are more meetings than the input spreadsheet allowed for, there won't be cells for each meeting.
+      lastcolno = Meeting.count + 6
+      (colno..lastcolno).each do |colcolno|
+        #byebug if master[rowno][colcolno].nil?
+        if master[rowno][colcolno].nil?
+          master.add_cell(rowno, colcolno, '#')
+        else
+          master[rowno][colcolno].chg_cell('#')
+        end
       end
       # Add a hash at the end of the row if there isn't one
-      master.add_cell(rowno, master[rowno].cells.count, '#') unless master[rowno][-1] && master[rowno][-1].value == '#'
+      master.add_cell(rowno, lastcolno+1, '#') unless master[rowno][lastcolno+1] && master[rowno][lastcolno+1].value == '#'
       rowno += 1
     end
     # Fill the rest of the rows with hash signs.  Make sure there's at least one row of hashes.
