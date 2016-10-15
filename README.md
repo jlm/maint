@@ -138,13 +138,13 @@ Mine looked like this:
         }
 ```
 
-Deploying with Tutum
-====================
-Another way of deploying the application is using Docker, managed with a service such as [Tutum](https://www.tutum.co).  Once debugged, this provides a very convenient deployment environment.  My setup for this involved [providing my own node](https://support.tutum.co/support/solutions/articles/5000513678) to the Tutum service.
+Deploying with Docker Cloud
+===========================
+Another way of deploying the application is using Docker, managed with a service such as [Docker Cloud](https://cloud.docker.com).  Once debugged, this provides a very convenient deployment environment.  My setup for this involved [providing my own node](https://docs.docker.com/docker-cloud/infrastructure/byoh/) to the Docker Cloud service.
 ```
     $ docker-compose build
-    $ docker tag -f maint_web tutum.co/yourusername/maint_web
-    $ docker push tutum.co/yourusername/maint_web
+    $ docker tag -f maint_web:latest yourusername/maint_web:latest
+    $ docker push yourusername/maint_web:latest
 ```
 
-Then navigate to the "Stacks" tab in Tutum, and select "Create Stack" and upload example-docker-tutum-stack.yml".  Then "Deploy" it!
+Then navigate to the "Stacks" tab in Docker Cloud, and select "Create Stack" and upload example-docker-cloud-stack.yml".  Edit as appropriate.  Then "Deploy" it!
