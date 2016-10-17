@@ -27,6 +27,8 @@ class ItemsController < ApplicationController
       @qualifier = "Open"
     elsif params[:closed].present?
       @qualifier = "Closed"
+    elsif params[:review].present?
+      @qualifier = "Review"
     elsif params[:search].present?
       @qualifier = ""
     else
