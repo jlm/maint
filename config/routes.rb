@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   resources :items do
     resources :minutes
+    resources :requests
   end
 
   match '/items',   to: 'items#index',          via: 'get'

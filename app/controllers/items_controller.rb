@@ -41,6 +41,8 @@ class ItemsController < ApplicationController
   def show
     @minutes = @item.minutes.where("minutes.DATE is not null").joins(:meeting).order("meetings.date").paginate(page: params[:page], per_page: 10)
     #@minutes = @item.minutes.joins(:meeting).order("meetings.date").paginate(page: params[:page], per_page: 10)
+    @request = @item.request
+    # binding.pry unless @request
   end
 
   # GET /items/new
@@ -51,6 +53,7 @@ class ItemsController < ApplicationController
 
   # GET /items/1/edit
   def edit
+    @request = @item.request
     respond_modal_with @item
     #byebug
   end

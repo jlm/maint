@@ -2,6 +2,7 @@ class Item < ActiveRecord::Base
 	has_many :minutes
 	has_many :meetings, through: :minutes
 	belongs_to :minst
+	has_one :request
 	# :number, :date, :standard, :clause, :subject, :draft
 	validates :number, presence: true, format: { with: /\A\d{4}\z/, message: "must be 4 decimal digits" }
 	validates :date, presence: true

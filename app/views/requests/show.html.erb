@@ -1,0 +1,66 @@
+<% provide(:title, "#{@request.item.subject}") %>
+<%= simple_form_for([@item, @request], remote: request.xhr?, html: { data: { modal: true } }) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="modal-body">
+    <div class="panel panel-default">
+	    <div class="panel-heading">
+	    	<h5 class="panel-title">Requested revision</h5>
+	    </div>
+    	<table class="table">
+        <tbody>
+          <tr>
+            <td><b>Standard:</b></td><td><%= @request.standard %></td><td><b>Clause:</b></td><td><%= @request.clauseno %></td>
+          </tr>
+          <tr>
+            <td><b>Clause title:</b></td><td colspan="3"><%= @request.clausetitle %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h5 class="panel-title">Rationale for revision</h5>
+      </div>
+      <div class="panel-body"><%= @request.rationale %></div>
+    </div>
+
+    <div class="panel panel-success">
+      <div class="panel-heading">
+        <h5 class="panel-title">Proposed text</h5>
+      </div>
+      <div class="panel-body"><%= @request.proposal %></div>
+    </div>
+
+    <div class="panel panel-warning">
+      <div class="panel-heading">
+        <h5 class="panel-title">Impact on existing networks</h5>
+      </div>
+      <div class="panel-body"><%= @request.impact %></div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h5 class="panel-title">Originator</h5>
+      </div>
+      <table class="table">
+        <tbody>
+        <tr>
+          <td><b>Name:</b></td><td><%= @request.name %></td><td><b>Email:</b></td><td><%= @request.email %></td>
+        </tr>
+        <tr>
+          <td><b>Affiliation:</b></td><td colspan="3"><%= @request.company %></td>
+        </tr>
+        <tr>
+          <td><b>Submitted:</b></td><td colspan="3"><%= @request.date %></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <%= submit_tag 'Close', :type => :reset, :class => "btn btn-default", "data-dismiss" => "modal", "aria-hidden" => "true" %>
+  </div>
+<% end %>

@@ -20,6 +20,10 @@ module ApplicationHelper
 	link_to "#{num}", ENV["REQ_URL"] % num
   end
 
+  def show_reqtxt(text)
+    text
+  end
+
   def bootstrap_class_for flash_type
     { success: "alert-success", error: "alert-danger", alert: "alert-warning", notice: "alert-info" }[flash_type.to_sym] || flash_type.to_s
   end
