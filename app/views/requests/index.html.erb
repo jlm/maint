@@ -1,0 +1,23 @@
+<% provide(:title, "Requests") %>
+<h1>Requests</h1>
+<p id="notice"><%= notice %></p>
+
+<p>Of course, there should be only one request per item.</p>
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th>Date submitted</th>
+    <th>Subject</th>
+    <th>Name</th>
+    <th colspan="3"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <tr>
+    <td><%= @request.date %></td>
+    <td><%= @item.subject %></td>
+    <td><%= @request.name %></td>
+  </tr>
+  </tbody>
+</table>

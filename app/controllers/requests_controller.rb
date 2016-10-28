@@ -3,6 +3,11 @@ class RequestsController < ApplicationController
   before_action :set_request, only: [:show, :edit, :update, :destroy]
   respond_to :html, :json
 
+  def index
+    @item = Item.find(params[:item_id])
+    @request = @item.request
+  end
+
   def show
     @item = Item.find(params[:item_id])
     #byebug

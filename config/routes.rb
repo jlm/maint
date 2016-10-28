@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   get 'static_pages/help'
 
   # Use "devise" for user registration etc., but override the registrations controller just so that we can redirect to a custom path.
-  devise_for :users, controllers: { registrations: "registrations" }
+  devise_for :users, controllers: { registrations: "registrations", sessions: "sessions" }
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   resources :items do
