@@ -51,9 +51,10 @@ class RequestsController < ApplicationController
   # DELETE /requests/1
   # DELETE /requests/1.json
   def destroy
+    @item = Item.find(params[:item_id])
     @request.destroy
     respond_to do |format|
-      format.html { redirect_to requests_url, notice: 'Request was successfully destroyed.' }
+      format.html { redirect_to item_url(@item), notice: 'Request was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

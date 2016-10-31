@@ -62,6 +62,9 @@ class ItemsController < ApplicationController
   # POST /items.json
   def create
     @item = Item.create(item_params)
+    # This change doesn't work. Don't know why.
+    #@item.minst = Minst.find_by_code('R')
+    #@item.save
     respond_modal_with @item
   end
 

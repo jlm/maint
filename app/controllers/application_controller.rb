@@ -17,8 +17,9 @@ class ApplicationController < ActionController::Base
 
     rescue_from SyntaxError, with: :syntax_error
 
-    rescue_from CanCan::AccessDenied do |exception|
-    	redirect_to main_app.home_url, :alert => exception.message
+	rescue_from CanCan::AccessDenied do |exception|
+		Rails.logger.debug "Access denied on #{exception.action} #{exception.subject.inspect}"
+		redirect_to main_app.home_url, :alert => exception.message
 	end
 
 	# From: http://www.jetthoughts.com/blog/tech/2014/08/27/5-steps-to-add-remote-modals-to-your-rails-app.html
