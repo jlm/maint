@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
     rescue_from SyntaxError, with: :syntax_error
 
 	rescue_from CanCan::AccessDenied do |exception|
-		Rails.logger.debug "Access denied on #{exception.action} #{exception.subject.inspect}"
+		Rails.logger.warn "Access denied on #{exception.action} #{exception.subject.inspect}"
 		redirect_to main_app.home_url, :alert => exception.message
 	end
 
