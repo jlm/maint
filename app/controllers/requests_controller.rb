@@ -1,6 +1,6 @@
 class RequestsController < ApplicationController
   load_and_authorize_resource
-  before_action :set_request, only: [:show, :edit, :update, :destroy]
+  before_action :set_request, only: [:show, :pre, :edit, :update, :destroy]
   respond_to :html, :json
 
   # GET /items/1/requests

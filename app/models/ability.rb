@@ -10,6 +10,7 @@ class Ability
         cannot :debug, :all
     else
         can :read, :all
+        can :pre, Request
     end
     if user.debugger?
         can :debug, :all
