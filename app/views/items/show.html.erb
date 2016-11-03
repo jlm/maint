@@ -13,7 +13,8 @@
     </tr>
     <tr>
       <td colspan="4">
-        <%= link_to 'Show Request', item_request_path(@item, @request), class: "btn btn-success", data: { modal: true } if @request %>          
+        <%= link_to 'Show Request', item_request_path(@item, @request), class: "btn btn-success", data: { modal: true } if @request %>
+        <%= link_to 'Show Preformatted Request', pre_item_request_path(@item, @request), class: "btn btn-primary" if @request %>
         <%= link_to 'Add Request', new_item_request_path(@item), class: "btn btn-default", data: { modal: true } if @request.nil? and can? :update, @item %>
         <%= link_to 'Edit Request', edit_item_request_path(@item, @request), class: "btn btn-warning", data: { modal: true } if @request and can? :update, @request %>
         <%= link_to 'Destroy Request', [@item, @request], class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } if @request and can? :delete, @request %>
