@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @task_group.name %>
+</p>
+
+<p>
+  <strong>Chair:</strong>
+  <%= @task_group.chair && @task_group.chair.full_name %>
+</p>
+
+<p>
+  <strong>Vice chairs:</strong>
+  <%= @task_group.vice_chairs.each { |vc| "#{vc.full_name}, "} %>
+</p>
+
+<%= link_to 'Edit', edit_task_group_path(@task_group) %> |
+<%= link_to 'Back', task_groups_path %>

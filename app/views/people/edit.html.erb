@@ -1,0 +1,6 @@
+<h1>Editing <%=  "#{@role.capitalize}" %></h1>
+
+<%= render 'form' %>
+
+<%= link_to 'Show', sti_person_path(@person.role, @person) %> |
+<%= link_to 'Back', sti_person_path(@role) %>

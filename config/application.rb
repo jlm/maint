@@ -29,6 +29,8 @@ module Maint
     # Postmark
     config.action_mailer.delivery_method = :postmark
     config.action_mailer.postmark_settings = { :api_key => ENV['POSTMARK_API_KEY'] }
+
+    config.autoload_paths += %W(#{config.root}/app/models/people)
   end
 end
 

@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  resources :task_groups
+  resources :people
+  resources :vice_chairs, controller: 'people', type: 'ViceChair'
+  resources :chairs, controller: 'people', type: 'Chair'
+  resources :editors, controller: 'people', type: 'Editor'
   resources :meetings
   resources :imports
   get 'static_pages/home'

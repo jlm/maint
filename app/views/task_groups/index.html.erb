@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Task Groups</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Vice chair</th>
+      <th>Chair</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @task_groups.each do |task_group| %>
+      <tr>
+        <td><%= task_group.name %></td>
+        <td><%= task_group.vice_chairs.each { |vc| "#{vc.full_name}, " } %></td>
+        <td><%= task_group.chair && task_group.chair.full_name%></td>
+        <td><%= link_to 'Show', task_group %></td>
+        <td><%= link_to 'Edit', edit_task_group_path(task_group) %></td>
+        <td><%= link_to 'Destroy', task_group, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Task group', new_task_group_path %>

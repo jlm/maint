@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing People</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>First name</th>
+      <th>Last name</th>
+      <th>Email</th>
+      <th>Affiliation</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @people.each do |person| %>
+      <tr>
+        <td><%= person.first_name %></td>
+        <td><%= person.last_name %></td>
+        <td><%= person.email %></td>
+        <td><%= person.affiliation %></td>
+        <td><%= link_to 'Show', sti_person_path(person.role, person) %></td>
+        <td><%= link_to 'Edit', sti_person_path(person.role, person, :edit) %></td>
+        <td><%= link_to 'Destroy', sti_person_path(person.role, person), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to "New #{@role}", sti_person_path(@role, nil, :new) %>
+<%= link_to 'See all people', sti_person_path %>

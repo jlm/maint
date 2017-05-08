@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161019230742) do
+ActiveRecord::Schema.define(version: 20170507202845) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,17 @@ ActiveRecord::Schema.define(version: 20161019230742) do
   add_index "minutes", ["item_id"], name: "index_minutes_on_item_id", using: :btree
   add_index "minutes", ["meeting_id"], name: "index_minutes_on_meeting_id", using: :btree
 
+  create_table "people", force: :cascade do |t|
+    t.string   "role"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "email"
+    t.string   "affiliation"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "task_group_id"
+  end
+
   create_table "requests", force: :cascade do |t|
     t.text     "reqtxt"
     t.integer  "item_id"
@@ -87,6 +98,15 @@ ActiveRecord::Schema.define(version: 20161019230742) do
   end
 
   add_index "requests", ["item_id"], name: "index_requests_on_item_id", using: :btree
+
+  create_table "task_groups", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "person_id"
+  end
+
+  add_index "task_groups", ["person_id"], name: "index_task_groups_on_person_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -118,5 +138,7 @@ ActiveRecord::Schema.define(version: 20161019230742) do
 
   add_foreign_key "minutes", "items"
   add_foreign_key "minutes", "meetings"
+  add_foreign_key "people", "task_groups"
   add_foreign_key "requests", "items"
+  add_foreign_key "task_groups", "people"
 end

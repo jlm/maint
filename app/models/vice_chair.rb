@@ -1,0 +1,2 @@
+class ViceChair < Person
+end
