@@ -1,19 +1,41 @@
+<% provide(:title, "#{@task_group.name} Task Group") %>
+<h1>Projects for <%= @task_group.name %> Task Group</h1>
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @task_group.name %>
-</p>
+<table class="table table-hover">
+  <tbody>
+  <tr>
+    <td><strong>Chair:</strong> <%= @task_group.chair && @task_group.chair.full_name %>
+    <td><strong>Vice Chairs:</strong> <%= @task_group.vice_chairs.each { |vc| "#{vc.full_name}, "} %>
+  </tr>
+  </tbody>
+</table>
 
-<p>
-  <strong>Chair:</strong>
-  <%= @task_group.chair && @task_group.chair.full_name %>
-</p>
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th>Designation</th>
+    <th>Project Type</th>
+    <th>Short Title</th>
+    <th>Draft</th>
+    <th>Last Motion</th>
+    <th>Status</th>
+    <th>Next Action</th>
+    <th>PAR ends</th>
+    <th colspan="3"></th>
+  </tr>
+  </thead>
 
-<p>
-  <strong>Vice chairs:</strong>
-  <%= @task_group.vice_chairs.each { |vc| "#{vc.full_name}, "} %>
-</p>
+  <tbody>
+  <% @projects.each do |project| %>
+      <%= render project %>
+  <% end %>
+  </tbody>
+</table>
+<%= will_paginate @projects, renderer: BootstrapPagination::Rails %>
 
-<%= link_to 'Edit', edit_task_group_path(@task_group) %> |
-<%= link_to 'Back', task_groups_path %>
+<br>
+
+<%= link_to 'New Project', new_task_group_project_path(@task_group), class: "btn btn-warning", data: { modal: true } if can? :update, @task_group %>
+<%= link_to 'Edit', edit_task_group_path(@task_group), class: "btn btn-warning", data: { modal: true } if can? :update, @task_group %>
+<%= link_to 'Back', task_groups_path, class: "btn btn-default" %>

@@ -1,0 +1,18 @@
+<tr>
+  <td><%= project.designation %></td>
+  <td><%= project.project_type %></td>
+  <td><%= project.short_title %></td>
+  <td><%= project.draft_no %></td>
+  <td><%= project.last_motion %></td>
+  <td><%= project.status %></td>
+  <td><%= project.next_action %></td>
+  <td><%= project.par_expiry %></td>
+
+  <td><%#= link_to 'Show', minute, class: "btn btn-default" %></td>
+  <% if can? :update, project %>
+      <td><%= link_to 'Edit', edit_task_group_project_path(@task_group, project), class: "btn btn-warning", data: { modal: true } %></td>
+  <% end %>
+  <% if can? :destroy, project %>
+      <td><%= link_to 'Destroy', task_group_project_path(@task_group, project), class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  <% end %>
+</tr>

@@ -1,0 +1,33 @@
+<!-- The array format used with form_for allows nested resources to be specified while leaving form_for
+     to work out the path etc. from the request's action.
+     See http://stackoverflow.com/questions/2034700/form-for-with-nested-resources -->
+<%= simple_form_for([@task_group, @project], remote: request.xhr?, html: { data: { modal: true } }) do |f| %>
+    <%= f.error_notification %>
+
+    <div class="modal-body">
+      <%= f.input :project_type, collection: Project.projecttypes %>
+      <%= f.input :designation %>
+      <%= f.input :short_title %>
+      <%= f.input :title %>
+      <%= f.input :draft_no, label: "Draft number" %>
+      <%= f.input :last_motion, collection: Project.lastmotions %>
+      <%= f.input :status, collection: Project.statuses %>
+      <%= f.input :next_action, collection: Project.nextactions %>
+      <%= f.input :par_url, label: "PAR URL" %>
+      <%= f.input :csd_url, label: "CSD URL" %>
+
+      <!-- Dates are tricky as they -->
+      <%= f.input :pool_formed, as: :date, html5: true %>
+      <%= f.input :mec, as: :date, html5: true  %>
+      <%= f.input :par_approval, as: :date, html5: true  %>
+      <%= f.input :par_expiry, as: :date, html5: true  %>
+      <%= f.input :standard_approval, as: :date, html5: true  %>
+      <%= f.input :published, as: :date, html5: true  %>
+
+      <!-- Don't forget to add the Base project association -->
+    </div>
+
+    <div class="modal-footer">
+      <%= f.button :submit, class: "btn btn-success" %>
+    </div>
+<% end %>

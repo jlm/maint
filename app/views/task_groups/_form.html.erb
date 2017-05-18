@@ -1,12 +1,22 @@
-<%= simple_form_for(@task_group) do |f| %>
-  <%= f.error_notification %>
+<%= simple_form_for(@task_group, remote: request.xhr?, html: { data: { modal: true } }) do |f| %>
+    <% if @task_group.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@task_group.errors.count, "error") %> prohibited this item from being saved:</h2>
 
-  <div class="form-inputs">
-    <%= f.input :name %>
-    <%= f.association :people, label_method: :full_name %>
-  </div>
+          <ul>
+            <% @task_group.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
-  </div>
+    <div class="modal-body">
+      <%= f.input :name %>
+      <%= f.association :chair, label_method: :full_name %>
+    </div>
+
+    <div class="modal-footer">
+      <%= f.button :submit, class: "btn btn-success" %>
+    </div>
 <% end %>

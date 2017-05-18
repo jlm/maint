@@ -1,15 +1,18 @@
 class TaskGroupsController < ApplicationController
+  load_and_authorize_resource
   before_action :set_task_group, only: [:show, :edit, :update, :destroy]
+  respond_to :html, :json
 
   # GET /task_groups
   # GET /task_groups.json
   def index
-    @task_groups = TaskGroup.all
+    @task_groups = TaskGroup.all.paginate(page: params[:page], per_page: 10)
   end
 
   # GET /task_groups/1
   # GET /task_groups/1.json
   def show
+    @projects = @task_group.projects.order(:designation).paginate(page: params[:page], per_page: 10)
   end
 
   # GET /task_groups/new
@@ -17,41 +20,27 @@ class TaskGroupsController < ApplicationController
     @task_group = TaskGroup.new
     #@chair_id = nil
     #binding.pry
+    respond_modal_with @task_group
   end
 
   # GET /task_groups/1/edit
   def edit
+    respond_modal_with @task_group
   end
 
   # POST /task_groups
   # POST /task_groups.json
   def create
-    @task_group = TaskGroup.new(task_group_params)
-    @task_group.chair = @task_group.person
-
-    respond_to do |format|
-      if @task_group.save
-        format.html { redirect_to @task_group, notice: 'Task group was successfully created.' }
-        format.json { render :show, status: :created, location: @task_group }
-      else
-        format.html { render :new }
-        format.json { render json: @task_group.errors, status: :unprocessable_entity }
-      end
-    end
+    @task_group = TaskGroup.create(task_group_params)
+#    @task_group.chair = @task_group.person
+    respond_modal_with @task_group
   end
 
   # PATCH/PUT /task_groups/1
   # PATCH/PUT /task_groups/1.json
   def update
-    respond_to do |format|
-      if @task_group.update(task_group_params)
-        format.html { redirect_to @task_group, notice: 'Task group was successfully updated.' }
-        format.json { render :show, status: :ok, location: @task_group }
-      else
-        format.html { render :edit }
-        format.json { render json: @task_group.errors, status: :unprocessable_entity }
-      end
-    end
+    flash[:notice] = "Task Group successfully updated" if @task_group.update(item_params)
+    respond_modal_with @task_group
   end
 
   # DELETE /task_groups/1

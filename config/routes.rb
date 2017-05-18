@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
-  resources :task_groups
   resources :people
   resources :vice_chairs, controller: 'people', type: 'ViceChair'
   resources :chairs, controller: 'people', type: 'Chair'
   resources :editors, controller: 'people', type: 'Editor'
+
   resources :meetings
   resources :imports
   get 'static_pages/home'
@@ -22,6 +22,11 @@ Rails.application.routes.draw do
   end
 
   match '/items',   to: 'items#index',          via: 'get'
+
+  resources :task_groups do
+    resources :projects
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

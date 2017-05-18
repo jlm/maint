@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170507202845) do
+ActiveRecord::Schema.define(version: 20170513194838) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,32 @@ ActiveRecord::Schema.define(version: 20170507202845) do
     t.integer  "task_group_id"
   end
 
+  create_table "projects", force: :cascade do |t|
+    t.integer  "task_group_id"
+    t.integer  "base_id"
+    t.string   "designation"
+    t.string   "title"
+    t.string   "short_title"
+    t.string   "project_type"
+    t.string   "status"
+    t.string   "last_motion"
+    t.string   "draft_no"
+    t.string   "next_action"
+    t.date     "pool_formed"
+    t.date     "mec"
+    t.string   "par_url"
+    t.string   "csd_url"
+    t.date     "par_approval"
+    t.date     "par_expiry"
+    t.date     "standard_approval"
+    t.date     "published"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "projects", ["base_id"], name: "index_projects_on_base_id", using: :btree
+  add_index "projects", ["task_group_id"], name: "index_projects_on_task_group_id", using: :btree
+
   create_table "requests", force: :cascade do |t|
     t.text     "reqtxt"
     t.integer  "item_id"
@@ -104,8 +130,10 @@ ActiveRecord::Schema.define(version: 20170507202845) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer  "person_id"
+    t.integer  "chair_id"
   end
 
+  add_index "task_groups", ["chair_id"], name: "index_task_groups_on_chair_id", using: :btree
   add_index "task_groups", ["person_id"], name: "index_task_groups_on_person_id", using: :btree
 
   create_table "users", force: :cascade do |t|
@@ -139,6 +167,7 @@ ActiveRecord::Schema.define(version: 20170507202845) do
   add_foreign_key "minutes", "items"
   add_foreign_key "minutes", "meetings"
   add_foreign_key "people", "task_groups"
+  add_foreign_key "projects", "task_groups"
   add_foreign_key "requests", "items"
   add_foreign_key "task_groups", "people"
 end

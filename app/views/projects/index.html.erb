@@ -1,0 +1,58 @@
+<% provide(:title, "Projects") %>
+<h1>Projects</h1>
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Projects</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Taskgroup</th>
+      <th>Designation</th>
+      <th>Title</th>
+      <th>Shorttitle</th>
+      <th>Projecttype</th>
+      <th>Status</th>
+      <th>Lastmotion</th>
+      <th>Draftno</th>
+      <th>Nextaction</th>
+      <th>Poolformed</th>
+      <th>Mec</th>
+      <th>Parurl</th>
+      <th>Csdurl</th>
+      <th>Parapproval</th>
+      <th>Parexpiry</th>
+      <th>Standardapproval</th>
+      <th>Published</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @projects.each do |project| %>
+      <tr>
+        <td><%= project.task_group.name %></td>
+        <td><%= project.designation %></td>
+        <td><%= project.title %></td>
+        <td><%= project.short_title %></td>
+        <td><%= project.project_type %></td>
+        <td><%= project.status %></td>
+        <td><%= project.last_motion %></td>
+        <td><%= project.draft_no %></td>
+        <td><%= project.next_action %></td>
+        <td><%= project.pool_formed %></td>
+        <td><%= project.mec %></td>
+        <td><%= project.par_url %></td>
+        <td><%= project.csd_url %></td>
+        <td><%= project.par_approval %></td>
+        <td><%= project.par_expiry %></td>
+        <td><%= project.standard_Approval %></td>
+        <td><%= project.published %></td>
+        <td><%= link_to 'Show', project %></td>
+        <td><%= link_to 'Edit', edit_project_path(project) %></td>
+        <td><%= link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate projects, renderer: BootstrapPagination::Rails %>

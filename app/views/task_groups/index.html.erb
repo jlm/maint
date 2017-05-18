@@ -1,31 +1,26 @@
+<% provide(:title, "Task Groups") %>
+<h1><%= ENV["COMMITTEE"] + " Task Groups" %></h1>
 <p id="notice"><%= notice %></p>
 
-<h1>Listing Task Groups</h1>
 
-<table>
+<table class="table table-hover">
   <thead>
-    <tr>
-      <th>Name</th>
-      <th>Vice chair</th>
-      <th>Chair</th>
-      <th colspan="3"></th>
-    </tr>
+  <tr>
+    <th>Name</th>
+    <th>Chair</th>
+    <th>Vice Chairs</th>
+    <th colspan="3"></th>
+  </tr>
   </thead>
 
   <tbody>
-    <% @task_groups.each do |task_group| %>
-      <tr>
-        <td><%= task_group.name %></td>
-        <td><%= task_group.vice_chairs.each { |vc| "#{vc.full_name}, " } %></td>
-        <td><%= task_group.chair && task_group.chair.full_name%></td>
-        <td><%= link_to 'Show', task_group %></td>
-        <td><%= link_to 'Edit', edit_task_group_path(task_group) %></td>
-        <td><%= link_to 'Destroy', task_group, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
+  <% @task_groups.each do |task_group| %>
+      <%= render task_group %>
+  <% end %>
   </tbody>
 </table>
+<%= will_paginate @task_groups, renderer: BootstrapPagination::Rails %>
 
 <br>
 
-<%= link_to 'New Task group', new_task_group_path %>
+<%= link_to 'New Task Group', new_task_group_path, class: "btn btn-default", data: { modal: true } if can? :create, TaskGroup %>

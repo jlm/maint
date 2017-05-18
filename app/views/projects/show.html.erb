@@ -1,0 +1,89 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Taskgroup:</strong>
+  <%= @project.task_group %>
+</p>
+
+<p>
+  <strong>Designation:</strong>
+  <%= @project.designation %>
+</p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @project.title %>
+</p>
+
+<p>
+  <strong>Shorttitle:</strong>
+  <%= @project.short_title %>
+</p>
+
+<p>
+  <strong>Projecttype:</strong>
+  <%= @project.project_type %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @project.status %>
+</p>
+
+<p>
+  <strong>Lastmotion:</strong>
+  <%= @project.last_motion %>
+</p>
+
+<p>
+  <strong>Draftno:</strong>
+  <%= @project.draft_no %>
+</p>
+
+<p>
+  <strong>Nextaction:</strong>
+  <%= @project.next_action %>
+</p>
+
+<p>
+  <strong>Poolformed:</strong>
+  <%= @project.pool_formed %>
+</p>
+
+<p>
+  <strong>Mec:</strong>
+  <%= @project.mec %>
+</p>
+
+<p>
+  <strong>Parurl:</strong>
+  <%= @project.par_url %>
+</p>
+
+<p>
+  <strong>Csdurl:</strong>
+  <%= @project.csd_url %>
+</p>
+
+<p>
+  <strong>Parapproval:</strong>
+  <%= @project.par_approval %>
+</p>
+
+<p>
+  <strong>Parexpiry:</strong>
+  <%= @project.par_expiry %>
+</p>
+
+<p>
+  <strong>Standardapproval:</strong>
+  <%= @project.standard_approval %>
+</p>
+
+<p>
+  <strong>Published:</strong>
+  <%= @project.published %>
+</p>
+
+<%= link_to 'Edit', edit_task_group_project_path(task_group, project), class: "btn btn-warning", data: { modal: true } if can? :update, project %> |
+<%= link_to 'Back', task_group_project_path(@task_group), class: "btn btn-default" %>
