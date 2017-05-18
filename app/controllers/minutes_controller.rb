@@ -3,22 +3,22 @@ class MinutesController < ApplicationController
   before_action :set_minute, only: [:show, :edit, :update, :destroy]
   respond_to :html, :json
 
-# GET /minutes
-  # GET /minutes.json
+  # GET /items/:item_id/minutes
+  # GET /items/:item_id/minutes.json
   def index
     @item = Item.find(params[:item_id])
     @minutes = @item.minutes.order(:date).paginate(page: params[:page], per_page: 10)
   end
 
-  # GET /minutes/1
-  # GET /minutes/1.json
+  # GET /items/:item_id/minutes/1
+  # GET /items/:item_id/minutes/1.json
   def show
     @item = Item.find(params[:item_id])
     #byebug
     @minute = @item.minutes.find(params[:id])
   end
 
-  # GET /minutes/new
+  # GET /items/:item_id/minutes/new
   def new
     @item = Item.find(params[:item_id])
     @minute = @item.minutes.build
@@ -33,8 +33,8 @@ class MinutesController < ApplicationController
     respond_modal_with(@minute, location: item_url(@item))
   end
 
-  # POST /minutes
-  # POST /minutes.json
+  # POST /items/:item_id/minutes
+  # POST /items/:item_id/minutes.json
   def create
     @item = Item.find(params[:item_id])
     @minute = @item.minutes.create(minute_params)
@@ -42,8 +42,8 @@ class MinutesController < ApplicationController
     respond_modal_with(@minute, location: item_url(@item))
   end
 
-  # PATCH/PUT /minutes/1
-  # PATCH/PUT /minutes/1.json
+  # PATCH/PUT /items/:item_id/minutes/1
+  # PATCH/PUT /items/:item_id/minutes/1.json
   def update
     @item = Item.find(params[:item_id])
     flash[:notice] = "Minute successfully updated" if @minute.update(minute_params) && @item.save
@@ -61,8 +61,8 @@ class MinutesController < ApplicationController
 =end
   end
 
-  # DELETE /minutes/1
-  # DELETE /minutes/1.json
+  # DELETE /items/:item_id/minutes/1
+  # DELETE /items/:item_id/minutes/1.json
   def destroy
     @item = Item.find(params[:item_id])
     @minute.destroy
