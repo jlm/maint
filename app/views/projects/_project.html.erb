@@ -1,18 +1,54 @@
-<tr>
-  <td><%= project.designation %></td>
-  <td><%= project.project_type %></td>
-  <td><%= project.short_title %></td>
-  <td><%= project.draft_no %></td>
-  <td><%= project.last_motion %></td>
-  <td><%= project.status %></td>
-  <td><%= project.next_action %></td>
-  <td><%= project.par_expiry %></td>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <div class="row">
+          <div class="col-md-1">
+            <a data-toggle="collapse" data-parent="#accordian" <%= raw 'href="#collapse' + "#{project.id}" + '"' %>><%= project.designation %></a>
+          </div>
+          <div class="col-md-1"><%= project.draft_no %></div>
+          <div class="col-md-3"><%= project.short_title %></div>
+          <div class="col-md-2"><%= project.last_motion %></div>
+          <div class="col-md-2"><%= project.status %></div>
+          <div class="col-md-2"><%= project.next_action %></div>
+          <div class="col-md-1"><%= link_to 'Show', [@task_group, project], class: "btn btn-default" %></div>
+        </div>
+      </div>
+    </div>
+    <div <%= raw 'id="collapse' + "#{project.id}" + '"' %>
+         <% if local_assigns[:firstflag] %>
+            class="panel-collapse collapse in"
+         <% else %>
+            class="panel-collapse collapse"
+         <% end %>
+         >
+      <div class="panel-body">
+        <%= render partial: "projects/progress", object: project %>
+      </div>
+      <!--div class="panel-footer">Panel Footer</div-->
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>Project Type</th>
+          <th>PAR ends</th>
+          <th colspan="3"></th>
+        </tr>
+        </thead>
 
-  <td><%#= link_to 'Show', minute, class: "btn btn-default" %></td>
-  <% if can? :update, project %>
-      <td><%= link_to 'Edit', edit_task_group_project_path(@task_group, project), class: "btn btn-warning", data: { modal: true } %></td>
-  <% end %>
-  <% if can? :destroy, project %>
-      <td><%= link_to 'Destroy', task_group_project_path(@task_group, project), class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  <% end %>
-</tr>
+        <tbody>
+        <tr>
+          <td><%= project.project_type %></td>
+          <td><%= project.par_expiry %></td>
+          <td><%= link_to 'Show', [@task_group, project], class: "btn btn-default" %></td>
+          <% if can? :update, project %>
+              <td><%= link_to 'Edit', edit_task_group_project_path(@task_group, project), class: "btn btn-warning", data: {modal: true} %></td>
+          <% end %>
+          <% if can? :destroy, project %>
+              <td><%= link_to 'Destroy', task_group_project_path(@task_group, project), class: "btn btn-danger", method: :delete, data: {confirm: 'Are you sure?'} %></td>
+          <% end %>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+

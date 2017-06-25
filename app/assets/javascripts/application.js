@@ -15,4 +15,5 @@
 //= require bootstrap-sprockets
 //= require modals
 //= require turbolinks
+//= require timeline
 //= require_tree .

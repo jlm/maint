@@ -1,3 +1,38 @@
+<% provide(:title, "#{@project.short_title}") %>
+<h1><%= @project.short_title %></h1>
+<p id="notice"><%= notice %></p>
+
+<table class="table table-hover">
+  <tbody>
+  <tr>
+    <td><strong>Editor:</strong> <%= @project.editor && @project.editor.full_name %>
+    <td><strong>Task Group:</strong> <%= @task_group.name %>
+  </tr>
+  </tbody>
+</table>
+
+<div id='timeline-embed' style="width: 100%; height: 500px"></div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-md-1">Designation</div>
+      <div class="col-md-1">Draft</div>
+      <div class="col-md-4">Short title</div>
+      <div class="col-md-2">Last motion</div>
+      <div class="col-md-2">Status</div>
+      <div class="col-md-2">Next action</div>
+    </div>
+  </div>
+
+</div>
+
+<%= render @project, firstflag: true %>
+
+<br>
+
+<!--  The auto-generated scaffold view -->
+
 <p id="notice"><%= notice %></p>
 
 <p>
@@ -85,5 +120,5 @@
   <%= @project.published %>
 </p>
 
-<%= link_to 'Edit', edit_task_group_project_path(task_group, project), class: "btn btn-warning", data: { modal: true } if can? :update, project %> |
-<%= link_to 'Back', task_group_project_path(@task_group), class: "btn btn-default" %>
+<%= link_to 'Edit', edit_task_group_project_path(@task_group, @project), class: "btn btn-warning", data: { modal: true } if can? :update, @project %> |
+<%= link_to 'Back', task_group_projects_path(@task_group), class: "btn btn-default" %>
