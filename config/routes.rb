@@ -24,7 +24,9 @@ Rails.application.routes.draw do
   match '/items',   to: 'items#index',          via: 'get'
 
   resources :task_groups do
-    resources :projects
+    resources :projects do
+      resources :events
+    end
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

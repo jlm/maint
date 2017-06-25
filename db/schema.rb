@@ -11,10 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170513194838) do
+ActiveRecord::Schema.define(version: 20170625204119) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "events", force: :cascade do |t|
+    t.string  "name"
+    t.date    "date"
+    t.string  "description"
+    t.integer "project_id"
+  end
+
+  add_index "events", ["project_id"], name: "index_events_on_project_id", using: :btree
 
   create_table "imports", force: :cascade do |t|
     t.string   "filename"
@@ -164,6 +173,7 @@ ActiveRecord::Schema.define(version: 20170513194838) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "events", "projects"
   add_foreign_key "minutes", "items"
   add_foreign_key "minutes", "meetings"
   add_foreign_key "people", "task_groups"

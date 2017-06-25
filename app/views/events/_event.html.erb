@@ -1,0 +1,11 @@
+<tr>
+  <td><%= event.date %></td>
+  <td><%= event.name %></td>
+  <td><%= event.description %></td>
+  <% if can? :update, event %>
+    <td><%= link_to 'Edit', edit_task_group_project_event_path(@task_group, @project, event), class: "btn btn-warning", data: {modal: true} %></td>
+  <% end %>
+  <% if can? :destroy, event %>
+      <td><%= link_to 'Destroy', task_group_project_path(@task_group, @project), class: "btn btn-danger", method: :delete, data: {confirm: 'Are you sure?'} %></td>
+  <% end %>
+</tr>

@@ -1,5 +1,6 @@
 class Project < ActiveRecord::Base
   belongs_to :task_group
+  has_many :events
   # self-reference: http://guides.rubyonrails.org/association_basics.html#self-joins
   has_many :subprojects, class_name: "Project", foreign_key: "base_id"
   belongs_to :base, class_name: "Project"
@@ -44,7 +45,7 @@ class Project < ActiveRecord::Base
                         headline: "Apparently the nedia's text item does nothing",
                         text: self.par_approval.to_s
                     }
-            },
+                },
                 text: "PAR Approval",
                 start_date: {day: self.par_approval.day, month: self.par_approval.month, year: self.par_approval.year}
             },

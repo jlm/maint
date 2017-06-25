@@ -1,0 +1,22 @@
+<% provide(:title, "#{@event.name}") %>
+<h1><%= @event.name %></h1>
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @event.name %>
+</p>
+
+<p>
+  <strong>Date:</strong>
+  <%= @event.date %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @event.description %>
+</p>
+
+
+<%= link_to 'Edit', edit_task_group_project_event_path(@task_group, @project, @event) %> |
+<%= link_to 'Back', task_group_project_events_path(@task_group, @project, @event) %>
