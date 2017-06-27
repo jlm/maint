@@ -28,55 +28,41 @@ class Project < ActiveRecord::Base
     %w(ParDevelopment NesCom TgBallot WgBallot SponsorBallot RevCom ParMod ParWithdrawal Withdrawal)
   end
 
+  include ActionView::Helpers::UrlHelper
+
   def timeline_json
-    {
+   # Put together a list of events in the format needed by the timeline plugin, from our events list.
+    ev_list = []
+    self.events.order(:date).each do |event|
+      caption = event.name + (event.description && !event.description.empty? ? ": #{event.description}" : '')
+      ev_list << {
+          media: {
+              url: '<blockquote>' + self.short_title + '</blockquote>',
+              caption: caption
+          },
+          #text: event.name + ' ' + event.description,
+          start_date: {day: event.date.day, month: event.date.month, year: event.date.year}
+      }
+    end
+    tl = {
         title: {
             text: {
-                headline: '<a href="' + self.par_url + '">' + self.short_title + '</a>',
+                headline: link_to(self.short_title, self.par_url),
                 text: self.title
             }
         },
-        events: [
-            {
-                media: {
-                    url: '<blockquote>' + self.short_title + '</blockquote>',
-                    caption: 'PAR Approved: ' + self.par_approval.to_s,
-                    text: {
-                        headline: "Apparently the nedia's text item does nothing",
-                        text: self.par_approval.to_s
-                    }
-                },
-                text: "PAR Approval",
-                start_date: {day: self.par_approval.day, month: self.par_approval.month, year: self.par_approval.year}
-            },
-            {
-                media: {
-                    url: '<blockquote>' + self.short_title + '</blockquote>',
-                    caption: 'PAR expires'
-                },
-                text: "PAR Expiry",
-                start_date: {day: self.par_expiry.day, month: self.par_expiry.month, year: self.par_expiry.year}
-            },
-            {
-                media: {
-                    url: '<blockquote>' + self.short_title + '</blockquote>',
-                    caption: 'Mandatory Editorial Coordination',
-                    title: self.mec.to_s
-                },
-                text: "MEC",
-                start_date: {day: self.mec.day, month: self.mec.month, year: self.mec.year}
-            },
-        ]
-    }.to_json
+        events: ev_list
+    }
+    tl.to_json
   end
 
   # :Designation, :Title, :ShortTitle, :ProjectType, :Status, :LastMotion, :DraftNo, :NextAction,
   # :PoolFormed, :Mec, :ParUrl, :CsdUrl, :ParApproval, :ParExpiry, :StandardApproval, :Published
   validates :title, presence: true
   validates :short_title, presence: true
-  validates :project_type, inclusion: {in: projecttypes, message: "%{value} is not a valid Project Type" }
-  validates :status, inclusion: {in: statuses, message: "%{value} is not a valid Status" }
-  validates :last_motion, inclusion: {in: lastmotions, message: "%{value} is not a valid LastMotion" }, allow_blank: true
-  validates :next_action, inclusion: {in: nextactions, message: "%{value} is not a valid Next Action" }
+  validates :project_type, inclusion: {in: projecttypes, message: "%{value} is not a valid Project Type"}
+  validates :status, inclusion: {in: statuses, message: "%{value} is not a valid Status"}
+  validates :last_motion, inclusion: {in: lastmotions, message: "%{value} is not a valid LastMotion"}, allow_blank: true
+  validates :next_action, inclusion: {in: nextactions, message: "%{value} is not a valid Next Action"}
 
 end
