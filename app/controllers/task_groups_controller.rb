@@ -39,7 +39,7 @@ class TaskGroupsController < ApplicationController
   # PATCH/PUT /task_groups/1
   # PATCH/PUT /task_groups/1.json
   def update
-    flash[:notice] = "Task Group successfully updated" if @task_group.update(item_params)
+    flash[:notice] = "Task Group successfully updated" if @task_group.update(task_group_params)
     respond_modal_with @task_group
   end
 
