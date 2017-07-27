@@ -1,17 +1,20 @@
-<%= simple_form_for(@person) do |f| %>
-  <%= f.error_notification %>
+<!-- The array format used with form_for allows nested resources to be specified while leaving form_for
+     to work out the path etc. from the request's action.
+     See http://stackoverflow.com/questions/2034700/form-for-with-nested-resources -->
+<%= simple_form_for(@person, remote: request.xhr?, html: { data: { modal: true } }) do |f| %>
+    <%= f.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.input :first_name %>
-    <%= f.input :last_name %>
-    <%= f.input :email %>
-    <%= f.input :affiliation %>
-    <%= f.input :role do %>
-      <%= f.select :role, Person.roles.map {|r| [r.humanize, r.camelcase]}, {} %>
-    <% end %>
-  </div>
+    <div class="modal-body">
+      <%= f.input :first_name %>
+      <%= f.input :last_name %>
+      <%= f.input :email %>
+      <%= f.input :affiliation %>
+      <%= f.input :role do %>
+          <%= f.select :role, Person.roles.map {|r| [r.humanize, r.camelcase]}, {} %>
+      <% end %>
+    </div>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
-  </div>
+    <div class="modal-footer">
+      <%= f.button :submit, class: "btn btn-success" %>
+    </div>
 <% end %>

@@ -23,9 +23,13 @@
          >
       <div class="panel-body">
         <%= render partial: "projects/progress", object: project %>
-        <b>Long title: </b><%= project.title %>
         <div class="row">
-          <div class="col-md-5"><b>Project Type:</b> <%= project.project_type %></div>
+          <div class="col-md-2"><b>Long title: </b></div>
+          <div class="col-md-8"><%= project.title %></div>
+        </div>
+        <div class="row">
+          <div class="col-md-2"><b>Project Type:</b></div>
+          <div class="col-md-6"><%= project.project_type %></div>
           <div class="col-md-2">PAR: <%= link_to_unless(project.par_url.nil?, 'PAR', project.par_url) %></div>
           <div class="col-md-2">CSD: <%= link_to_unless(project.csd_url.nil?, 'CSD', project.csd_url) %></div>
         </div>

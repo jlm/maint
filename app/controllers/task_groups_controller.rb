@@ -61,6 +61,6 @@ class TaskGroupsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def task_group_params
-      params.require(:task_group).permit(:name, :vice_chair_id, :person_id)
+      params.require(:task_group).permit(:name, :vice_chair_id, :person_id, :chair_id)
     end
 end

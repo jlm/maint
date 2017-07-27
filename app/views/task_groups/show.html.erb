@@ -34,6 +34,5 @@
 
 <br>
 
-<%= link_to 'New Project', new_task_group_project_path(@task_group), class: "btn btn-warning", data: {modal: true} if can? :update, @task_group %>
-<%= link_to 'Edit', edit_task_group_path(@task_group), class: "btn btn-warning", data: {modal: true} if can? :update, @task_group %>
-<%= link_to 'Back', task_groups_path, class: "btn btn-default" %>
+<%= link_to 'New Project', new_task_group_project_path(@task_group), class: "btn btn-primary", data: {modal: true} if can? :update, @task_group %>
+<%= link_to 'Edit Task Group', edit_task_group_path(@task_group), class: "btn btn-warning", data: {modal: true} if can? :update, @task_group %>

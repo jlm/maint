@@ -37,18 +37,6 @@ class ProjectsController < ApplicationController
     @project = @task_group.projects.create(project_params)
     @task_group.save
     respond_modal_with(@project, location: task_group_url(@task_group))
-
-=begin
-    respond_to do |format|
-      if @project.save
-        format.html { redirect_to @project, notice: 'Project was successfully created.' }
-        format.json { render :show, status: :created, location: @project }
-      else
-        format.html { render :new }
-        format.json { render json: @project.errors, status: :unprocessable_entity }
-      end
-    end
-=end
   end
 
   # PATCH/PUT /task_groups/1/projects/1
@@ -57,17 +45,6 @@ class ProjectsController < ApplicationController
     @task_group = TaskGroup.find(params[:task_group_id])
     flash[:notice] = "Project successfully updated" if @project.update(project_params) && @task_group.save
     respond_modal_with(@project, location: task_group_url(@task_group))
-=begin
-    respond_to do |format|
-      if @project.update(project_params)
-        format.html { redirect_to @project, notice: 'Project was successfully updated.' }
-        format.json { render :show, status: :ok, location: @project }
-      else
-        format.html { render :edit }
-        format.json { render json: @project.errors, status: :unprocessable_entity }
-      end
-    end
-=end
   end
 
   # DELETE /task_groups/1/projects/1
