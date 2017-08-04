@@ -7,8 +7,8 @@ class Project < ActiveRecord::Base
   belongs_to :editor
 
   def self.nextactions
-    %w(NesCom TgBallot WgBallot SponsorBallot SponsorBallotConditional RevCom
-      RevComConditional Publication Done ParWithdrawal Withdrawal)
+    %w(NesCom TgBallot WgBallot SponsorBallot SponsorBallotCond RevCom
+      RevComCond Publication Done ParWithdrawal Withdrawal)
   end
 
   def self.statuses
