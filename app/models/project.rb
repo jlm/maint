@@ -25,7 +25,7 @@ class Project < ActiveRecord::Base
   end
 
   def self.lastmotions
-    %w(ParDevelopment NesCom TgBallot WgBallot SponsorBallot RevCom ParMod ParWithdrawal Withdrawal)
+    %w(ParDevelopment NesCom TgBallot WgBallot SponsorBallot SponsorBallotCond RevCom RevComCond ParMod ParWithdrawal Withdrawal)
   end
 
   include ActionView::Helpers::UrlHelper
