@@ -7,6 +7,14 @@ class TaskGroupsController < ApplicationController
   # GET /task_groups.json
   def index
     @task_groups = TaskGroup.all.paginate(page: params[:page], per_page: 10)
+    # Search for items using OR: http://stackoverflow.com/questions/3639656/activerecord-or-query
+    if params[:search].present?
+      t = @task_groups.arel_table
+      match_string = '%' + params[:search] + '%'
+      @task_groups = @task_groups.where(
+          t[:name].matches(match_string)
+      )
+    end
   end
 
   # GET /task_groups/1
@@ -61,6 +69,6 @@ class TaskGroupsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def task_group_params
-      params.require(:task_group).permit(:name, :vice_chair_id, :person_id, :chair_id)
+      params.require(:task_group).permit(:name, :vice_chair_id, :person_id, :chair_id, :search)
     end
 end

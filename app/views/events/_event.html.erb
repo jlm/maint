@@ -1,11 +1,12 @@
 <tr>
   <td><%= event.date %></td>
+  <td><%= event.end_date %></td>
   <td><%= link_to_unless(event.url.nil?, event.name, event.url) %></td>
   <td><%= event.description %></td>
   <% if can? :update, event %>
     <td><%= link_to 'Edit', edit_task_group_project_event_path(@task_group, project, event), class: "btn btn-warning", data: {modal: true} %></td>
   <% end %>
   <% if can? :destroy, event %>
-      <td><%= link_to 'Destroy', task_group_project_path(@task_group, project), class: "btn btn-danger", method: :delete, data: {confirm: 'Are you sure?'} %></td>
+      <td><%= link_to 'Destroy', task_group_project_event_path(@task_group, project, event), class: "btn btn-danger", method: :delete, data: {confirm: 'Are you sure?'} %></td>
   <% end %>
 </tr>

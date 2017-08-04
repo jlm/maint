@@ -15,6 +15,7 @@
       <th>Nextaction</th>
       <th>PAR URL</th>
       <th>CSD URL</th>
+      <th>Awards</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -32,6 +33,7 @@
         <td><%= project.next_action %></td>
         <td><%= project.par_url %></td>
         <td><%= project.csd_url %></td>
+        <td><%= project.award %></td>
         <td><%= link_to 'Show', [@task_group, project], class: "btn btn-default" %></td>
         <td><%= link_to 'Edit', edit_task_group_project_path(@task_group, project), class: "btn btn-warning" if can? :update, project  %></td>
         <td><%= link_to 'Destroy', [@task_group, project], class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } if can? :destroy, project %></td>

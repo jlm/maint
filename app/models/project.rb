@@ -12,8 +12,8 @@ class Project < ActiveRecord::Base
   end
 
   def self.statuses
-    %w(ParDevelopment NesCom ParApproved EditorsDraft TgBallot WgBallot
-      SponsorBallot RevCom Approved Published Superceded Withdrawn )
+    %w(ParDevelopment NesCom ParApproved EditorsDraft TgBallot WgBallot TgBallotRecirc WgBallotRecirc
+      SponsorBallot RevCom Approved Published Superseded Withdrawn )
   end
 
   def self.status_colours
@@ -21,7 +21,7 @@ class Project < ActiveRecord::Base
   end
 
   def self.projecttypes
-    %w(Amendment Corridendum Revision NewStandard NewRecPractice Erratum)
+    %w(Amendment Corrigendum Revision NewStandard NewRecPractice Erratum)
   end
 
   def self.lastmotions
@@ -35,19 +35,23 @@ class Project < ActiveRecord::Base
     ev_list = []
     self.events.order(:date).each do |event|
       caption = event.name + (event.description && !event.description.empty? ? ": #{event.description}" : '')
-      ev_list << {
+      ev = {
           media: {
               url: '<blockquote>' + self.short_title + '</blockquote>',
               caption: caption
           },
           #text: event.name + ' ' + event.description,
-          start_date: {day: event.date.day, month: event.date.month, year: event.date.year}
+          start_date: { day: event.date.day, month: event.date.month, year: event.date.year }
       }
+      if event.end_date && event.date != event.end_date
+        ev[:end_date] = { day: event.end_date.day, month: event.end_date.month, year: event.end_date.year }
+      end
+      ev_list << ev
     end
     tl = {
         title: {
             text: {
-                headline: link_to(self.short_title, self.par_url),
+                headline: self.par_url.nil? ? self.short_title : link_to(self.short_title, self.par_url),
                 text: self.title
             }
         },

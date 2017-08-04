@@ -7,6 +7,14 @@ class ProjectsController < ApplicationController
   def index
     @task_group = TaskGroup.find(params[:task_group_id])
     @projects = @task_group.projects.order(:designation).paginate(page: params[:page], per_page: 10)
+    # Search for items using OR: http://stackoverflow.com/questions/3639656/activerecord-or-query
+    if params[:search].present?
+      t = @projects.arel_table
+      match_string = '%' + params[:search] + '%'
+      @projects = @projects.where(
+          t[:designation].matches(match_string)
+      )
+    end
   end
 
   # GET /task_groups/1/projects/1
@@ -66,6 +74,6 @@ class ProjectsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def project_params
-      params.require(:project).permit(:task_group_id, :designation, :title, :short_title, :project_type, :status, :last_motion, :draft_no, :next_action, :pool_formed, :mec, :par_url, :csd_url, :par_approval, :par_expiry, :standard_approval, :published)
+      params.require(:project).permit(:task_group_id, :designation, :title, :short_title, :project_type, :status, :last_motion, :draft_no, :next_action, :award, :pool_formed, :mec, :par_url, :csd_url, :par_approval, :par_expiry, :standard_approval, :published)
     end
 end
