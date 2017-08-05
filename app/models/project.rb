@@ -8,7 +8,7 @@ class Project < ActiveRecord::Base
 
   def self.nextactions
     %w(NesCom TgBallot WgBallot SponsorBallot SponsorBallotCond RevCom
-      RevComCond Publication Done ParWithdrawal Withdrawal)
+      RevComCond Publication Done ParMod ParWithdrawal Withdrawal)
   end
 
   def self.statuses
