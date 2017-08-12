@@ -5,9 +5,13 @@ class ProjectsController < ApplicationController
   # GET /task_groups/1/projects
   # GET /task_groups/1/projects.json
   def index
-    @task_group = TaskGroup.find(params[:task_group_id])
-    @projects = @task_group.projects.order(:designation).paginate(page: params[:page], per_page: 10)
-    # Search for items using OR: http://stackoverflow.com/questions/3639656/activerecord-or-query
+    if params[:task_group_id].present?
+      @task_group = TaskGroup.find(params[:task_group_id])
+      @projects = @task_group.projects.order(:designation).paginate(page: params[:page], per_page: 10)
+    else
+      @projects = Project.all.order(:designation).paginate(page: params[:page], per_page: 10)
+    end
+    # Search for projects using OR: http://stackoverflow.com/questions/3639656/activerecord-or-query
     if params[:search].present?
       t = @projects.arel_table
       match_string = '%' + params[:search] + '%'
@@ -20,8 +24,13 @@ class ProjectsController < ApplicationController
   # GET /task_groups/1/projects/1
   # GET /task_groups/1/projects/1.json
   def show
-    @task_group = TaskGroup.find(params[:task_group_id])
-    @project = @task_group.projects.find(params[:id])
+    if params[:task_group_id].present?
+      @task_group = TaskGroup.find(params[:task_group_id])
+      @project = @task_group.projects.find(params[:id])
+    else
+      @project = Project.find(params[:id])
+      @task_group = @project.task_group
+    end
   end
 
   # GET /task_groups/1/projects/new
@@ -64,6 +73,19 @@ class ProjectsController < ApplicationController
       format.html { redirect_to task_group_url(@task_group), notice: 'Project was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  # GET /task_groups/1/projects/1/timeline
+  # GET /task_groups/1/projects/1/timeline.json
+  def show_timeline
+    if params[:task_group_id].present?
+      @task_group = TaskGroup.find(params[:task_group_id])
+      @project = @task_group.projects.find(params[:project_id])
+    else
+      @project = Project.find(params[:id])
+      @task_group = @project.task_group
+    end
+
   end
 
   private

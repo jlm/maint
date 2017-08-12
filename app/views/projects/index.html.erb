@@ -1,6 +1,6 @@
-<% provide(:title, "Projects for #{@task_group.name} Task Group") %>
+<% provide(:title, "Projects for #{@task_group&.name} Task Group") %>
 <p id="notice"><%= notice %></p>
-<h1>Projects for <%= @task_group.name %> Task Group</h1>
+<h1>Projects for <%= @task_group&.name %> Task Group</h1>
 
 <table>
   <thead>

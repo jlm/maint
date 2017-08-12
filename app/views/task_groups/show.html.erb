@@ -27,7 +27,7 @@
   </div>
 
   <% @projects.each do |project| %>
-      <%= render project, firstflag: project == @projects.first %>
+      <%= render project, firstflag: false %>
   <% end %>
   <%= will_paginate @projects, renderer: BootstrapPagination::Rails %>
 </div>

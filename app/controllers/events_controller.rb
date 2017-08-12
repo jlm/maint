@@ -5,16 +5,25 @@ class EventsController < ApplicationController
   # GET /task_group/1/project/1/events
   # GET /task_group/1/project/1/events.json
   def index
-    @task_group = TaskGroup.find(params[:task_group_id])
-    @project = @task_group.projects.find(params[:project_id])
-    @events = @project.events.order(:date).paginate(page: params[:page], per_page: 10)
+    @project = Project.find(params[:project_id])
+    @task_group = @project.task_group
+    @events = @project.events.order(:date)
+    @events = @events.paginate(page: params[:page], per_page: 10) unless request.format == :json
+    # Search for events using OR: http://stackoverflow.com/questions/3639656/activerecord-or-query
+    if params[:search].present?
+      t = @events.arel_table
+      match_string = '%' + params[:search] + '%'
+      @events = @events.where(
+          t[:name].matches(match_string)
+      )
+    end
   end
 
   # GET /task_group/1/project/1/events/1
   # GET /task_group/1/project/1/events/1.json
   def show
-    @task_group = TaskGroup.find(params[:task_group_id])
-    @project = @task_group.projects.find(params[:project_id])
+    @project = Project.find(params[:project_id])
+    @task_group = @project.task_group
     @event = @project.events.find(params[:id])
   end
 
