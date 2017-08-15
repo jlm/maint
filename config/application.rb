@@ -34,6 +34,9 @@ module Maint
 
     # this is for timeline_json, from https://stackoverflow.com/questions/27379432/prevent-rails-from-encoding-the-ampersands-in-a-url-when-outputting-json
     config.active_support.escape_html_entities_in_json = false
+
+    MultiJson.use :yajl
+    MultiJson.dump_options = { pretty: true }
   end
 end
 
