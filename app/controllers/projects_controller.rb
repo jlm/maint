@@ -82,10 +82,17 @@ class ProjectsController < ApplicationController
       @task_group = TaskGroup.find(params[:task_group_id])
       @project = @task_group.projects.find(params[:project_id])
     else
-      @project = Project.find(params[:id])
+      @project = Project.find(params[:project_id])
       @task_group = @project.task_group
     end
+  end
 
+  # GET /timeline/[:designation]
+  # GET /timeline/[:designation].json
+  def show_timeline_by_desig
+    desig = params[:designation].gsub('-', '.')
+    @project = Project.where(designation: desig).first!
+    render 'show_timeline'
   end
 
   private

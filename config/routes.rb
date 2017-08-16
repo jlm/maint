@@ -31,8 +31,9 @@ Rails.application.routes.draw do
   end
   resources :projects do
     resources :events
+    get 'timeline' => 'projects#show_timeline'
   end
-
+get '/timeline/:designation', to: 'projects#show_timeline_by_desig', as: :timeline
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

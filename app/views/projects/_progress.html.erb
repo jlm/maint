@@ -1,5 +1,4 @@
-
 <script type="text/javascript">
-  var timeline_json = <%= raw progress.timeline_json %>;
+  var timeline_json = <%= raw '"' + project_timeline_url(progress, format: :json) + '"' %>;
   window.timeline = new TL.Timeline('timeline-embed', timeline_json, { debug: true } );
 </script>
