@@ -7,7 +7,16 @@ class PeopleController < ApplicationController
   # GET /people
   # GET /people.json
   def index
-    @people = role_class.all.paginate(page: params[:page], per_page: 10)
+    @people = role_class.all
+    @people = @people.paginate(page: params[:page], per_page: 10) unless request.format == :json
+    # Search for people using OR: http://stackoverflow.com/questions/3639656/activerecord-or-query
+    if params[:search].present?
+      t = @people.arel_table
+      match_string = '%' + params[:search] + '%'
+      @people = @people.where(
+          t[:last_name].matches(match_string)
+      )
+    end
   end
 
   # GET /people/1
@@ -37,7 +46,7 @@ class PeopleController < ApplicationController
   # PATCH/PUT /people/1.json
   def update
     flash[:notice] = "Person successfully updated" if @person.update(person_params)
-    respond_modal_with @task_group
+    respond_modal_with @person
   end
 
   # DELETE /people/1
