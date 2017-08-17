@@ -12,6 +12,7 @@
     <% end %>
 
     <div class="modal-body">
+      <%= f.input :abbrev, label: 'Abbreviation' %>
       <%= f.input :name %>
       <%= f.association :chair, label_method: :full_name %>
     </div>

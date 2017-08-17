@@ -1,0 +1,5 @@
+<% headers = ['Abbreviation', 'Name', 'Chair First Name', 'Chair Last Name'] %>
+<%= CSV.generate_line headers %>
+<% @task_groups.each do |tg| %>
+    <%= CSV.generate_line([tg.abbrev, tg.name, tg.chair.first_name, tg.chair.last_name]) %>
+<% end %>

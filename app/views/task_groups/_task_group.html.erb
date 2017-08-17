@@ -1,6 +1,7 @@
 <tr>
+  <td><%= task_group.abbrev %></td>
   <td><%= task_group.name %></td>
-  <td><%= (task_group.chair && task_group.chair.full_name) %></td>
+  <td><%= task_group.chair&.full_name %></td>
   <td><%= task_group.vice_chairs.each { |vc| "#{vc.full_name}, " } %></td>
   <td><%= link_to 'Show', task_group, class: "btn btn-default" %></td>
   <% if can? :update, task_group %>

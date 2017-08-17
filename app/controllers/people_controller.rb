@@ -2,7 +2,7 @@ class PeopleController < ApplicationController
   load_and_authorize_resource
   before_action :set_person, only: [:show, :edit, :update, :destroy]
   before_action :set_role
-  respond_to :html, :json
+  respond_to :html, :json, :csv
 
   # GET /people
   # GET /people.json
@@ -17,7 +17,7 @@ class PeopleController < ApplicationController
           t[:last_name].matches(match_string)
       )
     end
-  end
+   end
 
   # GET /people/1
   # GET /people/1.json
