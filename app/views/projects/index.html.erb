@@ -22,6 +22,7 @@
 
   <tbody>
     <% @projects.each do |project| %>
+      <% task_group = @task_group ? @task_group : project.task_group %>
       <tr>
         <td><%= project.designation %></td>
         <td><%= project.title %></td>
@@ -34,9 +35,9 @@
         <td><%= project.par_url %></td>
         <td><%= project.csd_url %></td>
         <td><%= project.award %></td>
-        <td><%= link_to 'Show', [@task_group, project], class: "btn btn-default" %></td>
-        <td><%= link_to 'Edit', edit_task_group_project_path(@task_group, project), class: "btn btn-warning" if can? :update, project  %></td>
-        <td><%= link_to 'Destroy', [@task_group, project], class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } if can? :destroy, project %></td>
+        <td><%= link_to 'Show', [task_group, project], class: "btn btn-default" %></td>
+        <td><%= link_to 'Edit', edit_task_group_project_path(task_group, project), class: "btn btn-warning" if can? :update, project  %></td>
+        <td><%= link_to 'Destroy', [task_group, project], class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } if can? :destroy, project %></td>
       </tr>
     <% end %>
   </tbody>
