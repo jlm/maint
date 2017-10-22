@@ -1,6 +1,6 @@
 # These first lines deploy an unmodified Postgres container.
 db:
-  image: postgres
+  image: postgres:9
 # These lines are for our application.
 web:
 # The build line causes an image to be created based on the Dockerfile and directory contents.
