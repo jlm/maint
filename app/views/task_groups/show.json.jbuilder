@@ -1,4 +1,4 @@
-json.extract! @task_group, :id, :name, :chair_id, :created_at, :updated_at
+json.extract! @task_group, :id, :abbrev, :name, :chair_id, :created_at, :updated_at
 json.projects @task_group.projects do |project|
   json.extract! project, :short_title
   json.url task_group_project_url(@task_group, project, format: :json)
