@@ -68,6 +68,9 @@ class ProjectsController < ApplicationController
   # DELETE /task_groups/1/projects/1.json
   def destroy
     @task_group = TaskGroup.find(params[:task_group_id])
+    @project.events.each do |e|
+      e.destroy
+    end
     @project.destroy
     respond_to do |format|
       format.html { redirect_to task_group_url(@task_group), notice: 'Project was successfully destroyed.' }
