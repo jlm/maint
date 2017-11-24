@@ -93,7 +93,7 @@ class ProjectsController < ApplicationController
   # GET /timeline/[:designation]
   # GET /timeline/[:designation].json
   def show_timeline_by_desig
-    desig = params[:designation].gsub('-', '.')
+    desig = params[:designation].sub('-', '.')
     @project = Project.where(designation: desig).first!
     render 'show_timeline'
   end
