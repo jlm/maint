@@ -14,7 +14,7 @@ class EventsController < ApplicationController
       t = @events.arel_table
       match_string = '%' + params[:search] + '%'
       @events = @events.where(
-          t[:name].matches(match_string)
+          t[:name].matches(match_string) # Note this is not an exact string match.  Caller beware!
       )
     end
   end

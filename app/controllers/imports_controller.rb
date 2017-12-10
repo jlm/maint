@@ -34,6 +34,7 @@ class ImportsController < ApplicationController
     end
     if params[:replace].present?
       Minute.destroy_all
+      Request.destroy_all
       Item.destroy_all
       Meeting.destroy_all
       Import.destroy_all
