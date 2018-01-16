@@ -3,7 +3,7 @@
 
 <h1>Events for <%= @project.short_title %></h1>
 
-<table>
+<table class="table table-hover">
   <thead>
     <tr>
       <th>Name</th>
@@ -18,8 +18,11 @@
   <tbody>
     <% @events.each do |event| %>
       <tr>
-        <td><%= event.name %></td>
-        <td><%= event.url %></td>
+        <% if event.url.nil? %>
+          <td><%= event.name %></td>
+        <% else %>
+          <%= link_to event.name, event.url %>
+        <% end %>
         <td><%= event.date %></td>
         <td><%= event.end_date %></td>
         <td><%= event.description %></td>

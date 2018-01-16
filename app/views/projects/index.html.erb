@@ -2,7 +2,7 @@
 <p id="notice"><%= notice %></p>
 <h1>Projects for <%= @task_group&.name %> Task Group</h1>
 
-<table>
+<table class="table table-hover">
   <thead>
     <tr>
       <th>Designation</th>
@@ -32,8 +32,8 @@
         <td><%= project.last_motion %></td>
         <td><%= project.draft_no %></td>
         <td><%= project.next_action %></td>
-        <td><%= project.par_url %></td>
-        <td><%= project.csd_url %></td>
+        <td><%= link_to 'PAR', project.par_url %></td>
+        <td><%= link_to_if project.csd_url, 'CSD', project.csd_url %></td>
         <td><%= project.award %></td>
         <td><%= link_to 'Show', [task_group, project], class: "btn btn-default" %></td>
         <td><%= link_to 'Edit', edit_task_group_project_path(task_group, project), class: "btn btn-warning" if can? :update, project  %></td>
