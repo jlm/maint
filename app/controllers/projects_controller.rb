@@ -7,10 +7,12 @@ class ProjectsController < ApplicationController
   def index
     if params[:task_group_id].present?
       @task_group = TaskGroup.find(params[:task_group_id])
-      @projects = @task_group.projects.order(:designation).paginate(page: params[:page], per_page: 10)
+      @projects = @task_group.projects.order(:designation)
     else
-      @projects = Project.all.order(:designation).paginate(page: params[:page], per_page: 10)
+      @projects = Project.all.order(:designation)
     end
+    # A dirty hack to avoid having to deal with pagination in API clients.  This does not scale.
+    @projects = @projects.paginate(page: params[:page], per_page: 10) unless request.format == :json
     # Search for projects using OR: http://stackoverflow.com/questions/3639656/activerecord-or-query
     if params[:search].present?
       t = @projects.arel_table
@@ -106,6 +108,9 @@ class ProjectsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def project_params
-      params.require(:project).permit(:task_group_id, :designation, :title, :short_title, :project_type, :status, :last_motion, :draft_no, :next_action, :award, :pool_formed, :mec, :par_url, :csd_url, :par_approval, :par_expiry, :standard_approval, :published)
+      params.require(:project).permit(:task_group_id, :designation, :title, :short_title, :project_type, :status,
+                                      :last_motion, :draft_no, :next_action, :award, :pool_formed, :mec, :par_url,
+                                      :csd_url, :files_url, :draft_url, :par_approval, :par_expiry, :standard_approval,
+                                      :published)
     end
 end

@@ -30,7 +30,7 @@
         <td><%= project.project_type %></td>
         <td><%= project.status %></td>
         <td><%= project.last_motion %></td>
-        <td><%= project.draft_no %></td>
+        <td><%= link_to_unless(project.draft_url.nil?, project.draft_no, project.draft_url) %></td>
         <td><%= project.next_action %></td>
         <td><%= link_to 'PAR', project.par_url %></td>
         <td><%= link_to_if project.csd_url, 'CSD', project.csd_url %></td>
