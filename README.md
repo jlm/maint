@@ -146,7 +146,7 @@ Deploying with Docker Cloud
 Another way of deploying the application is using Docker, managed with a service such as [Docker Cloud](https://cloud.docker.com).  Once debugged, this provides a very convenient deployment environment.  My setup for this involved [providing my own node](https://docs.docker.com/docker-cloud/infrastructure/byoh/) to the Docker Cloud service.
 ```
     $ docker-compose build
-    $ docker tag -f maint_web:latest yourusername/maint_web:latest
+    $ docker tag maint_web:latest yourusername/maint_web:latest
     $ docker push yourusername/maint_web:latest
 ```
 
