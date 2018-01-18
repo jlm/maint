@@ -28,10 +28,44 @@ RailsAdmin.config do |config|
     edit
     delete
     show_in_app
-    import
+    import                        # for rails_admin_import
 
     ## With an audit adapter, you can add:
     # history_index
     # history_show
+  end
+
+  # Options for rails_admin_import:
+  config.configure_with(:import) do |config|
+    config.update_if_exists = true      # set the "update if exists" checkbox by default.
+  end
+
+  config.model 'Project' do
+    import do
+      mapping_key :designation
+    end
+    export do
+      field :designation
+      field :project_type
+      field :short_title
+      field :last_motion
+      field :status
+      field :draft_no
+      field :next_action
+      field :task_group
+      field :files_url
+      field :par_url
+      field :csd_url
+    end
+  end
+
+  config.model 'TaskGroup' do
+    import do
+      mapping_key :abbrev
+    end
+    export do
+      field :abbrev
+      field :name
+    end
   end
 end
