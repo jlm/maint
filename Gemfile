@@ -35,6 +35,7 @@ gem 'dotenv-rails'
 gem 'rails_admin'
 gem 'devise'
 gem 'cancan'
+gem 'rails_admin_import', '~> 2.1'
 
 gem 'simple_form'
 gem 'rubyXL'
