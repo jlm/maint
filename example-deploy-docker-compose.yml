@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+   db:
+     image: postgres:9
+     volumes:
+       - /srv/docker/postgresql/data:/var/lib/postgresql/data
+     restart: always
+     environment:
+       POSTGRES_USER: dbuser
+       POSTGRES_PASSWORD: password
+
+   web:
+     image: username/maint_web:latest
+     expose:
+       - "3000"
+     restart: always
+     environment:
+       SECRET_KEY_BASE: secret-key-here
+       DEVISE_PEPPER: another-secret-key
+       RAILS_SERVE_STATIC_FILES: "yes"
+       COMMITTEE: Whatever
+       REQ_URL: http://www.whatever.org/n/files/public/maint/requests/maint_%s.pdf
+       MAIL_SENDER: admin@whatever.org
+       SERVER_PRODUCTION: www.whatever.org
+       SERVER_STAGING: www.whatever.org
+       SERVER_DEVELOPMENT: www.whatever.org
+       POSTGRES_USER: dbuser
+       POSTGRES_PASSWORD: password
+       DB_SERVICE_HOST: "db"
+       HOST_PORT: ":80"
+       VIRTUAL_HOST: "www.whatever.org"
+       LETSENCRYPT_HOST: "www.whatever.org,whatever.org"
+       LETSENCRYPT_EMAIL: "letsencrypt@cuthberts.org"
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
