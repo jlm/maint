@@ -4,7 +4,8 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 4'
 # Use postgresql as the database for Active Record
-gem 'pg'
+# Note: pg-1.0 requires Rails > 5.1.5.
+gem 'pg', '~> 0.21'
 # Use SCSS for stylesheets
 gem 'bootstrap-sass', '~> 3.3.5'
 gem 'sass-rails', '~> 5.0'
@@ -47,7 +48,7 @@ gem 'postmark-rails'
 # Use Unicorn as the app server
 # gem 'unicorn'
 
-group :development, :docker do
+group :development, :docker, :staging do
 	# Use Puma as the app server
 	gem 'puma'
 	gem 'dalli'
