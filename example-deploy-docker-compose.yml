@@ -3,6 +3,7 @@ version: '3'
 services:
    db:
      image: postgres:9
+     container_name: maint_db
      volumes:
        - /srv/docker/postgresql/data:/var/lib/postgresql/data
      restart: always
@@ -12,6 +13,7 @@ services:
 
    web:
      image: username/maint_web:latest
+     container_name: maint_web
      expose:
        - "3000"
      restart: always
@@ -30,8 +32,8 @@ services:
        DB_SERVICE_HOST: "db"
        HOST_PORT: ":80"
        VIRTUAL_HOST: "www.whatever.org"
-       LETSENCRYPT_HOST: "www.whatever.org,whatever.org"
-       LETSENCRYPT_EMAIL: "letsencrypt@cuthberts.org"
+       LETSENCRYPT_HOST: "www.whatever.org"
+       LETSENCRYPT_EMAIL: "letsencrypt@whatever.org"
 
 networks:
   default:
