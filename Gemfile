@@ -3,6 +3,10 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 4'
+# Rails 4 is basically deprecated. Below are some dependency updates to fix vulnerabilities.  These would not normally
+# be listed in the Gemfile at all.
+gem 'rails-html-sanitizer', '~> 1.0.4'
+
 # Use postgresql as the database for Active Record
 gem 'pg'
 # Use SCSS for stylesheets
@@ -32,13 +36,14 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'dotenv-rails'
 
 # Let's try RailsAdmin
-gem 'rails_admin'
+gem 'rails_admin', '~> 1.3'
 gem 'devise'
 gem 'cancan'
 gem 'rails_admin_import', '~> 2.1'
 
 gem 'simple_form'
-gem 'rubyXL'
+gem 'nokogiri', '~> 1.8.2'
+gem 'rubyXL', '~> 3.3.29'
 gem 'postmark-rails'
 
 # Use ActiveModel has_secure_password
