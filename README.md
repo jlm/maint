@@ -23,10 +23,10 @@ Then enter "type rbenv" to verify that rbenv is a function.
 Then install Ruby:
 ```
     $ sudo apt-get install libreadline-dev libssl-dev zlib1g-dev
-    $ rbenv install 2.2.2
-    $ rbenv global 2.2.2
+    $ rbenv install 2.4.2
+    $ rbenv global 2.4.2
 ```
-However, with Ubuntu 14.04, due to problems with Readline, I found I had to use this incantation to install Ruby:
+Perviously, with Ubuntu 14.04 with Ruby 2.2.2 , due to problems with Readline, I found I had to use this incantation to install Ruby:
 ```
     $ RUBY_CONFIGURE_OPTS=--with-readline-dir="/usr/include/readline" rbenv install 2.2.2
 ```
@@ -194,7 +194,7 @@ It takes a couple of minutes to initialise, set up the database and write cache 
 Enhancing the Docker Compose method to add HTTPS and a proxy server
 ===================================================================
 Jason Wilder has written a very fine [reverse proxy for Docker containers](http://jasonwilder.com/blog/2014/03/25/automated-nginx-reverse-proxy-for-docker/)
-based on Nginx.  Yves Blusseau has written an excellent [companion utility](https://github.com/jwilder/docker-letsencrypt-nginx-proxy-companion)
+based on Nginx.  Yves Blusseau has written an excellent [companion utility](https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion)
 which automatically generates, applies (and renews) [Let's Encrypt](www.letsencrypt.org) certificates to each virtual
 host created by the above.  No account or additional setup is needed.
 
