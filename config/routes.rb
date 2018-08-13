@@ -1,97 +1,48 @@
 Rails.application.routes.draw do
-  resources :people
-  resources :vice_chairs, controller: 'people', type: 'ViceChair'
-  resources :chairs, controller: 'people', type: 'Chair'
-  resources :editors, controller: 'people', type: 'Editor'
-
-  resources :meetings
-  resources :imports
+  # Static pages for the home screen, etc.
   get 'static_pages/home'
-
   get 'static_pages/help'
+  root 'static_pages#home'
+  match '/home',    to: 'static_pages#home',    via: 'get'
+  match '/help',    to: 'static_pages#help',    via: 'get'
+  match '/status',  to: 'static_pages#status',  via: 'get'
 
-  # Use "devise" for user registration etc., but override the registrations controller just so that we can redirect to a custom path.
-  devise_for :users, controllers: { registrations: "registrations", sessions: "sessions" }
-
-  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+  # The maintenance database.  Each Maintenance item has minutes and a request.
   resources :items do
     resources :minutes
     resources :requests do
+      # There's an option to display a request 'pre'-formatted.
       get 'pre', on: :member
     end
   end
-
   match '/items',   to: 'items#index',          via: 'get'
 
+  # The task group and project database.
   resources :task_groups do
     resources :projects do
       resources :events
       get 'timeline' => 'projects#show_timeline'
     end
   end
+  # Projects can also be accessed outside the scope of task groups.
   resources :projects do
     resources :events
     get 'timeline' => 'projects#show_timeline'
   end
-get '/timeline/:designation', to: 'projects#show_timeline_by_desig', as: :timeline
+  get '/timeline/:designation', to: 'projects#show_timeline_by_desig', as: :timeline
 
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
+  # The list of meetings.  Each meeting displays the maintenance items which were progressed at it.
+  resources :meetings
 
-  # You can have the root of your site routed with "root"
-  # See app/controllers/application_controller.rb for the definition of the function called here:
-  root 'static_pages#home'
+  # Sundry supporting resources
+  resources :people
+  resources :vice_chairs, controller: 'people', type: 'ViceChair'
+  resources :chairs, controller: 'people', type: 'Chair'
+  resources :editors, controller: 'people', type: 'Editor'
+  resources :imports
 
-  match '/home',    to: 'static_pages#home',    via: 'get'
-  match '/help',    to: 'static_pages#help',    via: 'get'
-  match '/status',  to: 'static_pages#status',  via: 'get'
-  
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
-
-  # Example of named route that can be invoked with purchase_url(id: product.id)
-  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
-
-  # Example resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
-
-  # Example resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Example resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Example resource route with more complex sub-resources:
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', on: :collection
-  #     end
-  #   end
-
-  # Example resource route with concerns:
-  #   concern :toggleable do
-  #     post 'toggle'
-  #   end
-  #   resources :posts, concerns: :toggleable
-  #   resources :photos, concerns: :toggleable
-
-  # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
+  # Use "devise" for user registration etc., but override the registrations controller just so that we can redirect to a custom path.
+  devise_for :users, controllers: { registrations: "registrations", sessions: "sessions" }
+  # RailsAdmin is included for maintenance and debug, restricted to specially authorised users.
+  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 end
