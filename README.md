@@ -1,11 +1,16 @@
 Introduction
 ============
 
-This is an attempt to convert the 802.1 Maintenance Database into a web application.  The old database
-was formed from a single Excel workbook with magic formulae to generate static HTML output.  It was difficult to maintain and keep error-free.
+This application is a conversion of the 802.1 Maintenance Database into a web application.  The old database
+was formed from a single Excel workbook with magic formulae to generate static HTML output.  It was difficult to maintain
+and keep error-free.
+
+To modify the application or run it locally in a development environment, some setup is required.  However if you just
+want to run it, you can skip to the "Deploying with Docker Compose" section below.
 
 Installing Rbenv and Ruby
 =========================
+
 These commands are for Ubuntu.  For other setups see https://github.com/sstephenson/rbenv.
 ```
     $ git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
@@ -141,13 +146,92 @@ Mine looked like this:
         }
 ```
 
-Deploying with Docker Cloud
-===========================
-Another way of deploying the application is using Docker, managed with a service such as [Docker Cloud](https://cloud.docker.com).  Once debugged, this provides a very convenient deployment environment.  My setup for this involved [providing my own node](https://docs.docker.com/docker-cloud/infrastructure/byoh/) to the Docker Cloud service.
+Creating a Dockerized version of the app
+========================================
+On the development machine:
 ```
     $ docker-compose build
     $ docker tag maint_web:latest yourusername/maint_web:latest
     $ docker push yourusername/maint_web:latest
 ```
 
-Then navigate to the "Stacks" tab in Docker Cloud, and select "Create Stack" and upload `example-docker-cloud-stack.yml`.  Edit as appropriate.  Then "Deploy" it!
+
+Deploying with Docker Compose
+=============================
+The preferred method of deploying the application is using Docker Compose.  This assumes you have a separate Docker
+hosting environment.  I use an Ubuntu virtual machine for this, with Docker CE installed. Digital Ocean offers a
+[pre-configured setup](https://www.digitalocean.com/community/tutorials/how-to-use-the-digitalocean-docker-application)
+for this. 
+
+On the Docker host (target), first prepare the storage area for the database (there are lots of other, perhaps better
+ways to do this, including using a persistent docker volume):
+```bash
+    $ sudo mkdir -p /srv/docker/postgresql/data
+    $ sudo chmod -R go-rwx /srv
+    $ sudo chown 999.root /srv/docker/postgresql/data
+```
+Then copy `example-deploy-docker-compose.yml` to `deploy-docker-compose.yml` and edit it to configure the application.
+The `POSTGRES_USER` and `POSTGRES_PASSWORD` fields can be set arbitrarily (but must be the same for the db and web
+sections). The `SECRET_KEY_BASE` and `DEVISE_PEPPER` entries are Rails secret keys, and can be generated using `openssl
+rand -hex 64` or `rake secret` (if you happened to have Rake installed).  The `VIRTUAL_HOST` and `LETSENCRYPT*` entries
+are only required if you are using Jason Wilder's `nginx-proxy` and Yves Blusseau's `docker-letsencrypt-nginx-proxy-companion`
+(see section below).  The remaining fields configure aspects of the user interface that depend on the use you are
+putting this project to.
+
+Once the Docker Compose file has been customised, the application can be launched with the
+command
+
+```
+    $ docker-compose -f deploy-docker-compose.yml up
+```
+It takes a couple of minutes to initialise, set up the database and write cache files.  Test it by navigating to
+`localhost:80`.  To terminate, press Control-C.  To launch it in the background, use
+
+```bash
+    $ docker-compose -f deploy-docker-compose.yml up -d
+```  
+
+Enhancing the Docker Compose method to add HTTPS and a proxy server
+===================================================================
+Jason Wilder has written a very fine [reverse proxy for Docker containers](http://jasonwilder.com/blog/2014/03/25/automated-nginx-reverse-proxy-for-docker/)
+based on Nginx.  Yves Blusseau has written an excellent [companion utility](https://github.com/jwilder/docker-letsencrypt-nginx-proxy-companion)
+which automatically generates, applies (and renews) [Let's Encrypt](www.letsencrypt.org) certificates to each virtual
+host created by the above.  No account or additional setup is needed.
+
+With a few simple steps, this allows multiple Dockerized web applications to run on the same VM, each as different
+virtual hosts, secured by valid certificates and supporting HTTPS without the web application having to be HTTPS-aware.
+Adding a new application requires no configuration beyond including the `VIRTUAL_HOST`, `LETSENCRYPT_HOST` and
+`LETSENCRYPT_EMAIL` environment variables to the environment of the new container.
+
+To apply this to the `maint` application, first register the newly invented DNS name of the web application virtual
+host to be a CNAME of the Docker host.  Then, before starting the web application with Docker Compose as described
+in the previous section, run these commands:
+ 
+```
+      $ sudo mkdir /web/nginx-proxy
+      $ sudo chown YOU /web/nginx-proxy
+      $ curl https://raw.githubusercontent.com/jwilder/nginx-proxy/master/nginx.tmpl > /web/nginx-proxy/nginx.tmpl
+      # Probably you need to patch nginx.tmpl to stop redirects to HTTPS for the letsencrypt verification files:
+      $ wget -Onginx.tmpl.patch https://gist.githubusercontent.com/jlm/f415ce4c99880dead9342b78dfefef53/raw/747aacbdafee1fe1fe0d239314d6e49848103c28/nginx.tmpl.patch
+      $ patch /web/nginx-proxy/nginx.tmpl < nginx.tmpl.patch
+      $ sudo docker network create nginx-proxy
+      
+      $ sudo docker run -d -p 80:80 -p 443:443 --name nginx-proxy --net nginx-proxy --restart=always -v /web/nginx-proxy:/etc/nginx/certs:ro  -v /etc/nginx/vhost.d     -v /usr/share/nginx/html -v /var/run/docker.sock:/tmp/docker.sock:ro  --label com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy jwilder/nginx-proxy
+      $ sudo docker run -d --name nginx-letsencrypt --net nginx-proxy --restart=always -v /web/nginx-proxy:/etc/nginx/certs:rw -v /var/run/docker.sock:/var/run/docker.sock:ro --volumes-from nginx-proxy jrcs/letsencrypt-nginx-proxy-companion
+```
+
+Deploying with Docker Cloud (deprecated)
+===========================
+[Docker Cloud](https://cloud.docker.com) was a cloud-based Docker stack manager.  It is gone, now. Sadface.
+
+
+Another way of deploying the application is using Docker, managed with a service such as Docker Cloud.
+Once debugged, this provides a very convenient deployment environment.  My setup for this involved [providing my own node](https://docs.docker.com/docker-cloud/infrastructure/byoh/) to the Docker Cloud service.
+```
+    $ docker-compose build
+    $ docker tag maint_web:latest yourusername/maint_web:latest
+    $ docker push yourusername/maint_web:latest
+```
+
+Then navigate to the "Stacks" tab in Docker Cloud, and select "Create Stack" and upload `example-docker-cloud-stack.yml`.
+Edit as appropriate.  Then "Deploy" it!

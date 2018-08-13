@@ -12,7 +12,7 @@ services:
        POSTGRES_PASSWORD: password
 
    web:
-     image: username/maint_web:latest
+     image: jmessenger/maint_web:latest
      container_name: maint_web
      expose:
        - "3000"
