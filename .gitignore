@@ -22,9 +22,10 @@ docker-tutum-stack*.yml
 docker-cloud-stack*.yml
 deploy-docker-compose.yml
 # Ignore linked files for rails (JLM 150513)
-config/database.yml
-config/secrets.yml
-.env
+# Unignore the Rails secret files, sanitize instead  - some are needed for automated builds
+# config/database.yml
+# config/secrets.yml
+# .env
 
 ## Environment normalisation:
 /.bundle
