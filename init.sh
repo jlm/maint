@@ -2,7 +2,10 @@
 #export SECRET_KEY_BASE=$(bundle exec rake secret)
 #export DEVISE_PEPPER=$(bundle exec rake secret)
 export RAILS_SERVE_STATIC_FILES='true'
-. /usr/src/app/secrets.sh
+if [ -r /usr/src/app/secrets.sh ]
+then
+  . /usr/src/app/secrets.sh
+fi
 
 echo Waiting around
 sleep 5
