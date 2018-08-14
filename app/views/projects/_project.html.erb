@@ -63,7 +63,9 @@
           <% end %>
         </tbody>
       </table>
-      <td><%= link_to 'Add Event', new_task_group_project_event_path(@task_group, project), class: "btn btn-default", data: {modal: true} %></td>
+      <% if can? :update, project %>
+        <td><%= link_to 'Add Event', new_task_group_project_event_path(@task_group, project), class: "btn btn-default", data: {modal: true} %></td>
+      <% end %>
     </div>
   </div>
 
