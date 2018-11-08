@@ -2,10 +2,19 @@
 <p id="notice"><%= notice %></p>
 <h1><%= make_meeting_name(@meeting) %> Meeting</h1>
 
-<p>
-  <strong>Location:</strong>
-  <%= @meeting.location %>
-</p>
+<table class="table table-hover">
+  <tbody>
+  <tr>
+    <td><strong>Location:</strong> <%= @meeting.location %></td>
+    <td>
+      <%= link_to 'Minutes', @meeting.minutes_url, class: "btn btn-primary" %>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2"></td>
+  </tr>
+  </tbody>
+</table>
 
 <table class="table table-hover">
   <thead>
