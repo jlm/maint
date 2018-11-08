@@ -1,6 +1,7 @@
 class Project < ActiveRecord::Base
   belongs_to :task_group
   has_many :events
+  has_many :motions
   # self-reference: http://guides.rubyonrails.org/association_basics.html#self-joins
   has_many :subprojects, class_name: "Project", foreign_key: "base_id"
   belongs_to :base, class_name: "Project"

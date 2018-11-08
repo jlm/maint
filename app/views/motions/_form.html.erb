@@ -1,0 +1,15 @@
+<%= simple_form_for([@meeting, @motion], remote: request.xhr?, html: { data: { modal: true } }) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="modal-body">
+    <%= f.association :meeting, collection: Meeting.order(date: :desc), label_method: :date, label: "Meeting", include_blank: false %>
+    <%= f.input :number %>
+    <%= f.input :motion_text %>
+    <%= f.association :project, label: "Project", label_method: :designation, include_blank: false %>
+  </div>
+
+  <div class="modal-footer">
+    <%= f.button :submit, class: "btn btn-success" %>
+  </div>
+<% end %>
+

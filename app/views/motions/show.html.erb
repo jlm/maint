@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Meeting:</strong>
+  <%= @motion.meeting.date %>
+</p>
+
+<p>
+  <strong>Project:</strong>
+  <%= @motion.project.designation %>
+</p>
+
+<p>
+  <strong>Motion text:</strong>
+  <%= @motion.motion_text %>
+</p>
+
+<p>
+  <strong>Number:</strong>
+  <%= @motion.number %>
+</p>
+
+<%= link_to 'Edit', edit_meeting_motion_path(@meeting, @motion), class: "btn btn-default" %>
+<%= link_to 'Back', meeting_motions_path(@meeting), class: "btn btn-default" %>

@@ -48,17 +48,6 @@ class MinutesController < ApplicationController
     @item = Item.find(params[:item_id])
     flash[:notice] = "Minute successfully updated" if @minute.update(minute_params) && @item.save
     respond_modal_with(@minute, location: item_url(@item))
-=begin
-    respond_to do |format|
-      if @minute.update(minute_params) && @item.save
-        format.html { redirect_to item_url(@item), notice: 'Minute was successfully updated.' }
-        format.json { render :show, status: :ok, location: @minute }
-      else
-        format.html { render :edit }
-        format.json { render json: @minute.errors, status: :unprocessable_entity }
-      end
-    end
-=end
   end
 
   # DELETE /items/:item_id/minutes/1

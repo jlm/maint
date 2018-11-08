@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180923161103) do
+ActiveRecord::Schema.define(version: 20181108101616) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,18 @@ ActiveRecord::Schema.define(version: 20180923161103) do
 
   add_index "minutes", ["item_id"], name: "index_minutes_on_item_id", using: :btree
   add_index "minutes", ["meeting_id"], name: "index_minutes_on_meeting_id", using: :btree
+
+  create_table "motions", force: :cascade do |t|
+    t.integer  "meeting_id"
+    t.integer  "project_id"
+    t.string   "motion_text"
+    t.integer  "number"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "motions", ["meeting_id"], name: "index_motions_on_meeting_id", using: :btree
+  add_index "motions", ["project_id"], name: "index_motions_on_project_id", using: :btree
 
   create_table "people", force: :cascade do |t|
     t.string   "role"
@@ -183,6 +195,8 @@ ActiveRecord::Schema.define(version: 20180923161103) do
   add_foreign_key "events", "projects"
   add_foreign_key "minutes", "items"
   add_foreign_key "minutes", "meetings"
+  add_foreign_key "motions", "meetings"
+  add_foreign_key "motions", "projects"
   add_foreign_key "people", "task_groups"
   add_foreign_key "projects", "task_groups"
   add_foreign_key "requests", "items"

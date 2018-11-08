@@ -32,7 +32,9 @@ Rails.application.routes.draw do
   get '/timeline/:designation', to: 'projects#show_timeline_by_desig', as: :timeline
 
   # The list of meetings.  Each meeting displays the maintenance items which were progressed at it.
-  resources :meetings
+  resources :meetings do
+    resources :motions
+  end
 
   # Sundry supporting resources
   resources :people
