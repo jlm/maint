@@ -8,6 +8,13 @@ class MeetingsController < ApplicationController
   # GET /meetings.json
   def index
     @meetings = Meeting.order(sort_column + " " + sort_direction).paginate(page: params[:page], per_page: 10)
+    # Search for items using OR: http://stackoverflow.com/questions/3639656/activerecord-or-query
+    if params[:search].present?
+      t = @meetings.arel_table
+      @meetings = @meetings.where(
+          t[:date].eq(Date.parse(params[:search]))
+      )
+    end
   end
 
   # GET /meetings/1
@@ -59,7 +66,7 @@ class MeetingsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def meeting_params
-      params.require(:meeting).permit(:date, :meetingtype, :location, :minutes_url)
+      params.require(:meeting).permit(:date, :meetingtype, :location, :minutes_url, :search)
     end
 
     # From http://railscasts.com/episodes/228-sortable-table-columns?autoplay=true
