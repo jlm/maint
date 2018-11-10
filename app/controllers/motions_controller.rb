@@ -44,8 +44,8 @@ class MotionsController < ApplicationController
   # PATCH/PUT /meetings/:meeting_id/motions/1.json
   def update
     @meeting = Meeting.find(params[:meeting_id])
-    flash[:notice] = "Motion successfully updated" if motion.update(motion_params) && @meeting.save
-    respond_modal_with(@minute, location: item_url(@item))
+    flash[:notice] = "Motion successfully updated" if @motion.update(motion_params) && @meeting.save
+    respond_modal_with(@motion, location: meeting_url(@meeting))
   end
 
   # DELETE /meetings/:meeting_id/motions/1
