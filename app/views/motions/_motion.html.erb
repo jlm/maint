@@ -1,6 +1,6 @@
 <tr>
   <td><%= motion.meeting.date %></td>
-  <td><%= motion.project.designation %></td>
+  <td><%= motion.project&.designation %></td>
   <td><%= motion.number %></td>
   <td><%= motion.motion_text %></td>
   <% if can? :update, motion %>
