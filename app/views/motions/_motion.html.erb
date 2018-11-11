@@ -2,7 +2,7 @@
   <td><%= motion.meeting.date %></td>
   <td><%= motion.project&.designation %></td>
   <td><%= motion.number %></td>
-  <td><%= motion.motion_text %></td>
+  <td><%= Rinku.auto_link(motion.motion_text).html_safe %></td>
   <% if can? :update, motion %>
     <td><%= link_to 'Edit', edit_meeting_motion_path(@meeting, motion), class: "btn btn-warning", data: { modal: true } %></td>
   <% end %>

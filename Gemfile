@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 4'
 # Rails 4 is basically deprecated. Below are some dependency updates to fix vulnerabilities.  These would not normally
 # be listed in the Gemfile at all.
@@ -13,6 +12,9 @@ gem 'pg'
 gem 'bootstrap-sass', '~> 3.3.5'
 gem 'sass-rails', '~> 5.0'
 gem 'will_paginate-bootstrap'
+
+# Be able to convert URLs to links.
+gem 'rinku'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
