@@ -1,45 +1,34 @@
-<% provide(:title, "Projects for #{@task_group&.name} Task Group") %>
+<% if @task_group %>
+  <% provide(:title, "Projects for #{@task_group&.name} Task Group") %>
+  <h1>Projects for <%= @task_group&.name %> Task Group</h1>
+<% else %>
+  <% provide(:title, "Projects") %>
+  <h1>Projects</h1>
+<% end %>
+
 <p id="notice"><%= notice %></p>
-<h1>Projects for <%= @task_group&.name %> Task Group</h1>
 
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th>Designation</th>
-      <th>Title</th>
-      <th>Shorttitle</th>
-      <th>Projecttype</th>
-      <th>Status</th>
-      <th>Lastmotion</th>
-      <th>Draftno</th>
-      <th>Nextaction</th>
-      <th>PAR URL</th>
-      <th>CSD URL</th>
-      <th>Awards</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<div class="panel-group" id="accordian">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-md-1">Designation</div>
+        <div class="col-md-1">Draft</div>
+        <div class="col-md-3">Short title</div>
+        <div class="col-md-2">Last motion</div>
+        <div class="col-md-2">Status</div>
+        <div class="col-md-2">Next action</div>
+        <div class="col-md-1">Details</div>
+      </div>
+    </div>
+  </div>
 
-  <tbody>
-    <% @projects.each do |project| %>
-      <% task_group = @task_group ? @task_group : project.task_group %>
-      <tr>
-        <td><%= project.designation %></td>
-        <td><%= project.title %></td>
-        <td><%= project.short_title %></td>
-        <td><%= project.project_type %></td>
-        <td><%= project.status %></td>
-        <td><%= project.last_motion %></td>
-        <td><%= link_to_unless(project.draft_url.nil?, project.draft_no, project.draft_url) %></td>
-        <td><%= project.next_action %></td>
-        <td><%= link_to 'PAR', project.par_url %></td>
-        <td><%= link_to_if project.csd_url, 'CSD', project.csd_url %></td>
-        <td><%= project.award %></td>
-        <td><%= link_to 'Show', [task_group, project], class: "btn btn-default" %></td>
-        <td><%= link_to 'Edit', edit_task_group_project_path(task_group, project), class: "btn btn-warning" if can? :update, project  %></td>
-        <td><%= link_to 'Destroy', [task_group, project], class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } if can? :destroy, project %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-<%= will_paginate @projects, renderer: BootstrapPagination::Rails %>
+  <% @projects.each do |project| %>
+    <%= render project, firstflag: false %>
+  <% end %>
+  <%= will_paginate @projects, renderer: BootstrapPagination::Rails %>
+</div>
+
+<br>
+
+<%= link_to 'New Project', new_task_group_project_path(@task_group), class: "btn btn-primary", data: {modal: true} if can? :update, @task_group %>

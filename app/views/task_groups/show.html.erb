@@ -5,8 +5,8 @@
 <table class="table table-hover">
   <tbody>
   <tr>
-    <td><strong>Chair:</strong> <%= @task_group.chair && @task_group.chair.full_name %>
-    <td><strong>Vice Chairs:</strong> <%= @task_group.vice_chairs.each {|vc| "#{vc.full_name}, "} %>
+    <td><strong>Chair:</strong> <%= @task_group.chair && @task_group.chair.full_name %></td>
+<!--    <td><strong>Vice Chairs:</strong> <%#= @task_group.vice_chairs.each {|vc| "#{vc.full_name}, "} %></td>-->
   </tr>
   </tbody>
 </table>
