@@ -6,6 +6,8 @@ gem 'rails', '~> 4'
 # be listed in the Gemfile at all.
 gem 'rails-html-sanitizer', '~> 1.0.4'
 
+gem "rack", ">= 1.6.11"
+
 # Use postgresql as the database for Active Record
 gem 'pg'
 # Use SCSS for stylesheets
