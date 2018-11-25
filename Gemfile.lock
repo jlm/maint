@@ -157,7 +157,7 @@ GEM
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
     puma (3.11.0)
-    rack (1.6.10)
+    rack (1.6.11)
     rack-pjax (1.0.0)
       nokogiri (~> 1.5)
       rack (>= 1.1)
@@ -304,6 +304,7 @@ DEPENDENCIES
   pry-rescue
   pry-stack_explorer
   puma
+  rack (>= 1.6.11)
   rails (~> 4)
   rails-erd
   rails-html-sanitizer (~> 1.0.4)
