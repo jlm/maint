@@ -1,17 +1,16 @@
 source 'https://rubygems.org'
 
 
-gem 'rails', '~> 4'
+gem 'rails', '~> 4.2.11'
 # Rails 4 is basically deprecated. Below are some dependency updates to fix vulnerabilities.  These would not normally
 # be listed in the Gemfile at all.
 gem 'rails-html-sanitizer', '~> 1.0.4'
-
 gem "rack", ">= 1.6.11"
 
 # Use postgresql as the database for Active Record
 gem 'pg'
 # Use SCSS for stylesheets
-gem 'bootstrap-sass', '~> 3.3.5'
+gem 'bootstrap-sass', '~> 3.4.0'
 gem 'sass-rails', '~> 5.0'
 gem 'will_paginate-bootstrap'
 
