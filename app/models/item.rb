@@ -9,8 +9,8 @@ class Item < ActiveRecord::Base
 	validates :standard, presence: true, length: { in: 3..50 }
 	validates :subject, presence: true, length: { maximum: 200 }, unless: "Rails.application.config.importing"
 	before_save {
-		lastminute = self.minutes.where("minutes.DATE is not null").joins(:meeting).order("meetings.DATE").last;
-		self.minst = lastminute.minst unless lastminute.nil?
+  		lastminst = self.minutes.order(:date, :id).last.minst
+		self.minst = lastminst unless lastminst.nil?
 	}
 
 	CLOSED_CODES = ["P", "J", "W"]
