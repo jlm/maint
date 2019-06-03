@@ -38,7 +38,7 @@ GEM
     arel (6.0.4)
     autoprefixer-rails (9.4.8)
       execjs
-    bcrypt (3.1.11)
+    bcrypt (3.1.13)
     binding_of_caller (0.7.3)
       debug_inspector (>= 0.0.1)
     bootstrap-sass (3.4.1)
@@ -74,10 +74,10 @@ GEM
     crass (1.0.4)
     dalli (2.7.6)
     debug_inspector (0.0.3)
-    devise (4.3.0)
+    devise (4.6.2)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
-      railties (>= 4.1.0, < 5.2)
+      railties (>= 4.1.0, < 6.0)
       responders
       warden (~> 1.2.3)
     dotenv (2.2.1)
@@ -218,9 +218,9 @@ GEM
     rdoc (4.3.0)
     ref (2.0.0)
     remotipart (1.4.2)
-    responders (2.4.0)
-      actionpack (>= 4.2.0, < 5.3)
-      railties (>= 4.2.0, < 5.3)
+    responders (2.4.1)
+      actionpack (>= 4.2.0, < 6.0)
+      railties (>= 4.2.0, < 6.0)
     rinku (2.0.4)
     ruby-graphviz (1.2.3)
     rubyXL (3.3.29)
@@ -295,7 +295,7 @@ DEPENDENCIES
   capistrano-rbenv
   coffee-rails (~> 4)
   dalli
-  devise
+  devise (>= 4.6.0)
   dotenv-rails
   jbuilder (~> 2.0)
   jquery-rails
