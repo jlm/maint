@@ -31,6 +31,8 @@ Rails.application.routes.draw do
   end
   get '/timeline/:designation', to: 'projects#show_timeline_by_desig', as: :timeline
 
+  match '/active-ballots', to: 'static_pages#active_ballots', via: 'get'
+
   # The list of meetings.  Each meeting displays the maintenance items which were progressed at it.
   resources :meetings do
     resources :motions

@@ -1,5 +1,15 @@
 class StaticPagesController < ApplicationController
   def home
+    @blt = []
+    Project.all.each do |p|
+      p.events.each do |e|
+        if /(G (ballot|Ballot|recirc|Recirc)|^Sponsor [bB]allot)/ =~ e.name
+          if e.date <= Date.today && e.end_date >= Date.today
+            @blt << { event: e, project: p }
+          end
+        end
+      end
+    end
   end
 
   def help
@@ -11,4 +21,18 @@ class StaticPagesController < ApplicationController
   		@sts[m.code] = [ m.name, Item.joins(:minst).where("minsts.code = ?", m.code).count ]
   	end
   end
+
+  def active_ballots
+    @blt = []
+    Project.all.each do |p|
+      p.events.each do |e|
+        if /(G (ballot|Ballot|recirc|Recirc)|^Sponsor [bB]allot)/ =~ e.name
+          if e.date <= Date.today && e.end_date >= Date.today
+            @blt << { event: e, project: p }
+          end
+        end
+      end
+    end
+  end
+
 end

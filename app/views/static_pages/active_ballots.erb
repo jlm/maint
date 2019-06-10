@@ -1,12 +1,6 @@
-<% provide(:title, "Home") %>
+<% provide(:title, "Active Ballots") %>
 <div class="center jumbotron">
-  <h1><%= ENV["COMMITTEE"] %> Tools</h1>
-
-  <h2>Welcome to the <%= ENV["COMMITTEE"] %> tools portal.</h2>
-
-  <p>Use the links in the bar above to navigate around the site.</p>
-
-  <h2>Active Ballots</h2>
+  <h1><%= ENV["COMMITTEE"] %> Active Ballots</h1>
 
   <table class="table table-hover">
     <thead>
@@ -29,6 +23,5 @@
     <% end %>
     </tbody>
   </table>
-
 </div>
 
