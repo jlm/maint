@@ -1,9 +1,8 @@
 <tr>
-  <td><%= task_group.abbrev %></td>
-  <td><%= task_group.name %></td>
+  <td><%= link_to(task_group.abbrev, task_group) %></td>
+  <td><%= link_to_unless(task_group.page_url.nil?, task_group.name, task_group.page_url)  %></td>
   <td><%= task_group.chair&.full_name %></td>
   <td><%= task_group.vice_chairs.each { |vc| "#{vc.full_name}, " } %></td>
-  <td><%= link_to 'Show', task_group, class: "btn btn-default" %></td>
   <% if can? :update, task_group %>
     <td><%= link_to 'Edit', edit_task_group_path(task_group), class: "btn btn-warning", data: { modal: true } %></td>
   <% end %>

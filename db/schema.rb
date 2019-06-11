@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181108101616) do
+ActiveRecord::Schema.define(version: 20190611120323) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -128,6 +128,7 @@ ActiveRecord::Schema.define(version: 20181108101616) do
     t.string   "award"
     t.string   "files_url"
     t.string   "draft_url"
+    t.string   "page_url"
   end
 
   add_index "projects", ["base_id"], name: "index_projects_on_base_id", using: :btree
@@ -159,6 +160,7 @@ ActiveRecord::Schema.define(version: 20181108101616) do
     t.integer  "person_id"
     t.integer  "chair_id"
     t.string   "abbrev"
+    t.string   "page_url"
   end
 
   add_index "task_groups", ["chair_id"], name: "index_task_groups_on_chair_id", using: :btree

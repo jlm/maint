@@ -27,7 +27,7 @@ json.data do
 
   json.array! @blt do |ballot|
     json.array! [ link_to(ballot[:project].designation, project_url(ballot[:project])),
-                  ballot[:project].short_title,
+                  link_to_unless(ballot[:project].page_url.nil?, ballot[:project].short_title, ballot[:project].page_url),
                   link_to_unless(ballot[:event].url.nil?, ballot[:event].name, ballot[:event].url),
                   ballot[:event].end_date
                 ]

@@ -112,7 +112,7 @@ class ProjectsController < ApplicationController
     def project_params
       params.require(:project).permit(:task_group_id, :designation, :title, :short_title, :project_type, :status,
                                       :last_motion, :draft_no, :next_action, :award, :pool_formed, :mec, :par_url,
-                                      :csd_url, :files_url, :draft_url, :par_approval, :par_expiry, :standard_approval,
+                                      :csd_url, :page_url, :files_url, :draft_url, :par_approval, :par_expiry, :standard_approval,
                                       :published)
     end
 end

@@ -22,7 +22,7 @@
     <% @blt.each do |ballot| %>
       <tr>
         <td><%= link_to(ballot[:project].designation, project_path(ballot[:project])) %></td>
-        <td><%= ballot[:project].short_title %></td>
+        <td><%= link_to_unless(ballot[:project].page_url.nil?, ballot[:project].short_title, ballot[:project].page_url) %></td>
         <td><%= link_to_unless(ballot[:event].url.nil?, ballot[:event].name, ballot[:event].url) %></td>
         <td><%= ballot[:event].end_date %></td>
       </tr>
