@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   load_and_authorize_resource
-  skip_authorize_resource only: :show_timeline
+  skip_authorize_resource only: [:show_timeline, :show_timeline_by_desig]
   before_action :set_project, only: [:show, :edit, :update, :destroy]
   respond_to :html, :json
 
