@@ -5,12 +5,12 @@ json.options do
   json.table_foot false
   json.alternating_row_colors true
   json.row_hover true
-  json.print_name true
+  json.print_name false
   json.print_name_position 'above'
   json.print_description false
   json.print_description_position 'below'
   json.extra_css_classes ''
-  json.use_datatables true
+  json.use_datatables false
   json.datatables_sort true
   json.datatables_filter true
   json.datatables_paginate true
