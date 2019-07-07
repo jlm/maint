@@ -33,6 +33,7 @@ class Project < ActiveRecord::Base
 
   # :Designation, :Title, :ShortTitle, :ProjectType, :Status, :LastMotion, :DraftNo, :NextAction,
   # :PoolFormed, :Mec, :ParUrl, :CsdUrl, :ParApproval, :ParExpiry, :StandardApproval, :Published
+  validates_uniqueness_of :designation
   validates :title, presence: true
   validates :short_title, presence: true
   validates :project_type, inclusion: {in: projecttypes, message: "%{value} is not a valid Project Type"}

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190611120323) do
+ActiveRecord::Schema.define(version: 20190707104623) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -132,6 +132,7 @@ ActiveRecord::Schema.define(version: 20190611120323) do
   end
 
   add_index "projects", ["base_id"], name: "index_projects_on_base_id", using: :btree
+  add_index "projects", ["designation"], name: "index_projects_on_designation", unique: true, using: :btree
   add_index "projects", ["task_group_id"], name: "index_projects_on_task_group_id", using: :btree
 
   create_table "requests", force: :cascade do |t|

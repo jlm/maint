@@ -6,9 +6,9 @@
         <h4 class="modal-title" id="mainModalLabel">
           <%= yield :title if content_for? :title %>&nbsp;
         </h4>
+        <div id="error_explanation" style="display:none;"></div>
       </div>
-
-      <%= yield %>
+        <%= yield %>
     </div>
   </div>
 </div>

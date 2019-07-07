@@ -55,9 +55,19 @@ class ProjectsController < ApplicationController
   # POST /task_groups/1/projects.json
   def create
     @task_group = TaskGroup.find(params[:task_group_id])
-    @project = @task_group.projects.create(project_params)
-    @task_group.save
-    respond_modal_with(@project, location: task_group_url(@task_group))
+    # @task_group.save
+    # respond_modal_with(@project, location: task_group_url(@task_group))
+    respond_modal_with do |format|
+      @project = @task_group.projects.new(project_params)
+      if @project.save
+        @task_group.save
+        format.html { redirect_to @task_group }
+        format.json { render json: @project, status: :created, location: @project }
+      else
+        format.html { render json: @project.errors.full_messages, status: :unprocessable_entity }
+        format.json { render json: @project.errors.full_messages, status: :unprocessable_entity }
+      end
+    end
   end
 
   # PATCH/PUT /task_groups/1/projects/1
