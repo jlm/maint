@@ -3,7 +3,8 @@ class StaticPagesController < ApplicationController
     @blt = []
     Project.all.each do |p|
       p.events.each do |e|
-        if /(G (ballot|Ballot|recirc|Recirc)|^Sponsor [bB]allot)/ =~ e.name
+        # Negative lookahead: https://www.oreilly.com/library/view/regular-expressions-cookbook/9780596802837/ch05s05.html
+        if /(G (ballot|Ballot|recirc|Recirc)|^Sponsor [bB]allot)\b(?![pP]ool)$/ =~ e.name
           if e.date <= Date.today && e.end_date >= Date.today
             @blt << { event: e, project: p }
           end
@@ -26,7 +27,8 @@ class StaticPagesController < ApplicationController
     @blt = []
     Project.all.each do |p|
       p.events.each do |e|
-        if /(G (ballot|Ballot|recirc|Recirc)|^Sponsor [bB]allot)/ =~ e.name
+        # Negative lookahead: https://www.oreilly.com/library/view/regular-expressions-cookbook/9780596802837/ch05s05.html
+        if /(G (ballot|Ballot|recirc|Recirc)|^Sponsor [bB]allot)\b(?![pP]ool)$/ =~ e.name
           if e.date <= Date.today && e.end_date >= Date.today
             @blt << { event: e, project: p }
           end
