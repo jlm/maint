@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 
-gem 'rails', '~> 4.2.11'
+gem 'rails', '~> 4.2.11.1'
 # Rails 4 is basically deprecated. Below are some dependency updates to fix vulnerabilities.  These would not normally
 # be listed in the Gemfile at all.
 gem 'rails-html-sanitizer', '~> 1.0.4'
