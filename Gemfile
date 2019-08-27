@@ -45,7 +45,7 @@ gem 'cancan'
 gem 'rails_admin_import', '~> 2.1'
 
 gem 'simple_form'
-gem 'nokogiri', '~> 1.8.2'
+gem 'nokogiri', '>= 1.10.4'
 gem 'rubyXL', '~> 3.3.29'
 gem 'postmark-rails'
 
