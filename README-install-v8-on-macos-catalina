@@ -1,0 +1,17 @@
+   93  gem install bundler -v 1.17.3
+   94  bundle install
+   95  rbenv rehash
+   96  bundle install
+   97  ls -la
+   98  cat .rbenv-gemsets
+   99  gem uninstall libv8
+  100  gem uninstall therubyracer
+  101  brew rm v8
+XXX  102  brew tap homebrew/dupes
+XXX  103  brew tap homebrew/versions
+  104  brew install v8-315
+XXX  105  gem install libv8 -v 3.16.14.13 -- --with-system-v8
+XXX  106  gem install therubyracer -- --with-v8-dir=/usr/local/opt/v8@3.15
+  107  gem install libv8 -v 3.16.14.19 -- --with-system-v8
+  108  gem install therubyracer -- --with-v8-dir=/usr/local/opt/v8@3.15
+  109  history
