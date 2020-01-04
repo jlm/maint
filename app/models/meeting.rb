@@ -1,4 +1,4 @@
-class Meeting < ActiveRecord::Base
+class Meeting < ApplicationRecord
 	has_many :minutes
 	has_many :items, through: :minutes
 	has_many :motions

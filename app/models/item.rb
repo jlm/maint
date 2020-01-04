@@ -1,4 +1,4 @@
-class Item < ActiveRecord::Base
+class Item < ApplicationRecord
 	has_many :minutes
 	has_many :meetings, through: :minutes
 	belongs_to :minst

@@ -1,4 +1,4 @@
-class TaskGroup < ActiveRecord::Base
+class TaskGroup < ApplicationRecord
   has_many :people
   #delegate :chair, :vice_chairs, :editors, to: :people
   delegate :vice_chairs, to: :people

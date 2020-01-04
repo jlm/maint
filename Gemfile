@@ -1,11 +1,8 @@
 source 'https://rubygems.org'
 
 
-gem 'rails', '~> 4.2.11.1'
-# Rails 4 is basically deprecated. Below are some dependency updates to fix vulnerabilities.  These would not normally
-# be listed in the Gemfile at all.
-gem 'rails-html-sanitizer', '~> 1.0.4'
-gem "rack", ">= 1.6.11"
+gem 'rails', '~> 5.0'
+gem 'bootsnap',  '>= 1.1.0'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -39,14 +36,14 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'dotenv-rails'
 
 # Let's try RailsAdmin
-gem 'rails_admin', '~> 1.3'
+gem 'rails_admin'
 gem 'devise', ">= 4.6.0"
-gem 'cancan'
+gem 'cancancan'
 gem 'rails_admin_import', '~> 2.1'
 
 gem 'simple_form'
 gem 'nokogiri', '>= 1.10.4'
-gem 'rubyXL', '~> 3.3.29'
+gem 'rubyXL', '~> 3.4.0'
 gem 'postmark-rails'
 
 # Use ActiveModel has_secure_password
@@ -59,6 +56,7 @@ group :development, :docker do
 	# Use Puma as the app server
 	gem 'puma'
 	gem 'dalli'
+  gem 'listen'
 end
 
 group :production do

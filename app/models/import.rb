@@ -1,3 +1,3 @@
-class Import < ActiveRecord::Base
+class Import < ApplicationRecord
 	validates :filename, presence: true
 end

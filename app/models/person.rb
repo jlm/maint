@@ -1,4 +1,4 @@
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   belongs_to :task_group
   self.inheritance_column = :role
 

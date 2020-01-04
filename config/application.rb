@@ -10,7 +10,11 @@ module Maint
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
+    # -- all .rb files in that directory are automatically loaded after loading
+    # the framework and any gems in your application.
+
+    # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 5.0
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
@@ -20,9 +24,6 @@ module Maint
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
-    # Do not swallow errors in after_commit/after_rollback callbacks.
-    config.active_record.raise_in_transactional_callbacks = true
-
     # Environment
     ENV["SCRIPT_NAME"] ||= ""
 
@@ -31,6 +32,11 @@ module Maint
     config.action_mailer.postmark_settings = { :api_key => ENV['POSTMARK_API_KEY'] }
 
     config.autoload_paths += %W(#{config.root}/app/models/people)
+
+    # Per-form CSRF Tokens were added in Rails 5
+    config.action_controller.per_form_csrf_tokens = true
+
+    config.middleware.use ActionDispatch::Session::CookieStore, { :key => "_maint_session", :cookie_only => true }
 
     # This is for timeline_json, from https://stackoverflow.com/questions/27379432/prevent-rails-from-encoding-the-ampersands-in-a-url-when-outputting-json
     config.active_support.escape_html_entities_in_json = false

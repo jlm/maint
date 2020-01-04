@@ -1,4 +1,4 @@
-class Project < ActiveRecord::Base
+class Project < ApplicationRecord
   belongs_to :task_group
   has_many :events
   has_many :motions

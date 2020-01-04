@@ -1,3 +1,3 @@
-class Request < ActiveRecord::Base
+class Request < ApplicationRecord
   belongs_to :item
 end

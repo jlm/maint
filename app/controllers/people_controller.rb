@@ -1,6 +1,6 @@
 class PeopleController < ApplicationController
   load_and_authorize_resource
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
   before_action :set_person, only: [:show, :edit, :update, :destroy]
   before_action :set_role
   respond_to :html, :json, :csv
