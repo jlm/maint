@@ -2,6 +2,8 @@ RailsAdmin.config do |config|
 
   config.main_app_name = [ENV["COMMITTEE"], "Maintenance Database"]
 
+  config.parent_controller = 'ApplicationController'
+
   ### Popular gems integration
 
   ## == Devise ==
@@ -11,7 +13,7 @@ RailsAdmin.config do |config|
   config.current_user_method(&:current_user)
 
   ## == Cancan ==
-  config.authorize_with :cancan
+  config.authorize_with :cancancan
 
   ## == PaperTrail ==
   # config.audit_with :paper_trail, 'User', 'PaperTrail::Version' # PaperTrail >= 3.0.0
@@ -33,6 +35,30 @@ RailsAdmin.config do |config|
     ## With an audit adapter, you can add:
     # history_index
     # history_show
+  end
+
+  config.model 'Minute' do
+    parent Item
+  end
+
+  config.model 'Request' do
+    parent Item
+  end
+
+  config.model 'Minst' do
+    parent Minute
+  end
+
+  config.model 'Event' do
+    parent Project
+  end
+
+  config.model 'Project' do
+    parent TaskGroup
+  end
+
+  config.model 'Motion' do
+    parent Meeting
   end
 
   # Options for rails_admin_import:
