@@ -4,8 +4,8 @@ class Project < ApplicationRecord
   has_many :motions
   # self-reference: http://guides.rubyonrails.org/association_basics.html#self-joins
   has_many :subprojects, class_name: "Project", foreign_key: "base_id"
-  belongs_to :base, class_name: "Project"
-  belongs_to :editor
+  belongs_to :base, class_name: "Project", optional: true
+  belongs_to :editor, optional: true
 
   def self.nextactions
     %w(ParDevelopment NesCom EditorsDraft TgBallot WgBallot SponsorBallot SponsorBallotCond RevCom
