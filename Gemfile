@@ -59,6 +59,11 @@ group :development, :docker do
   gem 'listen'
 end
 
+group :development do
+  gem 'debase'
+  gem 'ruby-debug-ide'
+end
+
 group :production do
 	gem 'passenger'
 

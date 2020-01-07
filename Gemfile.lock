@@ -86,6 +86,9 @@ GEM
     concurrent-ruby (1.1.5)
     crass (1.0.5)
     dalli (2.7.10)
+    debase (0.2.4.1)
+      debase-ruby_core_source (>= 0.10.2)
+    debase-ruby_core_source (0.10.9)
     debug_inspector (0.0.3)
     devise (4.7.1)
       bcrypt (~> 3.0)
@@ -238,6 +241,8 @@ GEM
       actionpack (>= 5.0)
       railties (>= 5.0)
     rinku (2.0.6)
+    ruby-debug-ide (0.7.0)
+      rake (>= 0.8.1)
     ruby-graphviz (1.2.4)
     rubyXL (3.4.10)
       nokogiri (>= 1.4.4)
@@ -319,6 +324,7 @@ DEPENDENCIES
   capistrano-rbenv
   coffee-rails (~> 4)
   dalli
+  debase
   devise (>= 4.6.0)
   dotenv-rails
   jbuilder (~> 2.0)
@@ -337,6 +343,7 @@ DEPENDENCIES
   rails_admin
   rails_admin_import (~> 2.1)
   rinku
+  ruby-debug-ide
   rubyXL (~> 3.4.0)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
