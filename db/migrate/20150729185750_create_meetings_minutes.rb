@@ -1,4 +1,4 @@
-class CreateMeetingsMinutes < ActiveRecord::Migration
+class CreateMeetingsMinutes < ActiveRecord::Migration[4.2]
   def change
     create_table :meetings_minutes, :id => false do |t|
     	t.references :meeting

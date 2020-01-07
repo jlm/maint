@@ -1,4 +1,4 @@
-class AddMinstToItems < ActiveRecord::Migration
+class AddMinstToItems < ActiveRecord::Migration[4.2]
   def change
     add_column :items, :minst_id, :integer
   end

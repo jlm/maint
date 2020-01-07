@@ -1,4 +1,4 @@
-class CreateMinsts < ActiveRecord::Migration
+class CreateMinsts < ActiveRecord::Migration[4.2]
   def change
     create_table :minsts do |t|
       t.string :code
