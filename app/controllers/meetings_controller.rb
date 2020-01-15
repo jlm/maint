@@ -20,7 +20,7 @@ class MeetingsController < ApplicationController
   # GET /meetings/1
   # GET /meetings/1.json
   def show
-    @items = @meeting.items.order(sort_column + " " + sort_direction).paginate(page: params[:page], per_page: 10).uniq
+    @items = @meeting.items.order(sort_column + " " + sort_direction).paginate(page: params[:page], per_page: 10).distinct
   end
 
   # GET /meetings/new
