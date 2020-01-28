@@ -30,6 +30,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   test "should get edit" do
+    sign_in
     get :edit, id: @person
     assert_response :success
   end

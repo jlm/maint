@@ -1,39 +1,39 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  TaskGroup_id: 
-  Designation: MyString
-  Title: MyString
-  ShortTitle: MyString
-  ProjectType: MyString
-  Status: MyString
-  LastMotion: MyString
-  DraftNo: MyString
-  NextAction: MyString
-  PoolFormed: 2017-05-13
-  Mec: 2017-05-13
-  ParUrl: MyString
-  CsdUrl: MyString
-  ParApproval: 2017-05-13
-  ParExpiry: 2017-05-13
-  StandardApproval: 2017-05-13
-  Published: 2017-05-13
+  task_group: Building
+  designation: 802.12F
+  title: Building a house
+  short_title: Housebuilding
+  project_type: New Standard
+  status: WgBallot
+  last_motion: WgBallot
+  draft_no: 2.0
+  next_action: SponsorBallot
+  pool_formed: 2017-05-13
+  mec: 2017-05-13
+  par_url: MyString
+  csd_url: MyString
+  par_approval: 2017-05-13
+  par_expiry: 2017-05-13
+  standard_approval: 2017-05-13
+  published: 2017-05-13
 
 two:
-  TaskGroup_id: 
-  Designation: MyString
-  Title: MyString
-  ShortTitle: MyString
-  ProjectType: MyString
-  Status: MyString
-  LastMotion: MyString
-  DraftNo: MyString
-  NextAction: MyString
-  PoolFormed: 2017-05-13
-  Mec: 2017-05-13
-  ParUrl: MyString
-  CsdUrl: MyString
-  ParApproval: 2017-05-13
-  ParExpiry: 2017-05-13
-  StandardApproval: 2017-05-13
-  Published: 2017-05-13
+  task_group: Fishing
+  designation: 802.12Fa
+  title: How to fish at home
+  short_title: Home Fishing
+  project_type: Amendment
+  status: NesCom
+  last_motion: NesCom
+  draft_no:
+  next_action: EditorsDraft
+  pool_formed:
+  mec:
+  par_url:
+  csd_url:
+  par_approval:
+  par_expiry:
+  standard_approval:
+  published:
