@@ -48,3 +48,4 @@ bower.json
 .idea
 .generators
 .rakeTasks
+/spec/examples.txt

@@ -1,11 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  vice_chair_id: 
-  chair_id: 
+  name: Fishing
+  chair_id: 1
 
 two:
-  name: MyString
-  vice_chair_id: 
-  chair_id: 
+  name: Building
+  chair_id: 2
