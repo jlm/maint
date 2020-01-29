@@ -39,8 +39,16 @@ class PeopleController < ApplicationController
   # POST /people
   # POST /people.json
   def create
-    @person = Person.create(person_params)
-    respond_modal_with @person
+    @person = role_class.new(person_params)
+    respond_with do |format|
+      if @person.save
+        format.html { redirect_to people_path, notice: 'Person was successfully created.' }
+        format.json { render json: @person, status: :created, location: @person }
+      else
+        format.html { puts @person.errors.full_messages.to_sentence; render :new, notice: @person.errors.full_messages.to_sentence }
+        format.json { render json: @person.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # PATCH/PUT /people/1

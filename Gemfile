@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 
-gem 'rails', '~> 5.0'
+gem 'rails', '~> 5.1'
 gem 'bootsnap',  '>= 1.1.0'
 
 # Use postgresql as the database for Active Record
@@ -85,6 +85,10 @@ group :development, :test do
   gem 'pry-rescue'
   gem 'pry-stack_explorer'
   gem 'rspec-rails'
+  gem 'capybara'
+  gem 'apparition'
+  gem 'selenium-webdriver'
+  gem 'factory_bot_rails'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   # gem 'web-console', '~> 2.0'

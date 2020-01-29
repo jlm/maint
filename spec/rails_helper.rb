@@ -8,6 +8,12 @@ require File.expand_path('../config/environment', __dir__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
+require 'capybara/rails'
+require 'capybara/apparition'
+Capybara.default_driver = :rack_test
+Capybara.javascript_driver = :apparition
+
+include Warden::Test::Helpers     # for login_as
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -35,6 +41,7 @@ end
 RSpec.configure do |config|
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include ControllerHelpers, type: :controller
+  config.include FactoryBot::Syntax::Methods
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -42,6 +49,8 @@ RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
+  # Note: JLM 200128: use_transactional_fixtures can interfere with testing Devise using Capybara.
+  # See https://github.com/heartcombo/devise/wiki/How-To:-Test-with-Capybara
   config.use_transactional_fixtures = true
 
   # RSpec Rails can automatically mix in different behaviours to your tests

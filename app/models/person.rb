@@ -1,5 +1,5 @@
 class Person < ApplicationRecord
-  belongs_to :task_group
+  belongs_to :task_group, optional: true
   self.inheritance_column = :role
 
   validates :role, presence: true

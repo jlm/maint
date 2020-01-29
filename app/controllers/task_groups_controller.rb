@@ -39,8 +39,9 @@ class TaskGroupsController < ApplicationController
   # POST /task_groups
   # POST /task_groups.json
   def create
-    @task_group = TaskGroup.create(task_group_params)
+    @task_group = TaskGroup.new(task_group_params)
 #    @task_group.chair = @task_group.person
+    flash[:notice] = "Task Group successfully created" if @task_group.save
     respond_modal_with @task_group
   end
 
