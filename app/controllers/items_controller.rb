@@ -61,10 +61,13 @@ class ItemsController < ApplicationController
   # POST /items
   # POST /items.json
   def create
-    @item = Item.create(item_params)
-    # This change doesn't work. Don't know why.
-    #@item.minst = Minst.find_by_code('R')
-    #@item.save
+    @item = Item.new(item_params)
+    @item.minst = Minst.find_by_code('R')
+    unless @item.save
+      @item.errors.full_messages.each do |e|
+        puts 'Error: ' + e
+      end
+    end
     respond_modal_with @item
   end
 
