@@ -4,7 +4,7 @@ class Item < ApplicationRecord
 	belongs_to :minst
 	has_one :request
 	# :number, :date, :standard, :clause, :subject, :draft
-	validates :number, presence: true, format: { with: /\A\d{4}\z/, message: "must be 4 decimal digits" }
+	validates :number, presence: true, format: { with: /\A\d{4}\z/, message: "must be 4 decimal digits" }, uniqueness: true
 	validates :date, presence: true
 	validates :standard, presence: true, length: { in: 3..50 }
 	validates :subject, presence: true, length: { maximum: 200 }, unless: -> { Rails.application.config.importing }
