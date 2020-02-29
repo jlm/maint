@@ -10,8 +10,6 @@ require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'capybara/rails'
 require 'capybara/apparition'
-Capybara.default_driver = :rack_test
-Capybara.javascript_driver = :apparition
 
 include Warden::Test::Helpers     # for login_as
 
@@ -42,6 +40,16 @@ RSpec.configure do |config|
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include ControllerHelpers, type: :controller
   config.include FactoryBot::Syntax::Methods
+
+  Capybara.default_driver = :rack_test
+  Capybara.javascript_driver = :apparition
+=begin
+  Capybara.register_driver :apparition_c do |app|
+    Capybara::Apparition::Driver.new(app, [ browser_options: [ '--auto-open-devtools-for-tabs', '--auto-open-devtools-for-popups'] ] )
+  end
+  Capybara.javascript_driver = :apparition_c
+=end
+  Capybara.default_max_wait_time = 10
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"

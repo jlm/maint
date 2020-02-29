@@ -63,8 +63,10 @@ class ItemsController < ApplicationController
   def create
     @item = Item.new(item_params)
     @item.minst = Minst.find_by_code('R')
-    unless @item.save
-      @item.errors.full_messages.each do |e|
+    if @item.save
+      flash[:success] = 'Item successfully created.'
+    else
+        @item.errors.full_messages.each do |e|
         puts 'Error: ' + e
       end
     end
@@ -74,7 +76,7 @@ class ItemsController < ApplicationController
   # PATCH/PUT /items/1
   # PATCH/PUT /items/1.json
   def update
-    flash[:notice] = "Item successfully updated" if @item.update(item_params)
+    flash[:notice] = "Item successfully updated." if @item.update(item_params)
     respond_modal_with @item
   end
 

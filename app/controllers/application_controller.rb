@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
 	# For APIs, you may want to use :null_session instead.
 	# For APIs, I followed advice here: http://api.rubyonrails.org/classes/ActionController/RequestForgeryProtection.html#M000491
 	# protect_from_forgery with: :exception unless: -> { request.format.json? }
-	protect_from_forgery unless: -> { request.format.json? }
+	protect_from_forgery with: :exception, unless: -> { request.format.json? }
 
 	class SyntaxError < StandardError
 	end

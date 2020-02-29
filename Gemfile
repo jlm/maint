@@ -8,7 +8,7 @@ gem 'bootsnap',  '>= 1.1.0'
 gem 'pg'
 # Use SCSS for stylesheets
 gem 'bootstrap-sass', '~> 3.4.0'
-gem 'sass-rails', '~> 5.0'
+gem 'sassc-rails'
 gem 'will_paginate-bootstrap'
 
 # Be able to convert URLs to links.

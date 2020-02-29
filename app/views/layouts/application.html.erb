@@ -8,16 +8,16 @@
   <%= render 'layouts/shim' %>
 </head>
 <body>
-    <%= render 'layouts/header' %>
-    <main role="main">
-	    <div class="flash-container">
-    		<%= flash_messages %>
-    		<div class="container">
-    			<%= yield %>
-    		</div>
-		</div>
-    	<%#= render('layouts/footer') %>
-	</main>
+  <%= render 'layouts/header' %>
+  <main role="main">
+    <div class="flash-container">
+      <%= flash_messages %>
+    </div>
+    <div class="container">
+      <%= yield %>
+    </div>
+    <%#= render('layouts/footer') %>
+  </main>
   <div id="modal-holder"></div>
 </body>
 </html>
