@@ -42,7 +42,7 @@ gem 'cancancan'
 gem 'rails_admin_import', '~> 2.1'
 
 gem 'simple_form'
-gem 'nokogiri', '>= 1.10.4'
+gem 'nokogiri', '>= 1.10.8'
 gem 'rubyXL', '~> 3.4.0'
 gem 'postmark-rails'
 
@@ -54,7 +54,7 @@ gem 'postmark-rails'
 
 group :development, :docker do
 	# Use Puma as the app server
-	gem 'puma'
+	gem 'puma', '>= 4.3.2'
 	gem 'dalli'
   gem 'listen'
 end
