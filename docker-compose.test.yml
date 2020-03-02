@@ -1,0 +1,5 @@
+# Specify how Docker-hub should automatically test commits and autobuilds.
+# See https://docs.docker.com/docker-hub/builds/automated-testing/
+sut:
+  build: .
+  Command: rails spec
