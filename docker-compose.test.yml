@@ -2,4 +2,4 @@
 # See https://docs.docker.com/docker-hub/builds/automated-testing/
 sut:
   build: .
-  Command: rails spec
+  command: rails spec
