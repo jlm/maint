@@ -22,7 +22,7 @@ These commands are for Ubuntu.  For other setups see https://github.com/sstephen
 Then enter "type rbenv" to verify that rbenv is a function.
 Then install Ruby:
 ```
-    $ sudo apt-get install libreadline-dev libssl-dev zlib1g-dev
+    $ sudo apt-get install build-essential libreadline-dev libssl-dev zlib1g-dev
     $ rbenv install 2.4.2
     $ rbenv global 2.4.2
 ```
@@ -35,7 +35,7 @@ Other prerequisites
 Install the bundler gem and other prerequisites:
 ```
     $ gem install bundler
-    $ sudo apt-get install postgresql postgresql-client libpq-dev git
+    $ sudo apt-get install postgresql postgresql-client libpq-dev git libicu-dev
 ```
 
 Clone the repository and add missing files
@@ -70,6 +70,7 @@ Try it out
 ==========
 At this point you should be able to start the server and connect to it using your web browser at http://localhost:3000/users/sign_in.
 ```
+    $ rbenv rehash
     $ rails server
 ```
 Click on "sign up".  Follow the instructions.  For this to work, your development machine has to have a way to send emails, and the "devise"
