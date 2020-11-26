@@ -139,7 +139,7 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
-    json (1.8.6)
+    json (2.3.1)
     kaminari (1.1.1)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.1.1)
@@ -255,7 +255,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    rdoc (4.3.0)
+    rdoc (6.2.1)
     ref (2.0.0)
     regexp_parser (1.6.0)
     remotipart (1.4.4)
@@ -295,9 +295,8 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    sdoc (0.4.2)
-      json (~> 1.7, >= 1.7.7)
-      rdoc (~> 4.0)
+    sdoc (2.0.2)
+      rdoc (>= 5.0)
     selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
@@ -365,6 +364,7 @@ DEPENDENCIES
   factory_bot_rails
   jbuilder (~> 2.0)
   jquery-rails
+  json (>= 2.3.0)
   listen
   multi_json
   nokogiri (>= 1.10.8)
@@ -383,7 +383,7 @@ DEPENDENCIES
   ruby-debug-ide
   rubyXL (~> 3.4.0)
   sassc-rails
-  sdoc (~> 0.4.0)
+  sdoc
   selenium-webdriver
   simple_form
   spring
