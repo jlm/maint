@@ -10,6 +10,9 @@ gem 'pg'
 # Use SCSS for stylesheets
 gem 'bootstrap-sass', '~> 3.4.0'
 gem 'sassc-rails'
+gem 'simple_form'
+# Use jquery as the JavaScript library
+gem 'jquery-rails'
 gem 'will_paginate-bootstrap'
 
 # Be able to convert URLs to links.
@@ -22,8 +25,6 @@ gem 'coffee-rails', '~> 4'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'therubyracer', platforms: :ruby
 
-# Use jquery as the JavaScript library
-gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 gem 'json', '>= 2.3.0'
@@ -43,7 +44,6 @@ gem 'devise', ">= 4.6.0"
 gem 'cancancan'
 gem 'rails_admin_import', '~> 2.1'
 
-gem 'simple_form'
 gem 'nokogiri', '>= 1.10.8'
 gem 'rubyXL', '~> 3.4.0'
 gem 'postmark-rails'
