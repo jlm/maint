@@ -1,4 +1,4 @@
-FROM ruby:2.6
+FROM ruby:2.7.1
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
@@ -7,6 +7,7 @@ RUN apt-get update \
 
 WORKDIR /usr/src/app
 COPY Gemfile* ./
+RUN bundle update --bundler
 RUN bundle install
 COPY . .
 
