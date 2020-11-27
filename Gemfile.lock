@@ -350,6 +350,7 @@ DEPENDENCIES
   apparition
   bootsnap (>= 1.1.0)
   bootstrap-sass (~> 3.4.0)
+  bundler (~> 2.0)
   cancancan
   capistrano (~> 3.4.0)
   capistrano-passenger

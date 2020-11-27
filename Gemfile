@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 
 gem 'rails', '>= 5.2.4.3'
+gem 'bundler', '~> 2.0'
 gem 'bootsnap',  '>= 1.1.0'
 
 # Use postgresql as the database for Active Record
