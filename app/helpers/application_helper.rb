@@ -16,8 +16,8 @@ module ApplicationHelper
     link_to title, {:sort => column, :direction => direction, :open => params[:open], :closed => params[:closed]}, {:class => css_class}
   end
 
-  def itemlink(num)
-	link_to "#{num}", ENV["REQ_URL"] % num
+  def itemlink(num, id)
+	link_to "#{num}", ENV["REQ_URL"] % id
   end
 
   def show_reqtxt(text)

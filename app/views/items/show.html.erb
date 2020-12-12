@@ -1,6 +1,6 @@
 <% provide(:title, "Item #{@item.number}") %>
 <h1>Minutes for 
-    <%= itemlink(@item.number)%>: <%= @item.subject %></h1>
+    <%= itemlink(@item.number, @item.id)%>: <%= @item.subject %></h1>
 <p id="notice"><%= notice %></p>
 
 <table class="table table-hover">
