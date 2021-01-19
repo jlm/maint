@@ -22,7 +22,7 @@ services:
        DEVISE_PEPPER: another-secret-key
        RAILS_SERVE_STATIC_FILES: "yes"
        COMMITTEE: Whatever
-       REQ_URL: http://www.whatever.org/n/files/public/maint/requests/maint_%s.pdf
+       REQ_URL: https://www.whatever.org/items/%s
        MAIL_SENDER: admin@whatever.org
        SERVER_PRODUCTION: www.whatever.org
        SERVER_STAGING: www.whatever.org
