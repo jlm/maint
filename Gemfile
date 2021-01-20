@@ -15,6 +15,11 @@ gem 'simple_form'
 gem 'jquery-rails'
 gem 'will_paginate-bootstrap'
 
+# Sprockets isn't used by the app but is installed by rails as a dependency.
+# Versions >= 4 cause issues if app/assets/config/manifest.js is not present.
+# This pins sprockets to an earlier version to prevent those errors
+gem 'sprockets', '< 4'
+
 # Be able to convert URLs to links.
 gem 'rinku'
 
