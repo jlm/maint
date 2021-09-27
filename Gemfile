@@ -49,7 +49,7 @@ gem 'devise', ">= 4.6.0"
 gem 'cancancan'
 gem 'rails_admin_import', '~> 2.1'
 
-gem 'nokogiri', '~> 1.11'
+gem 'nokogiri', '~> 1.12'
 gem 'rubyXL', '~> 3.4.0'
 gem 'postmark-rails'
 
