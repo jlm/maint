@@ -257,7 +257,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    rdoc (6.2.1)
+    rdoc (6.3.2)
     ref (2.0.0)
     regexp_parser (1.6.0)
     remotipart (1.4.4)
@@ -297,7 +297,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    sdoc (2.0.2)
+    sdoc (2.2.0)
       rdoc (>= 5.0)
     selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
