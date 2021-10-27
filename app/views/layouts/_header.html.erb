@@ -43,7 +43,9 @@
         </ul>
       </li>
       <li><%= link_to "Meetings", meetings_path %></li>
+      <!--
       <li><%= link_to "Task Groups", task_groups_path %></li>
+      -->
       <% if can? :manage, Import %>
         <li><%= link_to "Import", imports_path %></li>
       <% end %>
