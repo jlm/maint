@@ -24,10 +24,8 @@ jobs:
       # Add or Replace any other security checks here
       - name: Run security checks
         run: |
-          pwd
-          ls -lR
-          bin/bundle-audit --update
-          brakeman -q -w2
+          vendor/bundle/ruby/2.7.0/bin/bundle-audit --update
+          vendor/bundle/ruby/2.7.0/bin/brakeman -q -w2
       # Add or Replace any other Linters here
       - name: Run linters
         run: |
