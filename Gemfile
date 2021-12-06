@@ -12,7 +12,7 @@ gem 'bootstrap-sass', '~> 3.4.0'
 gem 'sassc-rails'
 gem 'simple_form'
 # Use jquery as the JavaScript library
-gem 'jquery-rails'
+gem 'jquery-rails', '>= 4.4.0'
 gem 'will_paginate-bootstrap'
 
 # Sprockets isn't used by the app but is installed by rails as a dependency.
