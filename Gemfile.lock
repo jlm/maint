@@ -62,7 +62,11 @@ GEM
     bootstrap-sass (3.4.1)
       autoprefixer-rails (>= 5.2.1)
       sassc (>= 2.0.0)
+    brakeman (5.1.2)
     builder (3.2.4)
+    bundler-audit (0.9.0.1)
+      bundler (>= 1.2.0, < 3)
+      thor (~> 1.0)
     cancancan (3.0.1)
     capistrano (3.4.1)
       i18n
@@ -354,7 +358,9 @@ DEPENDENCIES
   apparition
   bootsnap (>= 1.1.0)
   bootstrap-sass (~> 3.4.0)
+  brakeman
   bundler (~> 2.0)
+  bundler-audit
   cancancan
   capistrano (~> 3.4.0)
   capistrano-passenger

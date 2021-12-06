@@ -69,6 +69,7 @@ end
 group :development do
   gem 'debase'
   gem 'ruby-debug-ide'
+  gem 'rails-erd'
 end
 
 group :production do
@@ -81,12 +82,7 @@ group :production do
 	gem 'capistrano-passenger'
 end
 
-group :development do
-	gem 'rails-erd'
-end
-
 group :development, :test do
-  
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   #gem 'byebug'
   gem 'pry-rescue'
@@ -96,6 +92,8 @@ group :development, :test do
   gem 'apparition'
   gem 'selenium-webdriver'
   gem 'factory_bot_rails'
+  gem 'bundler-audit'
+  gem 'brakeman'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   # gem 'web-console', '~> 2.0'
