@@ -24,6 +24,8 @@ jobs:
       # Add or Replace any other security checks here
       - name: Run security checks
         run: |
+          pwd
+          ls -lR
           bin/bundle-audit --update
           brakeman -q -w2
       # Add or Replace any other Linters here
