@@ -94,6 +94,7 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'bundler-audit'
   gem 'brakeman'
+  gem 'rubocop'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   # gem 'web-console', '~> 2.0'
