@@ -90,6 +90,6 @@ class PeopleController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def person_params
-    params.require(role.underscore.to_sym).permit(:first_name, :last_name, :email, :affiliation, :role)
+    params.require(role.underscore.to_sym).permit(:first_name, :last_name, :email, :affiliation, :role).delete_if { |param, val| param == "role" && ! (Person.roles.include? val) }
   end
 end
