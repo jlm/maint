@@ -1,0 +1,82 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "2f863007e669783b3085a030f4624b6e73dd6e1e7ccd504853ecd01d98d3a871",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/controllers/items_controller.rb",
+      "line": 11,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "Item.order(((sort_column + \" \") + sort_direction))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ItemsController",
+        "method": "index"
+      },
+      "user_input": "sort_column",
+      "confidence": "Medium",
+      "note": "sort_column and sort_direction are methods that filter out all except valid entries"
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "4518338d45c925b2ff6ddd2e24541a183577224e2f498772c4035965eac6c1e1",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/controllers/meetings_controller.rb",
+      "line": 23,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "Meeting.find(params[:id]).items.order(((sort_column + \" \") + sort_direction))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "MeetingsController",
+        "method": "show"
+      },
+      "user_input": "sort_column",
+      "confidence": "Medium",
+      "note": "sort_column and sort_direction are methods that filter out all except valid entries"
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "f7cf5e73d75b4fa8e38e0a8e32b9b32e089a2c07cd4b160877aaf00c41b97cec",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/controllers/meetings_controller.rb",
+      "line": 10,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "Meeting.order(((sort_column + \" \") + sort_direction))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "MeetingsController",
+        "method": "index"
+      },
+      "user_input": "sort_column",
+      "confidence": "Medium",
+      "note": "sort_column and sort_direction are methods that filter out all except valid entries"
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 113,
+      "fingerprint": "fea6a166c0704d9525d109c17d6ee95eda217dfb1ef56a4d4c91ec9bd384cbf8",
+      "check_name": "JSONEntityEscape",
+      "message": "HTML entities in JSON are not escaped by default",
+      "file": "config/environments/production.rb",
+      "line": 1,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross-site_scripting/",
+      "code": null,
+      "render_path": null,
+      "location": null,
+      "user_input": null,
+      "confidence": "Medium",
+      "note": "config/application.rb sets this as a workaround for Timeline.js.  Yes, it is a problem."
+    }
+  ],
+  "updated": "2021-12-08 21:53:31 +0000",
+  "brakeman_version": "5.1.2"
+}
