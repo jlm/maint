@@ -1,6 +1,10 @@
+# frozen_string_literal: true
+
+# rubocop:disable Style/Documentation
+
 class RequestsController < ApplicationController
   load_and_authorize_resource
-  before_action :set_request, only: [:show, :pre, :edit, :update, :destroy]
+  before_action :set_request, only: %i[show pre edit update destroy]
   respond_to :html, :json
 
   # GET /items/1/requests
@@ -12,7 +16,6 @@ class RequestsController < ApplicationController
   # GET /items/1/requests/20
   def show
     @item = Item.find(params[:item_id])
-    #byebug
     @request = @item.request
     respond_modal_with [@item, @request]
   end
@@ -21,7 +24,6 @@ class RequestsController < ApplicationController
   # This is an additional member route, which renders pre.html.erb, and just shows the same data differently formatted.
   def pre
     @item = Item.find(params[:item_id])
-    #byebug
     @request = @item.request
     respond_modal_with [@item, @request]
   end
@@ -38,7 +40,6 @@ class RequestsController < ApplicationController
     @item = Item.find(params[:item_id])
     @request = @item.request
     respond_modal_with [@item, @request]
-    #byebug
   end
 
   # POST /items/1requests
@@ -55,7 +56,7 @@ class RequestsController < ApplicationController
   # PATCH/PUT /items/1/requests/1.json
   def update
     @item = Item.find(params[:item_id])
-    flash[:notice] = "Request successfully updated" if @request.update(request_params)
+    flash[:notice] = 'Request successfully updated' if @request.update(request_params)
     respond_modal_with(@request, location: item_url(@item))
   end
 
@@ -71,14 +72,15 @@ class RequestsController < ApplicationController
   end
 
   private
-    def set_request
-      @request = Request.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def request_params
-      params.require(:request).permit(:standard, :clauseno, :clausetitle, :name, :email, :company, :rationale, :proposal,
-                                      :impact, :date)
-    end
+  def set_request
+    @request = Request.find(params[:id])
+  end
 
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def request_params
+    params.require(:request).permit(:standard, :clauseno, :clausetitle, :name, :email, :company,
+                                    :rationale, :proposal, :impact, :date)
+  end
 end
+# rubocop:enable all

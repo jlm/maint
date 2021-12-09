@@ -1,6 +1,10 @@
+# frozen_string_literal: true
+
+# rubocop:disable Style/Documentation
+
 class MinutesController < ApplicationController
   load_and_authorize_resource
-  before_action :set_minute, only: [:show, :edit, :update, :destroy]
+  before_action :set_minute, only: %i[show edit update destroy]
   respond_to :html, :json
 
   # GET /items/:item_id/minutes
@@ -14,7 +18,6 @@ class MinutesController < ApplicationController
   # GET /items/:item_id/minutes/1.json
   def show
     @item = Item.find(params[:item_id])
-    #byebug
     @minute = @item.minutes.find(params[:id])
   end
 
@@ -46,7 +49,7 @@ class MinutesController < ApplicationController
   # PATCH/PUT /items/:item_id/minutes/1.json
   def update
     @item = Item.find(params[:item_id])
-    flash[:notice] = "Minute successfully updated" if @minute.update(minute_params) && @item.save
+    flash[:notice] = 'Minute successfully updated' if @minute.update(minute_params) && @item.save
     respond_modal_with(@minute, location: item_url(@item))
   end
 
@@ -62,13 +65,15 @@ class MinutesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_minute
-      @minute = Minute.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def minute_params
-      params.require(:minute).permit(:date, :text, :minst_id, :minute_id, :item_id, :meeting_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_minute
+    @minute = Minute.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def minute_params
+    params.require(:minute).permit(:date, :text, :minst_id, :minute_id, :item_id, :meeting_id)
+  end
 end
+# rubocop:enable all
