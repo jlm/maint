@@ -55,7 +55,9 @@ GEM
     ast (2.4.2)
     autoprefixer-rails (9.7.3)
       execjs
+    backport (1.2.0)
     bcrypt (3.1.13)
+    benchmark (0.2.0)
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
     bootsnap (1.4.5)
@@ -121,6 +123,7 @@ GEM
     dotenv-rails (2.7.5)
       dotenv (= 2.7.5)
       railties (>= 3.2, < 6.1)
+    e2mmap (0.1.0)
     erubi (1.10.0)
     execjs (2.7.0)
     factory_bot (5.1.1)
@@ -137,6 +140,7 @@ GEM
     i18n (1.8.11)
       concurrent-ruby (~> 1.0)
     interception (0.5)
+    jaro_winkler (1.5.4)
     jbuilder (2.9.1)
       activesupport (>= 4.2.0)
     jquery-rails (4.4.0)
@@ -158,6 +162,10 @@ GEM
       activerecord
       kaminari-core (= 1.2.1)
     kaminari-core (1.2.1)
+    kramdown (2.3.1)
+      rexml
+    kramdown-parser-gfm (1.1.0)
+      kramdown (~> 2.0)
     libv8 (3.16.14.19)
     listen (3.2.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -277,6 +285,8 @@ GEM
     responders (3.0.0)
       actionpack (>= 5.0)
       railties (>= 5.0)
+    reverse_markdown (2.1.1)
+      nokogiri
     rexml (3.2.5)
     rinku (2.0.6)
     rspec-core (3.9.1)
@@ -334,6 +344,20 @@ GEM
     simple_xlsx_reader (1.0.4)
       nokogiri
       rubyzip
+    solargraph (0.41.2)
+      backport (~> 1.1)
+      benchmark
+      bundler (>= 1.17.2)
+      e2mmap
+      jaro_winkler (~> 1.5)
+      kramdown (~> 2.3)
+      kramdown-parser-gfm (~> 1.1)
+      parser (~> 3.0)
+      reverse_markdown (>= 1.0.5, < 3)
+      rubocop (>= 0.52)
+      thor (~> 1.0)
+      tilt (~> 2.0)
+      yard (~> 0.9, >= 0.9.24)
     spring (2.1.0)
     sprockets (3.7.2)
       concurrent-ruby (~> 1.0)
@@ -362,6 +386,7 @@ GEM
     unicode-display_width (2.1.0)
     warden (1.2.8)
       rack (>= 2.0.6)
+    webrick (1.7.0)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -371,6 +396,8 @@ GEM
     xpath (3.2.0)
       nokogiri (~> 1.8)
     yajl-ruby (1.4.1)
+    yard (0.9.27)
+      webrick (~> 1.7.0)
 
 PLATFORMS
   ruby
@@ -419,6 +446,7 @@ DEPENDENCIES
   sdoc
   selenium-webdriver
   simple_form
+  solargraph
   spring
   sprockets (< 4)
   therubyracer

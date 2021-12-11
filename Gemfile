@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
-
-gem 'rails', '>= 5.2.4.6'
-gem 'bundler', '~> 2.0'
 gem 'bootsnap',  '>= 1.1.0'
+gem 'bundler', '~> 2.0'
+gem 'rails', '>= 5.2.4.6'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -31,8 +32,8 @@ gem 'coffee-rails', '~> 4'
 gem 'therubyracer', platforms: :ruby
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
 gem 'json', '>= 2.3.0'
+gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 gem 'multi_json'
@@ -44,14 +45,14 @@ gem 'sdoc'
 gem 'dotenv-rails'
 
 # Let's try RailsAdmin
-gem 'rails_admin'
-gem 'devise', ">= 4.6.0"
 gem 'cancancan'
+gem 'devise', ">= 4.6.0"
+gem 'rails_admin'
 gem 'rails_admin_import', '~> 2.1'
 
 gem 'nokogiri', '~> 1.11'
-gem 'rubyXL', '~> 3.4.0'
 gem 'postmark-rails'
+gem 'rubyXL', '~> 3.4.0'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -60,41 +61,42 @@ gem 'postmark-rails'
 # gem 'unicorn'
 
 group :development, :docker do
-	# Use Puma as the app server
-	gem 'puma', '>= 4.3.2'
-	gem 'dalli'
+  gem 'dalli'
   gem 'listen'
+  # Use Puma as the app server
+  gem 'puma', '>= 4.3.2'
 end
 
 group :development do
   gem 'debase'
-  gem 'ruby-debug-ide'
   gem 'rails-erd'
+  gem 'ruby-debug-ide'
 end
 
 group :production do
-	gem 'passenger'
+  gem 'passenger'
 
-	# Use Capistrano for deployment
-	gem 'capistrano', '~> 3.4.0'
-	gem 'capistrano-rails'
-	gem 'capistrano-rbenv'
-	gem 'capistrano-passenger'
+  # Use Capistrano for deployment
+  gem 'capistrano', '~> 3.4.0'
+  gem 'capistrano-passenger'
+  gem 'capistrano-rails'
+  gem 'capistrano-rbenv'
 end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  #gem 'byebug'
+  # gem 'byebug'
+  gem 'apparition'
+  gem 'brakeman'
+  gem 'bundler-audit'
+  gem 'capybara'
+  gem 'factory_bot_rails'
   gem 'pry-rescue'
   gem 'pry-stack_explorer'
   gem 'rspec-rails'
-  gem 'capybara'
-  gem 'apparition'
-  gem 'selenium-webdriver'
-  gem 'factory_bot_rails'
-  gem 'bundler-audit'
-  gem 'brakeman'
   gem 'rubocop', '~> 1.23'
+  gem 'selenium-webdriver'
+  gem 'solargraph'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   # gem 'web-console', '~> 2.0'
