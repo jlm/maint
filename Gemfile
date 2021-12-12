@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 gem 'bootsnap',  '>= 1.1.0'
 gem 'bundler', '~> 2.0'
-gem 'rails', '>= 5.2.4.6'
+gem 'rails', '>= 5.2.4.6', '< 6.0'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -96,7 +96,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rubocop', '~> 1.23'
   gem 'selenium-webdriver'
-  gem 'solargraph'
+  gem 'solargraph', '~> 0.44'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   # gem 'web-console', '~> 2.0'
