@@ -1,14 +1,4 @@
 Rails.application.configure do
-  ENV["SECRET_KEY_BASE"] = "929fd75ab3012484860232342af77e888fee9bbb042735394249355d7888d1ac858c760cfc02c6f2d058df7293944d2ba888860fa6910d72503be72ce920b8c29293590943025884733232342af77e888fee9bbb042735394249355d7888d1ac858c760cfc02c6f2d058df7293944d2ba888860fa6910d72503be72ce920b8c29293590943025884733232342af77e888fee9bbb042735394249355d7888d1ac858c760cfc02c6f2d058df7293944d2ba888860fa6910d72503be72ce920b8c2"
-  ENV["DEVISE_PEPPER"] = "d23a123dd291c853d872cb4443ec1fd75ab3960d7cb23563bc07cb85f8084151e943718db34c8befca712516f1118b3bd09d8872707039901e5d39a8127b01f6d23a123dd291c853d872cb4443ec19430258847332b23563bc07cb85f8084151e943718db34c8befca712516f1118b3bd09d8872707039901e5d39a8127b01f6d23a123dd291c853d872cb4443ec19430258847332b23563bc07cb85f8084151e943718db34c8befca712516f1118b3bd09d8872707039901e5d39a8127b01f6"
-  ENV["RAILS_SERVE_STATIC_FILES"] = "yes"
-  ENV["COMMITTEE"] = "802.4"
-  ENV["REQ_URL"] = "http://www.ieee802.org/n/files/public/maint/requests/maint_%s.pdf"
-  ENV["MAIL_SENDER"] = "admin@802-1.org"
-  ENV["SERVER_PRODUCTION"] = "www.802-1.org"
-  ENV["SERVER_STAGING"] = "www.802-1.org"
-  ENV["SERVER_DEVELOPMENT"] = "www.802-1.org"
-
   # Settings specified here will take precedence over those in config/application.rb.
 
   # The test environment is used exclusively to run your application's
@@ -25,7 +15,7 @@ Rails.application.configure do
   # Configure public file server for tests with Cache-Control for performance.
   config.public_file_server.enabled = true
   config.public_file_server.headers = {
-      'Cache-Control' => "public, max-age=#{1.hour.to_i}"
+    'Cache-Control' => "public, max-age=#{1.hour.to_i}"
   }
 
   # Show full error reports and disable caching.
