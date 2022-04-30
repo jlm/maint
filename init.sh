@@ -2,9 +2,9 @@
 #export SECRET_KEY_BASE=$(bundle exec rake secret)
 #export DEVISE_PEPPER=$(bundle exec rake secret)
 export RAILS_SERVE_STATIC_FILES='true'
-if [ -r /usr/src/app/secrets.sh ]
+if [ -r /myapp/secrets.sh ]
 then
-  . /usr/src/app/secrets.sh
+  . /myapp/secrets.sh
 fi
 
 echo Waiting around
