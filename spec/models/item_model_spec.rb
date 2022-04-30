@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Item do
-  let(:item) { FactoryBot.create(:item)}
+  let(:item) { FactoryBot.create(:item) }
 
   before do
     # Do nothing
