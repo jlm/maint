@@ -91,3 +91,6 @@ production: &production
 
 docker:
   <<: *production
+
+dockertest:
+  <<: *production
