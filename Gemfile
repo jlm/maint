@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-gem 'bootsnap',  '>= 1.1.0'
+gem 'bootsnap', '>= 1.1.0'
 gem 'bundler', '~> 2.0'
 gem 'rails', '>= 5.2.4.6', '< 6.0'
 
@@ -46,7 +46,7 @@ gem 'dotenv-rails'
 
 # Let's try RailsAdmin
 gem 'cancancan'
-gem 'devise', ">= 4.6.0"
+gem 'devise', '>= 4.6.0'
 gem 'rails_admin'
 gem 'rails_admin_import', '~> 2.1'
 
@@ -63,8 +63,6 @@ gem 'rubyXL', '~> 3.4.0'
 group :development, :docker do
   gem 'dalli'
   gem 'listen'
-  # Use Puma as the app server
-  gem 'puma', '>= 4.3.2'
 end
 
 group :development do
@@ -83,7 +81,7 @@ group :production do
   gem 'capistrano-rbenv'
 end
 
-group :development, :test do
+group :development, :test, :dockertest do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   # gem 'byebug'
   gem 'apparition'
@@ -93,6 +91,8 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'pry-rescue'
   gem 'pry-stack_explorer'
+  # Use Puma as the app server
+  gem 'puma', '>= 4.3.2'
   gem 'rspec-rails'
   gem 'rubocop', '~> 1.23'
   gem 'selenium-webdriver'
