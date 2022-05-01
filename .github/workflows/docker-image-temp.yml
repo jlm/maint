@@ -1,6 +1,7 @@
-name: Docker Image CI
+name: Docker Image CI rubocop-211208 branch
 
 on:
+  workflow_dispatch:
   push:
     branches: [ rubocop-211208 ]
   pull_request:
