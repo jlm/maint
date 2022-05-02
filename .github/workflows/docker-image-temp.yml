@@ -1,0 +1,23 @@
+name: Docker Image CI rubocop-211208 branch
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ rubocop-211208 ]
+  pull_request:
+    branches: [ rubocop-211208 ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag temp:$(date +%s)
+      env:
+        SERVER_PRODUCTION: www.nothing.fish
+        HOST_PORT: 80
+  
