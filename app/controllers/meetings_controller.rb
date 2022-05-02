@@ -1,18 +1,24 @@
+# frozen_string_literal: true
+
+# rubocop:disable Style/Documentation
+
 class MeetingsController < ApplicationController
   load_and_authorize_resource
-  before_action :set_meeting, only: [:show, :edit, :update, :destroy]
+  before_action :set_meeting, only: %i[show edit update destroy]
   helper_method :sort_column, :sort_direction
   respond_to :html, :json
 
   # GET /meetings
   # GET /meetings.json
   def index
-    @meetings = Meeting.order(sort_column + " " + sort_direction).paginate(page: params[:page], per_page: 10)
+    @meetings = Meeting.order("#{sort_column} #{sort_direction}").paginate(page: params[:page], per_page: 10)
     # Search for items using OR: http://stackoverflow.com/questions/3639656/activerecord-or-query
+    # rubocop:disable Style/GuardClause
+
     if params[:search].present?
       t = @meetings.arel_table
       @meetings = @meetings.where(
-          t[:date].eq(Date.parse(params[:search]))
+        t[:date].eq(Date.parse(params[:search]))
       )
     end
   end
@@ -20,7 +26,8 @@ class MeetingsController < ApplicationController
   # GET /meetings/1
   # GET /meetings/1.json
   def show
-    @items = @meeting.items.order(sort_column + " " + sort_direction).paginate(page: params[:page], per_page: 10).distinct
+    @items = @meeting.items.order("#{sort_column} #{sort_direction}").paginate(page: params[:page],
+                                                                               per_page: 10).distinct
   end
 
   # GET /meetings/new
@@ -44,7 +51,7 @@ class MeetingsController < ApplicationController
   # PATCH/PUT /meetings/1
   # PATCH/PUT /meetings/1.json
   def update
-    flash[:notice] = "Meeting successfully updated" if @meeting.update(meeting_params)
+    flash[:notice] = 'Meeting successfully updated' if @meeting.update(meeting_params)
     respond_modal_with @meeting, location: meetings_url
   end
 
@@ -59,23 +66,23 @@ class MeetingsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_meeting
-      @meeting = Meeting.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def meeting_params
-      params.require(:meeting).permit(:date, :meetingtype, :location, :minutes_url, :search)
-    end
+  def set_meeting
+    @meeting = Meeting.find(params[:id])
+  end
 
-    # From http://railscasts.com/episodes/228-sortable-table-columns?autoplay=true
-    def sort_column
-      Item.column_names.include?(params[:sort]) ? params[:sort] : "date"
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def meeting_params
+    params.require(:meeting).permit(:date, :meetingtype, :location, :minutes_url, :search)
+  end
 
-    def sort_direction
-      %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
-    end
+  # From http://railscasts.com/episodes/228-sortable-table-columns?autoplay=true
+  def sort_column
+    Item.column_names.include?(params[:sort]) ? params[:sort] : 'date'
+  end
 
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : 'desc'
+  end
 end
+# rubocop:enable all

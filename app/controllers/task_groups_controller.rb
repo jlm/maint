@@ -1,6 +1,10 @@
+# frozen_string_literal: true
+
+# rubocop:disable Style/Documentation
+
 class TaskGroupsController < ApplicationController
   load_and_authorize_resource
-  before_action :set_task_group, only: [:show, :edit, :update, :destroy]
+  before_action :set_task_group, only: %i[show edit update destroy]
   respond_to :html, :json
 
   # GET /task_groups
@@ -8,11 +12,13 @@ class TaskGroupsController < ApplicationController
   def index
     @task_groups = TaskGroup.all.paginate(page: params[:page], per_page: 10)
     # Search for items using OR: http://stackoverflow.com/questions/3639656/activerecord-or-query
+    # rubocop:disable Style/GuardClause
+
     if params[:search].present?
       t = @task_groups.arel_table
-      match_string = '%' + params[:search] + '%'
+      match_string = "%#{params[:search]}%"
       @task_groups = @task_groups.where(
-          t[:name].matches(match_string)
+        t[:name].matches(match_string)
       )
     end
   end
@@ -26,8 +32,6 @@ class TaskGroupsController < ApplicationController
   # GET /task_groups/new
   def new
     @task_group = TaskGroup.new
-    #@chair_id = nil
-    #binding.pry
     respond_modal_with @task_group
   end
 
@@ -40,15 +44,14 @@ class TaskGroupsController < ApplicationController
   # POST /task_groups.json
   def create
     @task_group = TaskGroup.new(task_group_params)
-#    @task_group.chair = @task_group.person
-    flash[:notice] = "Task Group successfully created" if @task_group.save
+    flash[:notice] = 'Task Group successfully created' if @task_group.save
     respond_modal_with @task_group
   end
 
   # PATCH/PUT /task_groups/1
   # PATCH/PUT /task_groups/1.json
   def update
-    flash[:notice] = "Task Group successfully updated" if @task_group.update(task_group_params)
+    flash[:notice] = 'Task Group successfully updated' if @task_group.update(task_group_params)
     respond_modal_with @task_group
   end
 
@@ -63,13 +66,14 @@ class TaskGroupsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_task_group
-      @task_group = TaskGroup.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def task_group_params
-      params.require(:task_group).permit(:name, :abbrev, :vice_chair_id, :person_id, :chair_id, :page_url, :search)
-    end
+  def set_task_group
+    @task_group = TaskGroup.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def task_group_params
+    params.require(:task_group).permit(:name, :abbrev, :vice_chair_id, :person_id, :chair_id, :page_url, :search)
+  end
 end
+# rubocop:enable all

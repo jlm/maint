@@ -6,6 +6,6 @@ FactoryBot.define do
     standard { "802.4b" }
     clause { 2 }
     draft { "" }
-    minst { Minst.find_by_code('R') }
+    minst
   end
 end

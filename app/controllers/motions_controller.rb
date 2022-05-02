@@ -1,6 +1,10 @@
+# frozen_string_literal: true
+
+# rubocop:disable Style/Documentation
+
 class MotionsController < ApplicationController
   load_and_authorize_resource
-  before_action :set_motion, only: [:show, :edit, :update, :destroy]
+  before_action :set_motion, only: %i[show edit update destroy]
   respond_to :html, :json
 
   # GET /meetings/:meeting_id/motions
@@ -44,7 +48,7 @@ class MotionsController < ApplicationController
   # PATCH/PUT /meetings/:meeting_id/motions/1.json
   def update
     @meeting = Meeting.find(params[:meeting_id])
-    flash[:notice] = "Motion successfully updated" if @motion.update(motion_params) && @meeting.save
+    flash[:notice] = 'Motion successfully updated' if @motion.update(motion_params) && @meeting.save
     respond_modal_with(@motion, location: meeting_url(@meeting))
   end
 
@@ -60,13 +64,15 @@ class MotionsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_motion
-      @motion = Motion.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def motion_params
-      params.require(:motion).permit(:meeting_id, :project_id, :motion_text, :number)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_motion
+    @motion = Motion.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def motion_params
+    params.require(:motion).permit(:meeting_id, :project_id, :motion_text, :number)
+  end
 end
+# rubocop:enable all
