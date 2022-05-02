@@ -52,6 +52,14 @@ jobs:
 
     - name: Set up database schema
       run: bin/rails db:setup
+      env:
+        SERVER_PRODUCTION: www.nothing.fish
+        SERVER_STAGING: www.nothing.fish
+        SERVER_DEVELOPMENT: www.nothing.fish
+        HOST_PORT: 80
+        COMMITTEE: 12.5
+        REQ_URL: https://www.nothing.fish/items/%s
+        MAIL_SENDER: admin@nothingfish.org
 
     - name: Run tests
       run: bundle exec rake
