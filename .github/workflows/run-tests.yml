@@ -52,8 +52,9 @@ jobs:
       run: bundle exec rake
       env:
         SERVER_PRODUCTION: www.nothing.fish
+        SERVER_STAGING: www.nothing.fish
+        SERVER_DEVELOPMENT: www.nothing.fish
         HOST_PORT: 80
-        #POSTGRES_USER: rails
-        #POSTGRES_PASSWORD: password
-        #DB_SERVICE_HOST: localhost
-
+        COMMITTEE: 12.5
+        REQ_URL: https://www.nothing.fish/items/%s
+        MAIL_SENDER: admin@nothingfish.org
