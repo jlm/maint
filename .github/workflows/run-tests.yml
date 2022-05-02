@@ -9,7 +9,7 @@ name: Run tests with rake
 
 on:
   push:
-    branches: [ rubocop-211208 ]
+    branches: [ rubocop-211208, master ]
   pull_request:
     branches: [ master ]
 
@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby-version: ['.ruby-version', '2.7', '3.0' ]
+        ruby-version: ['.ruby-version', '2.7' ]
     services:
       postgres:
         image: postgres:13
@@ -44,11 +44,6 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-    - name: Setup custom host entry for www.nothing.fish
-      run: echo "127.0.0.1 www.nothing.fish" | sudo tee -a /etc/hosts
-
-    - name: Debug hosts
-      run: cat /etc/hosts
 
     - name: Set up database schema
       run: bin/rails db:setup
