@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby-version: ['.ruby-version', '2.7']
+        ruby-version: ['.ruby-version', '2.7', '3.0' ]
     services:
       postgres:
         image: postgres:13
