@@ -1,3 +1,5 @@
+[![Tests](https://github.com/jlm/maint/actions/workflows/run-tests.yml/badge.svg)](https://github.com/jlm/maint/actions/workflows/run-tests.yml)
+
 Introduction
 ============
 
@@ -26,7 +28,7 @@ Then install Ruby:
     $ rbenv install 2.4.2
     $ rbenv global 2.4.2
 ```
-Perviously, with Ubuntu 14.04 with Ruby 2.2.2 , due to problems with Readline, I found I had to use this incantation to install Ruby:
+Previously, with Ubuntu 14.04 with Ruby 2.2.2 , due to problems with Readline, I found I had to use this incantation to install Ruby:
 ```
     $ RUBY_CONFIGURE_OPTS=--with-readline-dir="/usr/include/readline" rbenv install 2.2.2
 ```
@@ -196,7 +198,7 @@ Enhancing the Docker Compose method to add HTTPS and a proxy server
 ===================================================================
 Jason Wilder has written a very fine [reverse proxy for Docker containers](http://jasonwilder.com/blog/2014/03/25/automated-nginx-reverse-proxy-for-docker/)
 based on Nginx.  Yves Blusseau has written an excellent [companion utility](https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion)
-which automatically generates, applies (and renews) [Let's Encrypt](www.letsencrypt.org) certificates to each virtual
+which automatically generates, applies (and renews) [Let's Encrypt](https://www.letsencrypt.org) certificates to each virtual
 host created by the above.  No account or additional setup is needed.
 
 With a few simple steps, this allows multiple Dockerized web applications to run on the same VM, each as different
