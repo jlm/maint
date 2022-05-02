@@ -27,6 +27,7 @@ jobs:
           bundle exec vendor/bundle/ruby/2.7.0/bin/bundle-audit --update
           bundle exec vendor/bundle/ruby/2.7.0/bin/brakeman -q -w2
       # Add or Replace any other Linters here
-      - name: Run linters
-        run: |
-          bundle exec vendor/bundle/ruby/2.7.0/bin/rubocop --parallel
+      # Running Rubocop is disabled at present, as only part of the code has been rubocopped.
+      # - name: Run linters
+        # run: |
+          # bundle exec vendor/bundle/ruby/2.7.0/bin/rubocop --parallel
