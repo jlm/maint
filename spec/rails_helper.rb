@@ -41,8 +41,10 @@ RSpec.configure do |config|
   config.include ControllerHelpers, type: :controller
   config.include FactoryBot::Syntax::Methods
 
-  Capybara.default_driver = :rack_test
-  Capybara.javascript_driver = :apparition
+  # Capybara.default_driver = :rack_test
+  Capybara.default_driver = :selenium_chrome_headless
+  # Capybara.javascript_driver = :apparition
+  Capybara.javascript_driver = :selenium_chrome_headless
 =begin
   Capybara.register_driver :apparition_c do |app|
     Capybara::Apparition::Driver.new(app, [ browser_options: [ '--auto-open-devtools-for-tabs', '--auto-open-devtools-for-popups'] ] )
