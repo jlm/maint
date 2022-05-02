@@ -23,19 +23,37 @@ jobs:
     strategy:
       matrix:
         ruby-version: ['2.6', '2.7', '3.0']
+    services:
+      postgres:
+        image: postgres:13
+        ports:
+          - "5432:5432"
+        env:
+          POSTGRES_DB: rails_test
+          POSTGRES_USER: rails
+          POSTGRES_PASSWORD: password
+    env:
+      RAILS_ENV: test
+      DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
 
     steps:
     - uses: actions/checkout@v3
     - name: Set up Ruby
-    # To automatically get bug fixes and new Ruby versions for ruby/setup-ruby,
-    # change this to (see https://github.com/ruby/setup-ruby#versioning):
+    # It uses v1 as a code for "The latest version with automatic fixes etc.", referred to as a floating V1
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+
+    - name: Set up database schema
+      run: bin/rails db:schema:load
+
     - name: Run tests
       run: bundle exec rake
       env:
         SERVER_PRODUCTION: www.nothing.fish
         HOST_PORT: 80
+        #POSTGRES_USER: rails
+        #POSTGRES_PASSWORD: password
+        #DB_SERVICE_HOST: localhost
 
