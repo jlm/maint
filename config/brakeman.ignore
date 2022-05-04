@@ -3,33 +3,13 @@
     {
       "warning_type": "SQL Injection",
       "warning_code": 0,
-      "fingerprint": "2f863007e669783b3085a030f4624b6e73dd6e1e7ccd504853ecd01d98d3a871",
-      "check_name": "SQL",
-      "message": "Possible SQL injection",
-      "file": "app/controllers/items_controller.rb",
-      "line": 11,
-      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "Item.order(((sort_column + \" \") + sort_direction))",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "ItemsController",
-        "method": "index"
-      },
-      "user_input": "sort_column",
-      "confidence": "Medium",
-      "note": "sort_column and sort_direction are methods that filter out all except valid entries"
-    },
-    {
-      "warning_type": "SQL Injection",
-      "warning_code": 0,
-      "fingerprint": "4518338d45c925b2ff6ddd2e24541a183577224e2f498772c4035965eac6c1e1",
+      "fingerprint": "37eb7a81af629ec6e9557cca79f8703daf1e6ba8ac16f7d36f036603003b558c",
       "check_name": "SQL",
       "message": "Possible SQL injection",
       "file": "app/controllers/meetings_controller.rb",
-      "line": 23,
+      "line": 29,
       "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "Meeting.find(params[:id]).items.order(((sort_column + \" \") + sort_direction))",
+      "code": "Meeting.find(params[:id]).items.order(\"#{sort_column} #{sort_direction}\")",
       "render_path": null,
       "location": {
         "type": "method",
@@ -43,17 +23,37 @@
     {
       "warning_type": "SQL Injection",
       "warning_code": 0,
-      "fingerprint": "f7cf5e73d75b4fa8e38e0a8e32b9b32e089a2c07cd4b160877aaf00c41b97cec",
+      "fingerprint": "c31095b19f57d46a210462546cf6ddce326bd05c07a91c922bb4d6238a7a76aa",
       "check_name": "SQL",
       "message": "Possible SQL injection",
       "file": "app/controllers/meetings_controller.rb",
-      "line": 10,
+      "line": 14,
       "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "Meeting.order(((sort_column + \" \") + sort_direction))",
+      "code": "Meeting.order(\"#{sort_column} #{sort_direction}\")",
       "render_path": null,
       "location": {
         "type": "method",
         "class": "MeetingsController",
+        "method": "index"
+      },
+      "user_input": "sort_column",
+      "confidence": "Medium",
+      "note": "sort_column and sort_direction are methods that filter out all except valid entries"
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "ec8a384c5375921188d289ce3c2319126c0fa568d240780568b00c20e4d27cb4",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/controllers/items_controller.rb",
+      "line": 16,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "Item.order(\"#{sort_column} #{sort_direction}\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ItemsController",
         "method": "index"
       },
       "user_input": "sort_column",
@@ -77,6 +77,6 @@
       "note": "config/application.rb sets this as a workaround for Timeline.js.  Yes, it is a problem."
     }
   ],
-  "updated": "2021-12-08 21:53:31 +0000",
+  "updated": "2022-05-04 17:11:20 +0100",
   "brakeman_version": "5.1.2"
 }
