@@ -1,33 +1,40 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-# This workflow will download a prebuilt Ruby version, install dependencies, and  run linters
+# This reusable workflow will download a prebuilt Ruby version, install dependencies, and  run linters
 name: Rails - Install dependencies and run linters
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  workflow_call:
+    inputs:
+      skip-deps-audit:
+        required: false
+        type: boolean
+        description: "Don't audit dependencies with bundle-audit"
+      skip-app-audit:
+        required: false
+        type: boolean
+        description: "Don't audit app code with brakeman"
+      skip-lint:
+        required: false
+        type: boolean
+        description: "Don't lint app code with rubocop"
+
 jobs:
   run-lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Ruby and install gems
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
       # Add or Replace any other security checks here
-      - name: Run security checks
-        run: |
-          bundle exec vendor/bundle/ruby/2.7.0/bin/bundle-audit --update
-          bundle exec vendor/bundle/ruby/2.7.0/bin/brakeman -q -w2
-      # Add or Replace any other Linters here
-      # Running Rubocop is disabled at present, as only part of the code has been rubocopped.
-      # - name: Run linters
-        # run: |
-          # bundle exec vendor/bundle/ruby/2.7.0/bin/rubocop --parallel
+      - name: Audit dependencies for security
+        if: inputs.skip-deps-audit == false
+        run: bin/bundle-audit --update
+      - name: Audit app code for security
+        if: inputs.skip-app-audit == false
+        run: bin/brakeman -q -w2
+      - name: Run linters
+        if: inputs.skip-lint == false
+        run: bin/rubocop --parallel
