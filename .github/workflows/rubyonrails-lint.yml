@@ -31,10 +31,10 @@ jobs:
       # Add or Replace any other security checks here
       - name: Audit dependencies for security
         if: inputs.skip-deps-audit == false
-        run: bin/bundle-audit --update
+        run: bundle exec bundle-audit --update
       - name: Audit app code for security
         if: inputs.skip-app-audit == false
-        run: bin/brakeman -q -w2
+        run: bundle exec brakeman -q -w2
       - name: Run linters
         if: inputs.skip-lint == false
-        run: bin/rubocop --parallel
+        run: bundle exec rubocop --parallel
