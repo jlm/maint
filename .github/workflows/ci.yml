@@ -44,4 +44,4 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            RUBY_VERSION={{ steps.ruby.outputs.ruby-version }}
+            RUBY_VERSION=${{ steps.ruby.outputs.ruby-version }}
