@@ -1,4 +1,5 @@
-FROM ruby:2.7.4
+ARG RUBY_VERSION
+FROM ruby:${RUBY_VERSION:-2.7.4}
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
