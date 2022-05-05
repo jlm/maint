@@ -16,7 +16,12 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+      -
+        name: Audit
+        uses: ./.github/workflows/rubyonrails-lint
+        with:
+          skip-lint: true
       -
         name: Docker meta
         id: meta
@@ -33,7 +38,6 @@ jobs:
       -
         name: Get Ruby version
         id: ruby
-        # need to get the ruby version out of the .ruby-version file here I think.
         run: echo "::set-output name=ruby-version::`cat .ruby-version`"
       -
         name: Build and push
