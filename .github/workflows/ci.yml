@@ -31,6 +31,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
+        name: Get Ruby version
+        id: ruby
+        # need to get the ruby version out of the .ruby-version file here I think.
+        run: echo "::set-output name=ruby-version::`cat .ruby-version`"
+      -
         name: Build and push
         uses: docker/build-push-action@v2
         with:
@@ -38,3 +43,5 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            RUBY_VERSION={{ steps.ruby.outputs.ruby-version }}

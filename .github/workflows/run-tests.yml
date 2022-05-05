@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         ruby-version: ['.ruby-version' ]
-        postgres-version: [ '13', '12' ]
+        postgres-version: [ '13', 'latest' ]
     services:
       postgres:
         image: postgres:${{ matrix.postgres-version }}
