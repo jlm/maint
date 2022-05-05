@@ -1,9 +1,10 @@
-# This workflow will download a prebuilt Ruby version, install dependencies and run tests with Rake
-# For more information see: https://github.com/marketplace/actions/setup-ruby-jruby-and-truffleruby
+# This reusable workflow will download a prebuilt Ruby version, install dependencies and run tests with Rake
+# Matrix testing with different Ruby versions and Postgres versions is supported.
 
 name: Run tests with rake
 
 on:
+  workflow_call:
   push:
     branches: [ master ]
   pull_request:
