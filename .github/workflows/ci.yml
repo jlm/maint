@@ -5,7 +5,7 @@ on:
     branches:
       - 'master'
     tags:
-      - 't*'
+      - '[tv]*'
   pull_request:
     branches:
       - 'master'
@@ -15,11 +15,17 @@ jobs:
     name: Audit
     uses: ./.github/workflows/rubyonrails-lint.yml
     with:
+      # Rubocop is disabled currently, until the rest of the code has been rubocopped.
       skip-lint: true
 
+  tests:
+    name: Run tests
+    uses: ./.github/workflows/run-tests.yml
+
   docker:
+    name: 'Extract metadata, Build and push to Docker Hub'
     runs-on: ubuntu-latest
-    needs: audit
+    needs: [ audit, tests ]
     steps:
       -
         name: Checkout

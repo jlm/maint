@@ -20,6 +20,7 @@ on:
 jobs:
   run-lint:
     runs-on: ubuntu-latest
+    name: Audit and run linters
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
