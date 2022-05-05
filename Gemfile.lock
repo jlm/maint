@@ -166,7 +166,6 @@ GEM
       rexml
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
-    libv8 (3.16.14.19)
     listen (3.7.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -275,7 +274,6 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rdoc (6.3.3)
-    ref (2.0.0)
     regexp_parser (2.2.0)
     remotipart (1.4.4)
     responders (3.0.1)
@@ -369,9 +367,6 @@ GEM
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     temple (0.8.2)
-    therubyracer (0.12.3)
-      libv8 (~> 3.16.14.15)
-      ref
     thor (1.2.1)
     thread_safe (0.3.6)
     tilt (2.0.10)
@@ -448,7 +443,6 @@ DEPENDENCIES
   solargraph (~> 0.44)
   spring
   sprockets (< 4)
-  therubyracer
   turbolinks
   uglifier (~> 4)
   will_paginate-bootstrap
