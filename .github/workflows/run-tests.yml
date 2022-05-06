@@ -36,6 +36,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
     - name: Set up Ruby
     # It uses v1 as a code for "The latest version with automatic fixes etc.", referred to as a floating V1
       uses: ruby/setup-ruby@v1

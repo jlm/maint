@@ -31,7 +31,8 @@ gem 'coffee-rails', '~> 4'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'execjs'
 # gem 'therubyracer', platforms: :ruby
-gem 'mini_racer'
+# gem 'mini_racer'    # mini_racer 0.6.2 won't compile on the GitHub Runner at the moment because of a bug.
+# Instead of specifying an execution environment for execjs, just install node.js externally in the deployment.
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'json', '>= 2.3.0'
