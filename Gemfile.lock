@@ -414,6 +414,7 @@ DEPENDENCIES
   debase
   devise (>= 4.6.0)
   dotenv-rails
+  execjs
   factory_bot_rails
   jbuilder (~> 2.0)
   jquery-rails (>= 4.4.0)
