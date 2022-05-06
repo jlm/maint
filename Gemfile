@@ -31,6 +31,7 @@ gem 'coffee-rails', '~> 4'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'execjs'
 # gem 'therubyracer', platforms: :ruby
+gem 'mini_racer'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'json', '>= 2.3.0'
