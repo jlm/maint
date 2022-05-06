@@ -1,10 +1,12 @@
 ARG RUBY_VERSION
 FROM ruby:${RUBY_VERSION:-2.7.4}
 
-RUN apt-get update \
-	&& apt-get install -y --no-install-recommends \
+RUN apt update \
+	&& apt install -y --no-install-recommends \
 		postgresql-client \
-	&& rm -rf /var/lib/apt/lists/*
+    && curl -fsSL https://deb.nodesource.com/setup_18.x | bash \
+    && apt install -y nodejs \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /myapp
 COPY Gemfile* ./
