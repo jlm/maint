@@ -29,6 +29,7 @@ gem 'uglifier', '~> 4'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4'
 # See https://github.com/rails/execjs#readme for more supported runtimes
+gem 'execjs'
 # gem 'therubyracer', platforms: :ruby
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
