@@ -16,6 +16,8 @@ RSpec.describe 'People system', type: :system do
   end
 
   it 'lets me create a Chair' do
+    initial_user_count = Person.count
+
     visit "/people/new"
     fill_in 'First name', with: 'Joe'
     fill_in 'Last name', with: 'Chairperson'
@@ -24,7 +26,6 @@ RSpec.describe 'People system', type: :system do
     select 'Chair', from: 'Role'
     click_on 'Create Person'
 
-    expect(Person.count).to eql(1)
+    expect(Person.count).to eql(initial_user_count + 1)
   end
-
- end
+end
