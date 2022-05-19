@@ -40,6 +40,7 @@ RSpec.configure do |config|
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include ControllerHelpers, type: :controller
   config.include FactoryBot::Syntax::Methods
+  config.include ApiHelpers
 
   # Capybara.default_driver = :rack_test
   Capybara.default_driver = :selenium_chrome_headless
