@@ -30,7 +30,7 @@ gem 'uglifier', '~> 4'
 gem 'coffee-rails', '~> 4'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'execjs'
-# gem 'therubyracer', platforms: :ruby
+# gem 'therubyracer', platforms: :ruby     # This gem is no longer supported.
 # gem 'mini_racer'    # mini_racer 0.6.2 won't compile on the GitHub Runner at the moment because of a bug.
 # Instead of specifying an execution environment for execjs, just install node.js externally in the deployment.
 
@@ -85,13 +85,12 @@ group :production do
 end
 
 group :development, :test, :dockertest do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  # gem 'byebug'
   gem 'apparition'
   gem 'brakeman'
   gem 'bundler-audit'
   gem 'capybara'
   gem 'factory_bot_rails'
+  gem 'faker'
   gem 'pry-rescue'
   gem 'pry-stack_explorer'
   # Use Puma as the app server
@@ -100,10 +99,6 @@ group :development, :test, :dockertest do
   gem 'rubocop', '~> 1.23'
   gem 'selenium-webdriver'
   gem 'solargraph', '~> 0.44'
-
-  # Access an IRB console on exception pages or by using <%= console %> in views
-  # gem 'web-console', '~> 2.0'
-
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 end

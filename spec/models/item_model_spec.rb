@@ -31,7 +31,7 @@ RSpec.describe Item do
 
     it 'prevents items with duplicate item numbers from being created' do
       item.save
-      dupitem = FactoryBot.build(:item, subject: "Duplicate numbered item")
+      dupitem = FactoryBot.build(:item, number: item.number)
       dupitem.save
       dupitem.errors.full_messages.each { |e| puts e.inspect }
       puts "There are now #{Item.count} items in the database."
