@@ -1,7 +1,7 @@
 # This reusable workflow will download a prebuilt Ruby version, install dependencies and run tests with Rake
 # Matrix testing with different Ruby versions and Postgres versions is supported.
 
-name: Run tests with rake
+name: Tests
 
 on:
   workflow_call:
