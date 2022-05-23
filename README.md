@@ -223,19 +223,3 @@ in the previous section, run these commands:
       $ sudo docker run -d -p 80:80 -p 443:443 --name nginx-proxy --net nginx-proxy --restart=always -v /web/nginx-proxy:/etc/nginx/certs:ro  -v /etc/nginx/vhost.d     -v /usr/share/nginx/html -v /var/run/docker.sock:/tmp/docker.sock:ro  --label com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy jwilder/nginx-proxy
       $ sudo docker run -d --name nginx-letsencrypt --net nginx-proxy --restart=always -v /web/nginx-proxy:/etc/nginx/certs:rw -v /var/run/docker.sock:/var/run/docker.sock:ro --volumes-from nginx-proxy jrcs/letsencrypt-nginx-proxy-companion
 ```
-
-Deploying with Docker Cloud (deprecated)
-===========================
-[Docker Cloud](https://cloud.docker.com) was a cloud-based Docker stack manager.  It is gone, now. Sadface.
-
-
-Another way of deploying the application is using Docker, managed with a service such as Docker Cloud.
-Once debugged, this provides a very convenient deployment environment.  My setup for this involved [providing my own node](https://docs.docker.com/docker-cloud/infrastructure/byoh/) to the Docker Cloud service.
-```
-    $ docker-compose build
-    $ docker tag maint_web:latest yourusername/maint_web:latest
-    $ docker push yourusername/maint_web:latest
-```
-
-Then navigate to the "Stacks" tab in Docker Cloud, and select "Create Stack" and upload `example-docker-cloud-stack.yml`.
-Edit as appropriate.  Then "Deploy" it!
