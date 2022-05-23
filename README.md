@@ -26,8 +26,8 @@ Then enter "type rbenv" to verify that rbenv is a function.
 Then install Ruby:
 ```
     $ sudo apt-get install build-essential libreadline-dev libssl-dev zlib1g-dev
-    $ rbenv install 2.4.2
-    $ rbenv global 2.4.2
+    $ rbenv install 2.7.6
+    $ rbenv global 2.7.6
 ```
 Previously, with Ubuntu 14.04 with Ruby 2.2.2 , due to problems with Readline, I found I had to use this incantation to install Ruby:
 ```
@@ -97,8 +97,8 @@ logging in, stop the server and do the following, substituting the newly created
 ```
 Now, when logging in to the app or refreshing the page, you should see Administrator options in the top header.
 
-The first real step is to import an existing maintenance database spreadsheet using the Import menu.  Then use the Items menu to look at the
-maintenance database entries.
+When migrating from the Excel-based maintenance process, the first real step is to import an existing maintenance
+database spreadsheet using the Import menu.  Then use the Items menu to look at the maintenance database entries.
 
 Preparing the Import file
 =========================
@@ -108,47 +108,6 @@ Master and Minutes tabs (which should no longer present a problem) and illegal c
 save a copy of the spreadsheet in Excel and then do File->Info->Inspect Workbook->Document Properties and Personal Information (just
 that category).  Click "Remove", then save the copy and import it into the app.
 
-
-Deploying with Capistrano
-=========================
-
-This Ruby on Rails app is set up to deploy to a server using Capistrano.  For instructions and background, see https://gorails.com/deploy/ubuntu/14.04, 
-[also described here](https://www.digitalocean.com/community/tutorials/how-to-automate-ruby-on-rails-application-deployments-using-capistrano), and http://capistranorb.com/.
-My setup is based on an Ubuntu virtual machine running Nginx and Passenger.  (However, it may be better to use Docker, as described below.)
-
-Create `.env`, `config/database.yml`, `config/secrets.yml` based on the examples in the repository named "`example-`..."
-
-```
-	$ cap production deploy
-```
-This step is quite messy, as /var/www/maint has to exist on the deployment server and it doesn't and needs creating with the right permissions (it tries to
-create it but the /var/www directory which it doesn't own).  Then, some special files don't exist and have to be created:
-* `~deploy/maint-secrets/database.yml`
-* `~deploy/maint-secrets/secrets.yml`
-
-These have to be linked to the right places in the deployment structure:
-```
-	$ ln -s /home/deploy/maint-secrets/database.yml /var/www/maint/shared/config/
-	$ ln -s /home/deploy/maint-secrets/secrets.yml /var/www/maint/shared/config/
-```
-
-```
-	$ createdb maint_production
-```
-Apparently that step isn't automated.
-
-The nginx configuration file is not altered automatically to add the new application, so you have to manually edit `/opt/nginx/conf/nginx.conf` to add a section for the new app,
-in the existing `server` section after the `root` line.
-Mine looked like this:
-```
-        location ~ ^/maint(/.|$) {
-                alias /var/www/maint/current/public$1;
-                passenger_base_uri /maint;
-                passenger_app_root /var/www/maint/current;
-                passenger_document_root /var/www/maint/current/public;
-                passenger_enabled on;
-        }
-```
 
 Creating a Dockerized version of the app
 ========================================
@@ -197,8 +156,8 @@ It takes a couple of minutes to initialise, set up the database and write cache 
 
 Enhancing the Docker Compose method to add HTTPS and a proxy server
 ===================================================================
-Jason Wilder has written a very fine [reverse proxy for Docker containers](http://jasonwilder.com/blog/2014/03/25/automated-nginx-reverse-proxy-for-docker/)
-based on Nginx.  Yves Blusseau has written an excellent [companion utility](https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion)
+Jason Wilder has written a very fine [reverse proxy for Docker containers](https://github.com/nginx-proxy/nginx-proxy)
+based on Nginx.  Yves Blusseau has written an excellent [companion utility](https://github.com/nginx-proxy/acme-companion)
 which automatically generates, applies (and renews) [Let's Encrypt](https://www.letsencrypt.org) certificates to each virtual
 host created by the above.  No account or additional setup is needed.
 
@@ -214,12 +173,52 @@ in the previous section, run these commands:
 ```
       $ sudo mkdir /web/nginx-proxy
       $ sudo chown YOU /web/nginx-proxy
-      $ curl https://raw.githubusercontent.com/jwilder/nginx-proxy/master/nginx.tmpl > /web/nginx-proxy/nginx.tmpl
-      # Probably you need to patch nginx.tmpl to stop redirects to HTTPS for the letsencrypt verification files:
-      $ wget -Onginx.tmpl.patch https://gist.githubusercontent.com/jlm/f415ce4c99880dead9342b78dfefef53/raw/747aacbdafee1fe1fe0d239314d6e49848103c28/nginx.tmpl.patch
-      $ patch /web/nginx-proxy/nginx.tmpl < nginx.tmpl.patch
       $ sudo docker network create nginx-proxy
       
-      $ sudo docker run -d -p 80:80 -p 443:443 --name nginx-proxy --net nginx-proxy --restart=always -v /web/nginx-proxy:/etc/nginx/certs:ro  -v /etc/nginx/vhost.d     -v /usr/share/nginx/html -v /var/run/docker.sock:/tmp/docker.sock:ro  --label com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy jwilder/nginx-proxy
-      $ sudo docker run -d --name nginx-letsencrypt --net nginx-proxy --restart=always -v /web/nginx-proxy:/etc/nginx/certs:rw -v /var/run/docker.sock:/var/run/docker.sock:ro --volumes-from nginx-proxy jrcs/letsencrypt-nginx-proxy-companion
+      $ sudo docker run -d -p 80:80 -p 443:443 --name nginx-proxy --net nginx-proxy --restart=always -v /web/nginx-proxy:/etc/nginx/certs:ro  -v /etc/nginx/vhost.d     -v /usr/share/nginx/html -v /var/run/docker.sock:/tmp/docker.sock:ro  nginxproxy/nginx-proxy
+      $ sudo docker run -d --name nginx-letsencrypt --net nginx-proxy --restart=always -v /web/nginx-proxy:/etc/nginx/certs:rw -v /var/run/docker.sock:/var/run/docker.sock:ro -v acme:/etc/acme.sh --volumes-from nginx-proxy nginxproxy/acme-companion
+```
+
+Deploying with Capistrano
+=========================
+
+**NOTE: The Capistrano deployment process hasn't been used for many years, and would probably require updates to work.**
+
+This Ruby on Rails app was set up to deploy to a server using Capistrano.  For instructions and background, see https://gorails.com/deploy/ubuntu/14.04,
+[also described here](https://www.digitalocean.com/community/tutorials/how-to-automate-ruby-on-rails-application-deployments-using-capistrano), and http://capistranorb.com/.
+My setup is based on an Ubuntu virtual machine running Nginx and Passenger.
+(However, it may be better to use Docker, as described above.)
+
+Create `.env`, `config/database.yml`, `config/secrets.yml` based on the examples in the repository named "`example-`..."
+
+```
+	$ cap production deploy
+```
+This step is quite messy, as /var/www/maint has to exist on the deployment server and it doesn't and needs creating with the right permissions (it tries to
+create it but the /var/www directory which it doesn't own).  Then, some special files don't exist and have to be created:
+* `~deploy/maint-secrets/database.yml`
+* `~deploy/maint-secrets/secrets.yml`
+
+These have to be linked to the right places in the deployment structure:
+```
+	$ ln -s /home/deploy/maint-secrets/database.yml /var/www/maint/shared/config/
+	$ ln -s /home/deploy/maint-secrets/secrets.yml /var/www/maint/shared/config/
+```
+
+```
+	$ createdb maint_production
+```
+Apparently that step isn't automated.
+
+The nginx configuration file is not altered automatically to add the new application, so you have to manually edit `/opt/nginx/conf/nginx.conf` to add a section for the new app,
+in the existing `server` section after the `root` line.
+Mine looked like this:
+```
+        location ~ ^/maint(/.|$) {
+                alias /var/www/maint/current/public$1;
+                passenger_base_uri /maint;
+                passenger_app_root /var/www/maint/current;
+                passenger_document_root /var/www/maint/current/public;
+                passenger_enabled on;
+        }
 ```
