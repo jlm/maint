@@ -5,8 +5,6 @@ RSpec.configure do |config|
 end
 
 RSpec.describe '/items/id/requests API', type: :request do
-  let!(:my_item) { FactoryBot.create(:item) }
-  let!(:my_request) { FactoryBot.build(:request) }
 
   before do
     log_in_as_admin
@@ -17,9 +15,27 @@ RSpec.describe '/items/id/requests API', type: :request do
   end
 
   describe '/items/id/request=' do
+    let!(:my_item) { FactoryBot.create(:item) }
+    let!(:my_request) { FactoryBot.build(:request) }
     it 'adds a request to an existing item' do
       post "/items/#{my_item.id}/requests", params: my_request, as: :json
       expect(jsonrsp['item_id']).to eql(my_item.id)
+    end
+  end
+
+  describe 'Delete /items/id/request' do
+    let!(:myd_item) { FactoryBot.create(:item) }
+    let!(:myd_request) { FactoryBot.create(:request, item_id: myd_item.id ) }
+
+    it 'deletes a request from an existing item' do
+      delete "/items/#{myd_item.id}/requests/#{myd_request.id}", as: :json
+      expect(response).to have_http_status(:success)
+    end
+
+    context 'when deleting a non-existent request' do
+      it "raises RequestNotFound error" do
+        expect { delete "/items/#{myd_item.id}/requests/98765", as: :json }.to raise_error(ActiveRecord::RecordNotFound)
+      end
     end
   end
 end
