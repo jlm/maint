@@ -1,4 +1,8 @@
 require 'rails_helper'
+require 'system/login_helper'
+RSpec.configure do |config|
+  config.include LoginHelper
+end
 
 RSpec.describe '/items API', type: :request do
   let!(:my_item) { FactoryBot.create(:item) }
@@ -54,11 +58,26 @@ RSpec.describe '/items API', type: :request do
   end
 
   describe '/items=' do
-    let(:my_new_item) { FactoryBot.build(:item) }
-    it 'creates a new item' do
-      post "/items", params: my_new_item, as: :json
-      puts response
-      expect(response).to have_http_status(:created)
+    let!(:my_new_item) { FactoryBot.build(:item) }
+    context 'when unauthorized' do
+      it 'refuses to create a new item' do
+        post "/items", params: my_new_item, as: :json
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'when authorized' do
+      before do
+        log_in_as_admin
+      end
+      after do
+        clean_up
+      end
+
+      it 'creates a new item' do
+        post "/items", params: my_new_item, as: :json
+        expect(response).to have_http_status(:created)
+      end
     end
   end
 
