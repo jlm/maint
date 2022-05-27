@@ -16,7 +16,10 @@ class ApplicationController < ActionController::Base
 
   rescue_from CanCan::AccessDenied do |exception|
     Rails.logger.warn "Access denied on #{exception.action} #{exception.subject.inspect}"
-    redirect_to main_app.home_url, alert: exception.message
+    respond_to do |format|
+      format.json { head :forbidden }
+      format.html { redirect_to root_path, alert: exception.message }
+    end
   end
 
   # From: http://www.jetthoughts.com/blog/tech/2014/08/27/5-steps-to-add-remote-modals-to-your-rails-app.html
