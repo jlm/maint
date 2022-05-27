@@ -3,13 +3,6 @@ require 'rails_helper'
 RSpec.describe '/items API', type: :request do
   let!(:my_item) { FactoryBot.create(:item) }
 
-  before do
-  end
-
-  after do
-    # Do nothing
-  end
-
   describe '/items?search=' do
     let(:item) { jsonrsp.first }
 
@@ -26,7 +19,6 @@ RSpec.describe '/items API', type: :request do
     end
 
     it 'has an item number' do
-      # get "/items/#{rsp['id']}", headers: { "ACCEPT" => "application/json" }
       expect(item).to include('number')
     end
 
@@ -60,4 +52,14 @@ RSpec.describe '/items API', type: :request do
       expect(item['number']).to eql(my_item.number)
     end
   end
+
+  describe '/items=' do
+    let(:my_new_item) { FactoryBot.build(:item) }
+    it 'creates a new item' do
+      post "/items", params: my_new_item, as: :json
+      puts response
+      expect(response).to have_http_status(:created)
+    end
+  end
+
 end
