@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # From: https://eric.sau.pe/rails-system-tests-with-github-actions
 
 Capybara.register_driver :selenium_chrome_headless do |app|
@@ -13,7 +14,7 @@ Capybara.register_driver :selenium_chrome_headless do |app|
     opts.add_preference(:download, default_directory: Capybara.save_path)
   end
 
-  Capybara::Selenium::Driver.new(app, **{ browser: :chrome, options_key => browser_options })
+  Capybara::Selenium::Driver.new(app, **{:browser => :chrome, options_key => browser_options})
 end
 
 RSpec.configure do |config|
@@ -21,4 +22,3 @@ RSpec.configure do |config|
     driven_by :selenium_chrome_headless
   end
 end
-

@@ -1,3 +1,3 @@
 class Minst < ApplicationRecord
-	has_many :minutes
+  has_many :minutes
 end

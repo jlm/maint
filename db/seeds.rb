@@ -8,18 +8,18 @@
 User.create!(email: "jmessenger@advaoptical.com", password: "ponytail", password_confirmation: "ponytail", admin: true, debugger: true)
 # Note: initial values are seeded. Reading from a spreadsheet replaces these.
 Minst.create([
-	{ code: "P" , name: "Published" },
-	{ code: "A" , name: "Approved" },
-	{ code: "B" , name: "Ready for Ballot" },
-	{ code: "CB", name: "Complete then Ballot" },
-	{ code: "CE", name: "Complete then Errata" },
-	{ code: "E" , name: "Errata" },
-	{ code: "F" , name: "Failed" },
-	{ code: "I" , name: "Incomplete" },
-	{ code: "J" , name: "Rejected" },
-	{ code: "R" , name: "Received" },
-	{ code: "S" , name: "Errata Sheet Published" },
-	{ code: "T" , name: "Technical experts review" },
-	{ code: "V" , name: "Balloting" },
-	{ code: "W" , name: "Withdrawn" }
-	])
+  {code: "P", name: "Published"},
+  {code: "A", name: "Approved"},
+  {code: "B", name: "Ready for Ballot"},
+  {code: "CB", name: "Complete then Ballot"},
+  {code: "CE", name: "Complete then Errata"},
+  {code: "E", name: "Errata"},
+  {code: "F", name: "Failed"},
+  {code: "I", name: "Incomplete"},
+  {code: "J", name: "Rejected"},
+  {code: "R", name: "Received"},
+  {code: "S", name: "Errata Sheet Published"},
+  {code: "T", name: "Technical experts review"},
+  {code: "V", name: "Balloting"},
+  {code: "W", name: "Withdrawn"}
+])

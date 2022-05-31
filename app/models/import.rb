@@ -1,3 +1,3 @@
 class Import < ApplicationRecord
-	validates :filename, presence: true
+  validates :filename, presence: true
 end

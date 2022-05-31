@@ -275,13 +275,13 @@ TL.Util = {
             return prefix + "<a class='tl-makelink' href='" + url + "' onclick='void(0)'>" + link_text + "</a>";
         }
 		// http://, https://, ftp://
-		var urlPattern = /\b(?:https?|ftp):\/\/([a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|])/gim;
+		var urlPattern = /\b(?:https?|ftp):\/\/([a-z\d-+&@#\/%?=~_|!:,.;]*[a-z\d-+&@#\/%=~_|])/gim;
 
 		// www. sans http:// or https://
-		var pseudoUrlPattern = /(^|[^\/>])(www\.[\S]+(\b|$))/gim;
+		var pseudoUrlPattern = /(^|[^\/>])(www\.\S+(\b|$))/gim;
 
 		// Email addresses
-		var emailAddressPattern = /([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)/gim;
+		var emailAddressPattern = /([a-zA-Z\d_.+-]+@[a-zA-Z\d-]+\.[a-zA-Z\d-.]+)/gim;
 
 
 		return text
@@ -651,11 +651,11 @@ TL.Util = {
 		str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
 		}
 
-		str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+		str = str.replace(/[^a-z\d -]/g, '') // remove invalid chars
 		.replace(/\s+/g, '-') // collapse whitespace and replace by -
 		.replace(/-+/g, '-'); // collapse dashes
 
-		str = str.replace(/^([0-9])/,'_$1');
+		str = str.replace(/^(\d)/,'_$1');
 		return str;
 	},
 	maxDepth: function(ary) {
@@ -3383,7 +3383,7 @@ TL.TimelineConfig = TL.Class.extend({
             worksheet: 0 // not really sure how to use this to get the feed for that sheet, so this is not ready except for first sheet right now
         }
         // key as url parameter (old-fashioned)
-        var key_pat = /\bkey=([-_A-Za-z0-9]+)&?/i;
+        var key_pat = /\bkey=([-_A-Za-z\d]+)&?/i;
         var url_pat = /docs.google.com\/spreadsheets(.*?)\/d\//; // fixing issue of URLs with u/0/d
 
         if (url.match(key_pat)) {
@@ -3396,7 +3396,7 @@ TL.TimelineConfig = TL.Class.extend({
             if (url.match(/\?gid=(\d+)/)) {
                 parts.worksheet = url.match(/\?gid=(\d+)/)[1];
             }
-        } else if (url.match(/^\b[-_A-Za-z0-9]+$/)) {
+        } else if (url.match(/^\b[-_A-Za-z\d]+$/)) {
             parts.key = url;
         }
 
@@ -6977,7 +6977,7 @@ TL.MediaType = function(m, image_only) {
             {
                 type:         "profile",
                 name:         "Profile",
-                match_str:     /^(https?:)?\/*(www.)?instagr.am\/[a-zA-Z0-9]{2,}|^(https?:)?\/*(www.)?instagram.com\/[a-zA-Z0-9]{2,}/,
+                match_str:     /^(https?:)?\/*(www.)?instagr.am\/[a-zA-Z\d]{2,}|^(https?:)?\/*(www.)?instagram.com\/[a-zA-Z\d]{2,}/,
                 cls:         TL.Media.Profile
             },
             {
@@ -8329,7 +8329,7 @@ TL.Media.GoogleMap = TL.Media.extend({
 		var address_regex = /([\w\W]+)/;
 
 		// Data doesn't seem to get used for anything
-		var data_regex = /data=[\S]*/;
+		var data_regex = /data=\S*/;
 
 		// Capture the parameters that determine what map tiles to use
 		// In roadmap view, mode URLs include zoom paramater (e.g. "14z")
@@ -13874,4 +13874,3 @@ TL.Timeline.source_path = (function() {
 	var src = script_tags[script_tags.length-1].src;
 	return src.substr(0,src.lastIndexOf('/'));
 })();
-

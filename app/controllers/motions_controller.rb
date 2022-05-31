@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Style/Documentation
-
 class MotionsController < ApplicationController
   load_and_authorize_resource
   before_action :set_motion, only: %i[show edit update destroy]
@@ -48,7 +46,7 @@ class MotionsController < ApplicationController
   # PATCH/PUT /meetings/:meeting_id/motions/1.json
   def update
     @meeting = Meeting.find(params[:meeting_id])
-    flash[:notice] = 'Motion successfully updated' if @motion.update(motion_params) && @meeting.save
+    flash[:notice] = "Motion successfully updated" if @motion.update(motion_params) && @meeting.save
     respond_modal_with(@motion, location: meeting_url(@meeting))
   end
 
@@ -58,7 +56,7 @@ class MotionsController < ApplicationController
     @meeting = Meeting.find(params[:meeting_id])
     @motion.destroy
     respond_to do |format|
-      format.html { redirect_to meeting_url(@meeting), notice: 'Motion was successfully destroyed.' }
+      format.html { redirect_to meeting_url(@meeting), notice: "Motion was successfully destroyed." }
       format.json { head :no_content }
     end
   end

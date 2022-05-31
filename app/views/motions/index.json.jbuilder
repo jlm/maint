@@ -1,1 +1,1 @@
-json.array! @motions, partial: 'motions/motion', as: :motion
+json.array! @motions, partial: "motions/motion", as: :motion

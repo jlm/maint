@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Style/Documentation
-
 class RequestsController < ApplicationController
   load_and_authorize_resource
   before_action :set_request, only: %i[show pre edit update destroy]
@@ -56,7 +54,7 @@ class RequestsController < ApplicationController
   # PATCH/PUT /items/1/requests/1.json
   def update
     @item = Item.find(params[:item_id])
-    flash[:notice] = 'Request successfully updated' if @request.update(request_params)
+    flash[:notice] = "Request successfully updated" if @request.update(request_params)
     respond_modal_with(@request, location: item_url(@item))
   end
 
@@ -66,7 +64,7 @@ class RequestsController < ApplicationController
     @item = Item.find(params[:item_id])
     @request.destroy
     respond_to do |format|
-      format.html { redirect_to item_url(@item), notice: 'Request was successfully destroyed.' }
+      format.html { redirect_to item_url(@item), notice: "Request was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -80,7 +78,7 @@ class RequestsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def request_params
     params.require(:request).permit(:standard, :clauseno, :clausetitle, :name, :email, :company,
-                                    :rationale, :proposal, :impact, :date)
+      :rationale, :proposal, :impact, :date)
   end
 end
 # rubocop:enable all

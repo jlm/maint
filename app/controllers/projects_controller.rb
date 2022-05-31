@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Style/Documentation
-
 class ProjectsController < ApplicationController
   load_and_authorize_resource
   skip_authorize_resource only: %i[show_timeline show_timeline_by_desig]
@@ -10,7 +8,6 @@ class ProjectsController < ApplicationController
 
   # GET /task_groups/1/projects
   # GET /task_groups/1/projects.json
-  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
 
   def index
     if params[:task_group_id].present?
@@ -22,7 +19,6 @@ class ProjectsController < ApplicationController
     # A dirty hack to avoid having to deal with pagination in API clients.  This does not scale.
     @projects = @projects.paginate(page: params[:page], per_page: 10) unless request.format == :json
     # Search for projects using OR: http://stackoverflow.com/questions/3639656/activerecord-or-query
-    # rubocop:disable Style/GuardClause
 
     if params[:search].present?
       t = @projects.arel_table
@@ -62,7 +58,6 @@ class ProjectsController < ApplicationController
 
   # POST /task_groups/1/projects
   # POST /task_groups/1/projects.json
-  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
 
   def create
     @task_group = TaskGroup.find(params[:task_group_id])
@@ -86,7 +81,7 @@ class ProjectsController < ApplicationController
   # PATCH/PUT /task_groups/1/projects/1.json
   def update
     @task_group = TaskGroup.find(params[:task_group_id])
-    flash[:notice] = 'Project successfully updated' if @project.update(project_params) && @task_group.save
+    flash[:notice] = "Project successfully updated" if @project.update(project_params) && @task_group.save
     respond_modal_with(@project, location: task_group_url(@task_group))
   end
 
@@ -97,7 +92,7 @@ class ProjectsController < ApplicationController
     @project.events.each(&:destroy)
     @project.destroy
     respond_to do |format|
-      format.html { redirect_to task_group_url(@task_group), notice: 'Project was successfully destroyed.' }
+      format.html { redirect_to task_group_url(@task_group), notice: "Project was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -117,9 +112,9 @@ class ProjectsController < ApplicationController
   # GET /timeline/[:designation]
   # GET /timeline/[:designation].json
   def show_timeline_by_desig
-    desig = params[:designation].sub('-', '.')
+    desig = params[:designation].sub("-", ".")
     @project = Project.where(designation: desig).first!
-    render 'show_timeline'
+    render "show_timeline"
   end
 
   private
@@ -132,8 +127,8 @@ class ProjectsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def project_params
     params.require(:project).permit(:task_group_id, :designation, :title, :short_title, :project_type, :status,
-                                    :last_motion, :draft_no, :next_action, :award, :pool_formed, :mec, :par_url,
-                                    :csd_url, :page_url, :files_url, :draft_url, :par_approval, :par_expiry,
-                                    :standard_approval, :published)
+      :last_motion, :draft_no, :next_action, :award, :pool_formed, :mec, :par_url,
+      :csd_url, :page_url, :files_url, :draft_url, :par_approval, :par_expiry,
+      :standard_approval, :published)
   end
 end

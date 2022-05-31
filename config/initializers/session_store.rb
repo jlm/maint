@@ -6,7 +6,7 @@
 # instances (such as dalli and memcached)  avoids this.
 
 if Rails.env.docker?
-	Rails.application.config.session_store ActionDispatch::Session::CacheStore, :expire_after => 2.days
+  Rails.application.config.session_store ActionDispatch::Session::CacheStore, expire_after: 2.days
 else
-	Rails.application.config.session_store :cookie_store, key: '_maint_session'
+  Rails.application.config.session_store :cookie_store, key: "_maint_session"
 end

@@ -1,6 +1,6 @@
-require File.expand_path('../boot', __FILE__)
+require File.expand_path("../boot", __FILE__)
 
-require 'rails/all'
+require "rails/all"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -29,24 +29,24 @@ module Maint
 
     # Postmark
     config.action_mailer.delivery_method = :postmark
-    config.action_mailer.postmark_settings = { :api_key => ENV['POSTMARK_API_KEY'] }
+    config.action_mailer.postmark_settings = {api_key: ENV["POSTMARK_API_KEY"]}
 
-    config.autoload_paths += %W(#{config.root}/app/models/people)
+    config.autoload_paths += %W[#{config.root}/app/models/people]
 
     # Per-form CSRF Tokens were added in Rails 5
     config.action_controller.per_form_csrf_tokens = true
 
-    config.middleware.use ActionDispatch::Session::CookieStore, { :key => "_maint_session", :cookie_only => true }
+    config.middleware.use ActionDispatch::Session::CookieStore, {key: "_maint_session", cookie_only: true}
 
     # This is for timeline_json, from https://stackoverflow.com/questions/27379432/prevent-rails-from-encoding-the-ampersands-in-a-url-when-outputting-json
     config.active_support.escape_html_entities_in_json = false
 
     # This unnecessary configuration was part of debugging why JSON responses weren't working with TimelineJS Wordpress plugin
     MultiJson.use :yajl
-    MultiJson.dump_options = { pretty: true }
+    MultiJson.dump_options = {pretty: true}
 
     # Reduce XSS support to get TimelineJS to work with this site.
-    config.action_dispatch.default_headers.merge!('Access-Control-Allow-Origin' => '*')
+    config.action_dispatch.default_headers.merge!("Access-Control-Allow-Origin" => "*")
   end
 end
 
@@ -54,20 +54,20 @@ end
 # Therefore it is better not to overwrite the contents of a cell unless it has changed.
 # In this application, it's quite likely that the value being written will be the same as the one already there.
 module RubyXL::CellConvenienceMethods
-    def chg_cell(data, formula_expression = nil)
-        unless formula_expression.nil? and self.value == data
-            data = change_contents(data, formula_expression)
-        end
-        data
+  def chg_cell(data, formula_expression = nil)
+    unless formula_expression.nil? && (value == data)
+      data = change_contents(data, formula_expression)
     end
+    data
+  end
 end
 
 module RubyXL::WorksheetConvenienceMethods
-    def add_or_chg(row, col, data, formula_expression = nil)
-        if self[row].nil? or self[row][col].nil?
-            self.add_cell(row, col, data, formula_expression)
-        else
-            self[row][col].chg_cell(data, formula_expression)
-        end
+  def add_or_chg(row, col, data, formula_expression = nil)
+    if self[row].nil? || self[row][col].nil?
+      add_cell(row, col, data, formula_expression)
+    else
+      self[row][col].chg_cell(data, formula_expression)
     end
+  end
 end

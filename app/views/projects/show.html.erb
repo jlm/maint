@@ -5,7 +5,7 @@
 <table class="table table-hover">
   <tbody>
   <tr>
-    <td><strong>Editor:</strong> <%= @project.editor && @project.editor.full_name %>
+    <td><strong>Editor:</strong> <%= @project.editor&.full_name %>
     <td><strong>Task Group:</strong> <%= @task_group.name %>
   </tr>
   </tbody>

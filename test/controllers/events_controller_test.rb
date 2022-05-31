@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class EventsControllerTest < ActionController::TestCase
   setup do
@@ -17,8 +17,8 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   test "should create event" do
-    assert_difference('Event.count') do
-      post :create, event: { date: @event.date, description: @event.description, name: @event.name, project: @event.project }
+    assert_difference("Event.count") do
+      post :create, event: {date: @event.date, description: @event.description, name: @event.name, project: @event.project}
     end
 
     assert_redirected_to event_path(assigns(:event))
@@ -35,12 +35,12 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   test "should update event" do
-    patch :update, id: @event, event: { date: @event.date, description: @event.description, name: @event.name, project: @event.project }
+    patch :update, id: @event, event: {date: @event.date, description: @event.description, name: @event.name, project: @event.project}
     assert_redirected_to event_path(assigns(:event))
   end
 
   test "should destroy event" do
-    assert_difference('Event.count', -1) do
+    assert_difference("Event.count", -1) do
       delete :destroy, id: @event
     end
 

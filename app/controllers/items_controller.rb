@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Style/Documentation
-
 class ItemsController < ApplicationController
   load_and_authorize_resource
   before_action :set_item, only: %i[show edit update destroy]
@@ -10,14 +8,13 @@ class ItemsController < ApplicationController
 
   # GET /items
   # GET /items.json
-  # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
 
   def index
     @items = Item.order("#{sort_column} #{sort_direction}").paginate(page: params[:page], per_page: 10)
     @items = @items.open if params[:open].present?
     @items = @items.closed if params[:closed].present?
     @items = @items.review if params[:review].present?
-    @items = @items.joins(:minst).where('minsts.code = ?', params[:cat]) if params[:cat].present?
+    @items = @items.joins(:minst).where("minsts.code = ?", params[:cat]) if params[:cat].present?
 
     # Search for items using OR: http://stackoverflow.com/questions/3639656/activerecord-or-query
     if params[:search].present?
@@ -29,24 +26,24 @@ class ItemsController < ApplicationController
     end
 
     @qualifier = if params[:open].present?
-                   'Open'
-                 elsif params[:closed].present?
-                   'Closed'
-                 elsif params[:review].present?
-                   'Review'
-                 elsif params[:search].present?
-                   ''
-                 else
-                   'All'
-                 end
+      "Open"
+    elsif params[:closed].present?
+      "Closed"
+    elsif params[:review].present?
+      "Review"
+    elsif params[:search].present?
+      ""
+    else
+      "All"
+    end
   end
   # rubocop:enable all
 
   # GET /items/1
   # GET /items/1.json
   def show
-    @minutes = @item.minutes.where('minutes.DATE is not null').joins(:meeting)
-                    .order(:date, :id).paginate(page: params[:page], per_page: 10)
+    @minutes = @item.minutes.where("minutes.DATE is not null").joins(:meeting)
+      .order(:date, :id).paginate(page: params[:page], per_page: 10)
     @request = @item.request
   end
 
@@ -66,9 +63,9 @@ class ItemsController < ApplicationController
   # POST /items.json
   def create
     @item = Item.new(item_params)
-    @item.minst = Minst.find_by_code('R')
+    @item.minst = Minst.find_by_code("R")
     if @item.save
-      flash[:success] = 'Item successfully created.'
+      flash[:success] = "Item successfully created."
     else
       @item.errors.full_messages.each do |e|
         puts "Error: #{e}"
@@ -80,7 +77,7 @@ class ItemsController < ApplicationController
   # PATCH/PUT /items/1
   # PATCH/PUT /items/1.json
   def update
-    flash[:notice] = 'Item successfully updated.' if @item.update(item_params)
+    flash[:notice] = "Item successfully updated." if @item.update(item_params)
     respond_modal_with @item
   end
 
@@ -89,7 +86,7 @@ class ItemsController < ApplicationController
   def destroy
     @item.destroy
     respond_to do |format|
-      format.html { redirect_to items_url, notice: 'Item was successfully destroyed.' }
+      format.html { redirect_to items_url, notice: "Item was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -108,10 +105,10 @@ class ItemsController < ApplicationController
 
   # From http://railscasts.com/episodes/228-sortable-table-columns?autoplay=true
   def sort_column
-    Item.column_names.include?(params[:sort]) ? params[:sort] : 'number'
+    Item.column_names.include?(params[:sort]) ? params[:sort] : "number"
   end
 
   def sort_direction
-    %w[asc desc].include?(params[:direction]) ? params[:direction] : 'asc'
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
   end
 end

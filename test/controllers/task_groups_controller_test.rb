@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class TaskGroupsControllerTest < ActionController::TestCase
   setup do
@@ -17,8 +17,8 @@ class TaskGroupsControllerTest < ActionController::TestCase
   end
 
   test "should create task_group" do
-    assert_difference('TaskGroup.count') do
-      post :create, task_group: { chair_id: @task_group.chair_id, name: @task_group.name, vice_chair_id: @task_group.vice_chair_id }
+    assert_difference("TaskGroup.count") do
+      post :create, task_group: {chair_id: @task_group.chair_id, name: @task_group.name, vice_chair_id: @task_group.vice_chair_id}
     end
 
     assert_redirected_to task_group_path(assigns(:task_group))
@@ -35,12 +35,12 @@ class TaskGroupsControllerTest < ActionController::TestCase
   end
 
   test "should update task_group" do
-    patch :update, id: @task_group, task_group: { chair_id: @task_group.chair_id, name: @task_group.name, vice_chair_id: @task_group.vice_chair_id }
+    patch :update, id: @task_group, task_group: {chair_id: @task_group.chair_id, name: @task_group.name, vice_chair_id: @task_group.vice_chair_id}
     assert_redirected_to task_group_path(assigns(:task_group))
   end
 
   test "should destroy task_group" do
-    assert_difference('TaskGroup.count', -1) do
+    assert_difference("TaskGroup.count", -1) do
       delete :destroy, id: @task_group
     end
 

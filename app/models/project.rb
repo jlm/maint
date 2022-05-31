@@ -8,25 +8,25 @@ class Project < ApplicationRecord
   belongs_to :editor, optional: true
 
   def self.nextactions
-    %w(ParDevelopment NesCom EditorsDraft TgBallot WgBallot SponsorBallot SponsorBallotCond RevCom
-      RevComCond Publication Done ParMod ParWithdrawal Withdrawal)
+    %w[ParDevelopment NesCom EditorsDraft TgBallot WgBallot SponsorBallot SponsorBallotCond RevCom
+      RevComCond Publication Done ParMod ParWithdrawal Withdrawal]
   end
 
   def self.statuses
-    %w(ParDevelopment NesCom ParApproved EditorsDraft TgBallot WgBallot TgBallotRecirc WgBallotRecirc
-      SponsorBallot RevCom Approved Published Superseded Withdrawn )
+    %w[ParDevelopment NesCom ParApproved EditorsDraft TgBallot WgBallot TgBallotRecirc WgBallotRecirc
+      SponsorBallot RevCom Approved Published Superseded Withdrawn ]
   end
 
   def self.status_colours
-    %w(warning primary info success danger warning primary info success danger warning primary info success danger )
+    %w[warning primary info success danger warning primary info success danger warning primary info success danger]
   end
 
   def self.projecttypes
-    %w(Amendment Corrigendum Revision NewStandard NewRecPractice Erratum)
+    %w[Amendment Corrigendum Revision NewStandard NewRecPractice Erratum]
   end
 
   def self.lastmotions
-    %w(ParDevelopment NesCom TgBallot WgBallot SponsorBallot SponsorBallotCond RevCom RevComCond ParMod ParWithdrawal Withdrawal)
+    %w[ParDevelopment NesCom TgBallot WgBallot SponsorBallot SponsorBallotCond RevCom RevComCond ParMod ParWithdrawal Withdrawal]
   end
 
   include ActionView::Helpers::UrlHelper
@@ -40,5 +40,4 @@ class Project < ApplicationRecord
   validates :status, inclusion: {in: statuses, message: "%{value} is not a valid Status"}
   validates :last_motion, inclusion: {in: lastmotions, message: "%{value} is not a valid LastMotion"}, allow_blank: true
   validates :next_action, inclusion: {in: nextactions, message: "%{value} is not a valid Next Action"}
-
 end

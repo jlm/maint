@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Style/Documentation
-
 class TaskGroupsController < ApplicationController
   load_and_authorize_resource
   before_action :set_task_group, only: %i[show edit update destroy]
@@ -12,7 +10,6 @@ class TaskGroupsController < ApplicationController
   def index
     @task_groups = TaskGroup.all.paginate(page: params[:page], per_page: 10)
     # Search for items using OR: http://stackoverflow.com/questions/3639656/activerecord-or-query
-    # rubocop:disable Style/GuardClause
 
     if params[:search].present?
       t = @task_groups.arel_table
@@ -44,14 +41,14 @@ class TaskGroupsController < ApplicationController
   # POST /task_groups.json
   def create
     @task_group = TaskGroup.new(task_group_params)
-    flash[:notice] = 'Task Group successfully created' if @task_group.save
+    flash[:notice] = "Task Group successfully created" if @task_group.save
     respond_modal_with @task_group
   end
 
   # PATCH/PUT /task_groups/1
   # PATCH/PUT /task_groups/1.json
   def update
-    flash[:notice] = 'Task Group successfully updated' if @task_group.update(task_group_params)
+    flash[:notice] = "Task Group successfully updated" if @task_group.update(task_group_params)
     respond_modal_with @task_group
   end
 
@@ -60,7 +57,7 @@ class TaskGroupsController < ApplicationController
   def destroy
     @task_group.destroy
     respond_to do |format|
-      format.html { redirect_to task_groups_url, notice: 'Task group was successfully destroyed.' }
+      format.html { redirect_to task_groups_url, notice: "Task group was successfully destroyed." }
       format.json { head :no_content }
     end
   end

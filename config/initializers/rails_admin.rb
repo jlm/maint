@@ -1,8 +1,7 @@
 RailsAdmin.config do |config|
-
   config.main_app_name = [ENV["COMMITTEE"], "Maintenance Database"]
 
-  config.parent_controller = 'ApplicationController'
+  config.parent_controller = "ApplicationController"
 
   ### Popular gems integration
 
@@ -21,8 +20,8 @@ RailsAdmin.config do |config|
   ### More at https://github.com/sferik/rails_admin/wiki/Base-configuration
 
   config.actions do
-    dashboard                     # mandatory
-    index                         # mandatory
+    dashboard # mandatory
+    index # mandatory
     new
     export
     bulk_delete
@@ -30,43 +29,43 @@ RailsAdmin.config do |config|
     edit
     delete
     show_in_app
-    import                        # for rails_admin_import
+    import # for rails_admin_import
 
     ## With an audit adapter, you can add:
     # history_index
     # history_show
   end
 
-  config.model 'Minute' do
+  config.model "Minute" do
     parent Item
   end
 
-  config.model 'Request' do
+  config.model "Request" do
     parent Item
   end
 
-  config.model 'Minst' do
+  config.model "Minst" do
     parent Minute
   end
 
-  config.model 'Event' do
+  config.model "Event" do
     parent Project
   end
 
-  config.model 'Project' do
+  config.model "Project" do
     parent TaskGroup
   end
 
-  config.model 'Motion' do
+  config.model "Motion" do
     parent Meeting
   end
 
   # Options for rails_admin_import:
-  config.configure_with(:import) do |config|
-    config.update_if_exists = true      # set the "update if exists" checkbox by default.
+  config.configure_with(:import) do |cfg|
+    cfg.update_if_exists = true # set the "update if exists" checkbox by default.
   end
 
-  config.model 'Project' do
+  config.model "Project" do
     import do
       mapping_key :designation
     end
@@ -85,7 +84,7 @@ RailsAdmin.config do |config|
     end
   end
 
-  config.model 'TaskGroup' do
+  config.model "TaskGroup" do
     import do
       mapping_key :abbrev
     end

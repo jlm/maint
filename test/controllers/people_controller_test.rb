@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class PeopleControllerTest < ActionController::TestCase
   setup do
@@ -17,8 +17,8 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   test "should create person" do
-    assert_difference('Person.count') do
-      post :create, person: { affiliation: @person.affiliation, email: @person.email, first_name: @person.first_name, last_name: @person.last_name }
+    assert_difference("Person.count") do
+      post :create, person: {affiliation: @person.affiliation, email: @person.email, first_name: @person.first_name, last_name: @person.last_name}
     end
 
     assert_redirected_to person_path(assigns(:person))
@@ -36,12 +36,12 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   test "should update person" do
-    patch :update, id: @person, person: { affiliation: @person.affiliation, email: @person.email, first_name: @person.first_name, last_name: @person.last_name }
+    patch :update, id: @person, person: {affiliation: @person.affiliation, email: @person.email, first_name: @person.first_name, last_name: @person.last_name}
     assert_redirected_to person_path(assigns(:person))
   end
 
   test "should destroy person" do
-    assert_difference('Person.count', -1) do
+    assert_difference("Person.count", -1) do
       delete :destroy, id: @person
     end
 

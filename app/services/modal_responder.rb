@@ -1,14 +1,14 @@
 # From: http://www.jetthoughts.com/blog/tech/2014/08/27/5-steps-to-add-remote-modals-to-your-rails-app.html
 class ModalResponder < ActionController::Responder
   cattr_accessor :modal_layout
-  self.modal_layout = 'modal'
+  self.modal_layout = "modal"
 
   def render(*args)
     options = args.extract_options!
     if request.xhr?
-      options.merge! layout: modal_layout
+      options[:layout] = modal_layout
     end
-    controller.render *args, options
+    controller.render(*args, options)
   end
 
   def default_render(*args)

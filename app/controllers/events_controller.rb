@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Style/Documentation
-
 class EventsController < ApplicationController
   load_and_authorize_resource
   before_action :set_event, only: %i[show edit update destroy]
@@ -9,7 +7,6 @@ class EventsController < ApplicationController
 
   # GET /task_group/1/project/1/events
   # GET /task_group/1/project/1/events.json
-  # rubocop:disable Metrics/AbcSize
 
   def index
     @project = Project.find(params[:project_id])
@@ -17,7 +14,6 @@ class EventsController < ApplicationController
     @events = @project.events.order(:date)
     @events = @events.paginate(page: params[:page], per_page: 10) unless request.format == :json
     # Search for events using OR: http://stackoverflow.com/questions/3639656/activerecord-or-query
-    # rubocop:disable Style/GuardClause
 
     if params[:search].present?
       t = @events.arel_table
@@ -66,7 +62,7 @@ class EventsController < ApplicationController
   def update
     @task_group = TaskGroup.find(params[:task_group_id])
     @project = @task_group.projects.find(params[:project_id])
-    flash[:notice] = 'Event successfully updated' if @event.update(event_params) && @project.save
+    flash[:notice] = "Event successfully updated" if @event.update(event_params) && @project.save
     respond_modal_with(@event, location: task_group_project_url(@task_group, @project))
   end
 
@@ -77,7 +73,7 @@ class EventsController < ApplicationController
     @project = @task_group.projects.find(params[:project_id])
     @event.destroy
     respond_to do |format|
-      format.html { redirect_to task_group_project_url(@task_group, @project), notice: 'Event was destroyed' }
+      format.html { redirect_to task_group_project_url(@task_group, @project), notice: "Event was destroyed" }
       format.json { head :no_content }
     end
   end

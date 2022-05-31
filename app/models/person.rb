@@ -4,9 +4,9 @@ class Person < ApplicationRecord
 
   validates :role, presence: true
 
-  scope :chairs, ( -> {where(role: 'Chair')} )
-  scope :vice_chairs, ( -> {where(role: 'ViceChair')} )
-  scope :editors, ( -> {where(role: 'Editor')} )
+  scope :chairs, (-> { where(role: "Chair") })
+  scope :vice_chairs, (-> { where(role: "ViceChair") })
+  scope :editors, (-> { where(role: "Editor") })
 
   def full_name
     "#{first_name} #{last_name}"
@@ -14,8 +14,7 @@ class Person < ApplicationRecord
 
   class << self
     def roles
-      %w(Chair ViceChair Editor)
+      %w[Chair ViceChair Editor]
     end
   end
-
 end

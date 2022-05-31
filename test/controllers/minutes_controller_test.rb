@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class MinutesControllerTest < ActionController::TestCase
   setup do
@@ -17,8 +17,8 @@ class MinutesControllerTest < ActionController::TestCase
   end
 
   test "should create minute" do
-    assert_difference('Minute.count') do
-      post :create, minute: { date: @minute.date, status: @minute.status, text: @minute.text }
+    assert_difference("Minute.count") do
+      post :create, minute: {date: @minute.date, status: @minute.status, text: @minute.text}
     end
 
     assert_redirected_to minute_path(assigns(:minute))
@@ -35,12 +35,12 @@ class MinutesControllerTest < ActionController::TestCase
   end
 
   test "should update minute" do
-    patch :update, id: @minute, minute: { date: @minute.date, status: @minute.status, text: @minute.text }
+    patch :update, id: @minute, minute: {date: @minute.date, status: @minute.status, text: @minute.text}
     assert_redirected_to minute_path(assigns(:minute))
   end
 
   test "should destroy minute" do
-    assert_difference('Minute.count', -1) do
+    assert_difference("Minute.count", -1) do
       delete :destroy, id: @minute
     end
 

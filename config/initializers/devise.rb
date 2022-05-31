@@ -6,7 +6,7 @@ Devise.setup do |config|
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` on Rails 4+ applications as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  config.secret_key = ENV['SECRET_KEY_BASE']
+  config.secret_key = ENV["SECRET_KEY_BASE"]
   # config.secret_key = '76fcb120cf5f86868873c0b068f5762eeee98ed8816e973c6b58cad56cce6bf43ba83e7c4020c4602d16b977127f89fbb2ded36a9e0cce5c5737c0c16e8ad675'
 
   # ==> Mailer Configuration
@@ -22,7 +22,7 @@ Devise.setup do |config|
   # Load and configure the ORM. Supports :active_record (default) and
   # :mongoid (bson_ext recommended) by default. Other ORMs may be
   # available as additional gems.
-  require 'devise/orm/active_record'
+  require "devise/orm/active_record"
 
   # ==> Configuration for any authentication mechanism
   # Configure which keys are used when authenticating a user. The default is
@@ -106,7 +106,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 12
 
   # Setup a pepper to generate the encrypted password.
-  config.pepper = ENV['DEVISE_PEPPER']
+  config.pepper = ENV["DEVISE_PEPPER"]
 
   # Send a notification to the original email when the user's email is changed.
   # config.send_email_changed_notification = false

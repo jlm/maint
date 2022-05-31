@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class MeetingsControllerTest < ActionController::TestCase
   setup do
@@ -17,8 +17,8 @@ class MeetingsControllerTest < ActionController::TestCase
   end
 
   test "should create meeting" do
-    assert_difference('Meeting.count') do
-      post :create, meeting: { date: @meeting.date, location: @meeting.location, minuteable_id: @meeting.minuteable_id, minuteable_type: @meeting.minuteable_type, type: @meeting.type }
+    assert_difference("Meeting.count") do
+      post :create, meeting: {date: @meeting.date, location: @meeting.location, minuteable_id: @meeting.minuteable_id, minuteable_type: @meeting.minuteable_type, type: @meeting.type}
     end
 
     assert_redirected_to meeting_path(assigns(:meeting))
@@ -35,12 +35,12 @@ class MeetingsControllerTest < ActionController::TestCase
   end
 
   test "should update meeting" do
-    patch :update, id: @meeting, meeting: { date: @meeting.date, location: @meeting.location, minuteable_id: @meeting.minuteable_id, minuteable_type: @meeting.minuteable_type, type: @meeting.type }
+    patch :update, id: @meeting, meeting: {date: @meeting.date, location: @meeting.location, minuteable_id: @meeting.minuteable_id, minuteable_type: @meeting.minuteable_type, type: @meeting.type}
     assert_redirected_to meeting_path(assigns(:meeting))
   end
 
   test "should destroy meeting" do
-    assert_difference('Meeting.count', -1) do
+    assert_difference("Meeting.count", -1) do
       delete :destroy, id: @meeting
     end
 

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Style/Documentation
-
 class MeetingsController < ApplicationController
   load_and_authorize_resource
   before_action :set_meeting, only: %i[show edit update destroy]
@@ -13,7 +11,6 @@ class MeetingsController < ApplicationController
   def index
     @meetings = Meeting.order("#{sort_column} #{sort_direction}").paginate(page: params[:page], per_page: 10)
     # Search for items using OR: http://stackoverflow.com/questions/3639656/activerecord-or-query
-    # rubocop:disable Style/GuardClause
 
     if params[:search].present?
       t = @meetings.arel_table
@@ -27,7 +24,7 @@ class MeetingsController < ApplicationController
   # GET /meetings/1.json
   def show
     @items = @meeting.items.order("#{sort_column} #{sort_direction}").paginate(page: params[:page],
-                                                                               per_page: 10).distinct
+      per_page: 10).distinct
   end
 
   # GET /meetings/new
@@ -51,7 +48,7 @@ class MeetingsController < ApplicationController
   # PATCH/PUT /meetings/1
   # PATCH/PUT /meetings/1.json
   def update
-    flash[:notice] = 'Meeting successfully updated' if @meeting.update(meeting_params)
+    flash[:notice] = "Meeting successfully updated" if @meeting.update(meeting_params)
     respond_modal_with @meeting, location: meetings_url
   end
 
@@ -60,7 +57,7 @@ class MeetingsController < ApplicationController
   def destroy
     @meeting.destroy
     respond_to do |format|
-      format.html { redirect_to meetings_url, notice: 'Meeting was successfully destroyed.' }
+      format.html { redirect_to meetings_url, notice: "Meeting was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -78,11 +75,11 @@ class MeetingsController < ApplicationController
 
   # From http://railscasts.com/episodes/228-sortable-table-columns?autoplay=true
   def sort_column
-    Item.column_names.include?(params[:sort]) ? params[:sort] : 'date'
+    Item.column_names.include?(params[:sort]) ? params[:sort] : "date"
   end
 
   def sort_direction
-    %w[asc desc].include?(params[:direction]) ? params[:direction] : 'desc'
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
   end
 end
 # rubocop:enable all

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Style/Documentation, Metrics/ClassLength
-
 class ImportsController < ApplicationController
   # rubocop:enable Style/Documentation
 
@@ -17,7 +15,8 @@ class ImportsController < ApplicationController
 
   # GET /imports/1
   # GET /imports/1.json
-  def show; end
+  def show
+  end
 
   # GET /imports/new
   def new
@@ -25,15 +24,15 @@ class ImportsController < ApplicationController
   end
 
   # GET /imports/1/edit
-  def edit; end
+  def edit
+  end
 
   # POST /imports
   # POST /imports.json
-  # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
 
   def create
     unless params[:import].present?
-      flash[:error] = 'A file must be selected for upload'
+      flash[:error] = "A file must be selected for upload"
       redirect_to imports_path
       return
     end
@@ -48,17 +47,17 @@ class ImportsController < ApplicationController
     Rails.application.config.importing = true # Supress validation checks for Minutes during import.
     @import = Import.new(import_params)
     uploaded_io = params[:import][:filename]
-    filepath = Rails.root.join('public', 'uploads', uploaded_io.original_filename)
+    filepath = Rails.root.join("public", "uploads", uploaded_io.original_filename)
     @import.filename = filepath
     @import.content_type = uploaded_io.content_type
-    if @import.content_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-      File.open(filepath, 'wb') do |file|
+    if @import.content_type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      File.open(filepath, "wb") do |file|
         file.write(uploaded_io.read)
       end
       book = RubyXL::Parser.parse filepath
-      totals = book['Totals']
-      master = book['Master']
-      minutes = book['Minutes']
+      totals = book["Totals"]
+      master = book["Master"]
+      minutes = book["Minutes"]
 
       #
       # Import from the TOTALS tab
@@ -67,12 +66,12 @@ class ImportsController < ApplicationController
       # Read columns B and D, where column C is a hyphen, to populate the possible Status values
       # of minutes (stored in minst_id) and items (stored in ??).
       totals.each do |totalsrow|
-        next unless totalsrow && totalsrow[2] && totalsrow[2].value == '-'
+        next unless totalsrow && totalsrow[2] && totalsrow[2].value == "-"
         next unless totalsrow[1] && !totalsrow[1].value.blank?
         next unless totalsrow[3] && !totalsrow[3].value.blank?
 
         Minst.find_or_create_by(code: totalsrow[1].value) do |m|
-          m.name = totalsrow[3].value.gsub(/<[bB][rR]>/, ' ')
+          m.name = totalsrow[3].value.gsub(/<[bB][rR]>/, " ")
         end
       end
 
@@ -90,7 +89,6 @@ class ImportsController < ApplicationController
 
         # Date.parse will parse a date from the start of the string.
         # If of the form "Mar 2013 interim" the date will be 2013-03-01.
-        # rubocop:disable Metrics/BlockNesting
 
         meetingdate = Date.parse(mtgname)
         meeting = Meeting.find_or_create_by(date: meetingdate) do |m|
@@ -108,14 +106,13 @@ class ImportsController < ApplicationController
             end
           end
         end
-        meetings[j] = { name: mtgname, mtg: meeting }
+        meetings[j] = {name: mtgname, mtg: meeting}
         j += 1
       end
 
       # Read each row of the MASTER tab starting at the third row.  Identify rows with a valid item number
       # and create (or find) Items for each.
       i = 0
-      # rubocop:disable Metrics/BlockLength
 
       master.to_a[2..].each do |itemrow| # the 2 says skip the first two rows.
         i += 1
@@ -140,9 +137,9 @@ class ImportsController < ApplicationController
           next if stscell.nil?
 
           sts = stscell.value
-          next if sts == '-'
+          next if sts == "-"
 
-          break if sts == '#'
+          break if sts == "#"
 
           if meetings[j - 1].nil?
             ref = RubyXL::Reference.ind2ref(stscell.row, stscell.column)
@@ -184,7 +181,7 @@ class ImportsController < ApplicationController
         raise "Missing entry on Master sheet for item #{inum} from Minutes tab" if item.nil?
 
         datesrow = minutes[rowno]
-        textrow  = minutes[rowno + 1]
+        textrow = minutes[rowno + 1]
         j = 3
         while j < [datesrow.cells.count, textrow.cells.count].max
           mindate = datesrow[j]&.value
@@ -235,7 +232,7 @@ class ImportsController < ApplicationController
 
     respond_to do |format|
       if @import.errors.count.zero? && @import.save
-        format.html { redirect_to imports_url, notice: 'File was successfully imported' }
+        format.html { redirect_to imports_url, notice: "File was successfully imported" }
         format.json { render :show, status: :created, location: @import }
       else
         format.html { render :new }
@@ -248,11 +245,11 @@ class ImportsController < ApplicationController
   # PATCH/PUT /imports/1.json
   def update
     fname = @import.filename
-    bs, _, ext = fname.rpartition('.')
+    bs, _, ext = fname.rpartition(".")
     outfname = "#{bs}-out.#{ext}"
 
     book = RubyXL::Parser.parse(fname)
-    master = book['Master']
+    master = book["Master"]
 
     # Write out the meeting names unconditionally into Excel row 2 of the Master tab
     meetnamerow = master[1]
@@ -264,10 +261,10 @@ class ImportsController < ApplicationController
       end
       # Overwrite existing information with the information from the database
       fmt = if mtg.date.day == 1
-              '%B %Y '
-            else
-              '%-d %B %Y '
-            end
+        "%B %Y "
+      else
+        "%-d %B %Y "
+      end
       master.add_or_chg(1, col, "#{mtg.date.strftime(fmt)}#{mtg.meetingtype} Meeting")
       meetnamerow[col].style_index = meetnamerow[col - 1].style_index if col > 6 # copy previous cell's style
       col += 1
@@ -286,17 +283,17 @@ class ImportsController < ApplicationController
       # Change_contents spoils the shared string thing, so don't write unless you have to.
       # Anyhow, when writing, rows and columns might not exist.
       master.add_or_chg(rowno, 0, item.number.to_s) # Use this method to ensure that the row exists
-      master.add_or_chg(rowno, 1, item.date.strftime('%d-%b-%Y'))
+      master.add_or_chg(rowno, 1, item.date.strftime("%d-%b-%Y"))
       master.add_or_chg(rowno, 2, item.standard)
       master.add_or_chg(rowno, 3, item.clause)
       master.add_or_chg(rowno, 4, item.subject)
       master.add_or_chg(rowno, 5, item.draft)
       # There may not be a minutes entry corresponding to each meeting (=column), so keep a track of the item's current
       # status and use that where no minutes entry exists.
-      current_sts = '-'
+      current_sts = "-"
       colno = 6
       Meeting.order(:date).each do |mtg|
-        min = item.minutes.where('minutes.meeting_id = ?', mtg.id).first
+        min = item.minutes.where("minutes.meeting_id = ?", mtg.id).first
         current_sts = min.minst.code if min&.minst
         if master[rowno][colno].nil? || master[rowno][colno].blank?
           flash[:error] =
@@ -312,32 +309,32 @@ class ImportsController < ApplicationController
       lastcolno = Meeting.count + 6
       (colno..lastcolno).each do |colcolno|
         if master[rowno][colcolno].nil?
-          master.add_cell(rowno, colcolno, '#')
+          master.add_cell(rowno, colcolno, "#")
         else
-          master[rowno][colcolno].chg_cell('#')
+          master[rowno][colcolno].chg_cell("#")
         end
       end
       # Add a hash at the end of the row if there isn't one
-      unless master[rowno][lastcolno + 1] && master[rowno][lastcolno + 1].value == '#'
-        master.add_cell(rowno, lastcolno + 1, '#')
+      unless master[rowno][lastcolno + 1] && master[rowno][lastcolno + 1].value == "#"
+        master.add_cell(rowno, lastcolno + 1, "#")
       end
       rowno += 1
     end
     # Fill the rest of the rows with hash signs.  Make sure there's at least one row of hashes.
-    make_master_hash_row(master, rowno) unless master[rowno] && master[rowno][1] && master[rowno][1].value == '#'
+    make_master_hash_row(master, rowno) unless master[rowno] && master[rowno][1] && master[rowno][1].value == "#"
     ((rowno + 1)..(master.count - 1)).each do |r|
       make_master_hash_row(master, r)
     end
 
-    minutes = book['Minutes']
+    minutes = book["Minutes"]
     rowno = 1
     Item.order(:number).each do |item|
       minutes.add_or_chg(rowno, 1, item.number.to_s)
       colno = 3
       Meeting.order(:date).each do |mtg|
-        min = item.minutes.where('minutes.meeting_id = ?', mtg.id).first
+        min = item.minutes.where("minutes.meeting_id = ?", mtg.id).first
         if min && !min.date.blank?
-          datestr = min.date.strftime('%-d-%b-%Y')
+          datestr = min.date.strftime("%-d-%b-%Y")
           minutes.add_or_chg(rowno, colno, datestr)
         else
           minutes.delete_cell(rowno, colno)
@@ -348,7 +345,7 @@ class ImportsController < ApplicationController
           minutes.delete_cell(rowno + 1, colno)
         end
         if min && (!min.date.blank? || !min.text.blank?)
-          minutes.add_or_chg(rowno + 2, colno, '#')
+          minutes.add_or_chg(rowno + 2, colno, "#")
         else
           minutes.delete_cell(rowno + 2, colno)
         end
@@ -359,14 +356,14 @@ class ImportsController < ApplicationController
     # Delete the rest of the rows, making sure the last row has a single '#' in the number column.
     # Note that delete_row pushes cells up, so we delete the same numbered row repeatedly.
     (rowno..(minutes.count - 1)).each { |_r| minutes.delete_row(rowno) }
-    minutes.add_cell(rowno, 0, '')
-    minutes.add_cell(rowno, 1, '#')
+    minutes.add_cell(rowno, 0, "")
+    minutes.add_cell(rowno, 1, "#")
 
     book.write(outfname)
 
     respond_to do |format|
       format.html do
-        response.headers['Content-Length'] = File.size(outfname).to_s
+        response.headers["Content-Length"] = File.size(outfname).to_s
         send_file(outfname, type: @import.content_type, x_sendfile: true)
         return
       end
@@ -379,7 +376,7 @@ class ImportsController < ApplicationController
   def destroy
     @import.destroy
     respond_to do |format|
-      format.html { redirect_to imports_url, notice: 'Import was destroyed' }
+      format.html { redirect_to imports_url, notice: "Import was destroyed" }
       format.json { head :no_content }
     end
   end
@@ -396,10 +393,10 @@ class ImportsController < ApplicationController
   end
 
   def make_master_hash_row(sheet, rowno)
-    sheet.add_or_chg(rowno, 1, '#')
+    sheet.add_or_chg(rowno, 1, "#")
     sheet.delete_cell(rowno, 0)
     (2..5).each { |colno| sheet.delete_cell(rowno, colno) }
-    (6..sheet[1].cells.count - 1).each { |colno| sheet.add_or_chg(rowno, colno, '#') }
+    (6..sheet[1].cells.count - 1).each { |colno| sheet.add_or_chg(rowno, colno, "#") }
   end
 end
 # rubocop:enable all

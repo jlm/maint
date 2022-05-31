@@ -1,12 +1,14 @@
-#json.extract! @project, :timeline_json
-json.title { json.text {
-  json.headline @project.par_url.nil? ? @project.short_title : link_to(@project.short_title, @project.par_url)
-  json.text @project.title
-} }
+# json.extract! @project, :timeline_json
+json.title {
+  json.text {
+    json.headline @project.par_url.nil? ? @project.short_title : link_to(@project.short_title, @project.par_url)
+    json.text @project.title
+  }
+}
 json.events @project.events.order(:date) do |event|
-  caption = event.name + (event.description && !event.description.empty? ? ": #{event.description}" : '')
+  caption = event.name + (event.description && !event.description.empty? ? ": #{event.description}" : "")
   json.media {
-    json.url '<blockquote>' + @project.short_title + '</blockquote>'
+    json.url "<blockquote>" + @project.short_title + "</blockquote>"
     json.caption caption
   }
   json.start_date {

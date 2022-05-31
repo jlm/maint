@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Style/Documentation
-
 class MinutesController < ApplicationController
   load_and_authorize_resource
   before_action :set_minute, only: %i[show edit update destroy]
@@ -49,7 +47,7 @@ class MinutesController < ApplicationController
   # PATCH/PUT /items/:item_id/minutes/1.json
   def update
     @item = Item.find(params[:item_id])
-    flash[:notice] = 'Minute successfully updated' if @minute.update(minute_params) && @item.save
+    flash[:notice] = "Minute successfully updated" if @minute.update(minute_params) && @item.save
     respond_modal_with(@minute, location: item_url(@item))
   end
 
@@ -59,7 +57,7 @@ class MinutesController < ApplicationController
     @item = Item.find(params[:item_id])
     @minute.destroy
     respond_to do |format|
-      format.html { redirect_to item_url(@item), notice: 'Minute was successfully destroyed.' }
+      format.html { redirect_to item_url(@item), notice: "Minute was successfully destroyed." }
       format.json { head :no_content }
     end
   end

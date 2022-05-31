@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe TaskGroupsController, type: :controller do
   let!(:chair) { FactoryBot.create(:chair) }
