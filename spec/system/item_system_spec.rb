@@ -15,6 +15,7 @@ RSpec.describe "Item system", type: :system do
 
   after do
     clean_up
+    # Pointless comment
   end
 
   context "Given a chair" do
