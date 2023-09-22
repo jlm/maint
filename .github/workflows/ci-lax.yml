@@ -2,6 +2,7 @@
 name: BuildLax
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - 'rails-6'
