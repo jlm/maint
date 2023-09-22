@@ -125,9 +125,6 @@ GEM
     concurrent-ruby (1.1.10)
     crass (1.0.6)
     dalli (3.2.3)
-    debase (2.3.8)
-      debase-ruby_core_source (~> 0.10.15)
-    debase-ruby_core_source (0.10.17)
     debug_inspector (1.1.0)
     devise (4.8.1)
       bcrypt (~> 3.0)
@@ -337,8 +334,6 @@ GEM
       unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.23.0)
       parser (>= 3.1.1.0)
-    ruby-debug-ide (2.3.8)
-      debase (~> 2.3.8)
     ruby-graphviz (1.2.5)
       rexml
     ruby-progressbar (1.11.0)
@@ -466,7 +461,6 @@ DEPENDENCIES
   rinku
   rspec-rails
   rubocop (~> 1.23)
-  ruby-debug-ide
   rubyXL (~> 3.4.0)
   sassc-rails
   sdoc

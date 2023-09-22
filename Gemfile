@@ -70,7 +70,6 @@ end
 
 group :development do
   gem "rails-erd"
-  gem "ruby-debug-ide"
 end
 
 group :production do
