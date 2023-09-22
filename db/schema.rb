@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(version: 2022_11_03_140134) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "events", force: :cascade do |t|
+  create_table "events", id: :serial, force: :cascade do |t|
     t.string "name"
     t.date "date"
     t.string "description"
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 2022_11_03_140134) do
     t.index ["project_id"], name: "index_events_on_project_id"
   end
 
-  create_table "imports", force: :cascade do |t|
+  create_table "imports", id: :serial, force: :cascade do |t|
     t.string "filename"
     t.boolean "imported"
     t.datetime "created_at", null: false
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 2022_11_03_140134) do
     t.string "content_type"
   end
 
-  create_table "items", force: :cascade do |t|
+  create_table "items", id: :serial, force: :cascade do |t|
     t.string "number"
     t.date "date"
     t.string "standard"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 2022_11_03_140134) do
     t.integer "minst_id"
   end
 
-  create_table "meetings", force: :cascade do |t|
+  create_table "meetings", id: :serial, force: :cascade do |t|
     t.date "date"
     t.string "meetingtype"
     t.string "location"
@@ -55,7 +55,7 @@ ActiveRecord::Schema.define(version: 2022_11_03_140134) do
     t.string "minutes_url"
   end
 
-  create_table "minsts", force: :cascade do |t|
+  create_table "minsts", id: :serial, force: :cascade do |t|
     t.string "code"
     t.string "name"
     t.datetime "created_at", null: false
@@ -64,7 +64,7 @@ ActiveRecord::Schema.define(version: 2022_11_03_140134) do
     t.index ["name"], name: "index_minsts_on_name"
   end
 
-  create_table "minutes", force: :cascade do |t|
+  create_table "minutes", id: :serial, force: :cascade do |t|
     t.date "date"
     t.text "text"
     t.string "status"
@@ -77,7 +77,7 @@ ActiveRecord::Schema.define(version: 2022_11_03_140134) do
     t.index ["meeting_id"], name: "index_minutes_on_meeting_id"
   end
 
-  create_table "motions", force: :cascade do |t|
+  create_table "motions", id: :serial, force: :cascade do |t|
     t.integer "meeting_id"
     t.integer "project_id"
     t.string "motion_text"
@@ -88,7 +88,7 @@ ActiveRecord::Schema.define(version: 2022_11_03_140134) do
     t.index ["project_id"], name: "index_motions_on_project_id"
   end
 
-  create_table "people", force: :cascade do |t|
+  create_table "people", id: :serial, force: :cascade do |t|
     t.string "role"
     t.string "first_name"
     t.string "last_name"
@@ -99,7 +99,7 @@ ActiveRecord::Schema.define(version: 2022_11_03_140134) do
     t.integer "task_group_id"
   end
 
-  create_table "projects", force: :cascade do |t|
+  create_table "projects", id: :serial, force: :cascade do |t|
     t.integer "task_group_id"
     t.integer "base_id"
     t.string "designation"
@@ -129,7 +129,7 @@ ActiveRecord::Schema.define(version: 2022_11_03_140134) do
     t.index ["task_group_id"], name: "index_projects_on_task_group_id"
   end
 
-  create_table "requests", force: :cascade do |t|
+  create_table "requests", id: :serial, force: :cascade do |t|
     t.text "reqtxt"
     t.integer "item_id"
     t.datetime "created_at", null: false
@@ -147,7 +147,7 @@ ActiveRecord::Schema.define(version: 2022_11_03_140134) do
     t.index ["item_id"], name: "index_requests_on_item_id"
   end
 
-  create_table "task_groups", force: :cascade do |t|
+  create_table "task_groups", id: :serial, force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -159,7 +159,7 @@ ActiveRecord::Schema.define(version: 2022_11_03_140134) do
     t.index ["person_id"], name: "index_task_groups_on_person_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", id: :serial, force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
