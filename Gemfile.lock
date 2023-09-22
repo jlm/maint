@@ -442,7 +442,6 @@ DEPENDENCIES
   capybara
   coffee-rails (~> 4)
   dalli
-  debase
   devise (>= 4.6.0)
   dotenv-rails
   execjs

@@ -69,7 +69,6 @@ group :development, :docker do
 end
 
 group :development do
-  gem "debase"
   gem "rails-erd"
   gem "ruby-debug-ide"
 end
