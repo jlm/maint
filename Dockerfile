@@ -1,7 +1,7 @@
 ARG RUBY_VERSION
-ARG NODE_MAJOR=20
 FROM ruby:${RUBY_VERSION:-2.7.8}
 
+ARG NODE_MAJOR=20
 RUN apt update \
 	&& apt install -y --no-install-recommends \
 		postgresql-client \
