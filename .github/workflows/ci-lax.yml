@@ -3,6 +3,31 @@ name: BuildLax
 
 on:
   workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: false
+        default: 'warning'
+        type: choice
+        options:
+          - info
+          - warning
+          - debug
+      build_id:
+        description: 'Build ID'
+        required: false
+        type: string
+      run_lint:
+        description: 'Lint with RuboCop?'
+        required: true
+        type: boolean
+        default: false
+      run_brakeman:
+        description: 'Audit app with Brakeman?'
+        required: true
+        type: boolean
+        default: false
+
   push:
     branches:
       - 'rails-6'
@@ -11,14 +36,21 @@ on:
       - 'rails-6'
 
 jobs:
+  print-options:
+    runs-on: ubuntu-latest
+    if:  ${{ inputs.run_lint }}
+    steps:
+      - name: Report the job options
+        run: echo  The inputs are ${{ inputs }} so we are going to run the Linter.
   audit:
-    name: AuditABit
+    name: Selective Audit
     uses: ./.github/workflows/rubyonrails-lint.yml
     with:
-      # Rubocop is disabled currently, until the rest of the code has been rubocopped.
-      skip-lint: true
+      # Only run RuboCop if the user has specified to do so.
+      skip-lint: ${{ ! inputs.run_lint }}
       # There is no point auditing something that has known other dependency audit failures
       skip-deps-audit: true
+      skip-app-audit: ${{ ! inputs.run_brakeman }}
 
   tests:
     name: Run tests
