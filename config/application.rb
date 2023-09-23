@@ -38,15 +38,18 @@ module Maint
 
     config.middleware.use ActionDispatch::Session::CookieStore, {key: "_maint_session", cookie_only: true}
 
-    # This is for timeline_json, from https://stackoverflow.com/questions/27379432/prevent-rails-from-encoding-the-ampersands-in-a-url-when-outputting-json
-    config.active_support.escape_html_entities_in_json = false
+    # Support for TimelineJS has been suspended because Brakeman doesn't like the security laxity
+    if false
+      # This is for timeline_json, from https://stackoverflow.com/questions/27379432/prevent-rails-from-encoding-the-ampersands-in-a-url-when-outputting-json
+      config.active_support.escape_html_entities_in_json = false
 
-    # This unnecessary configuration was part of debugging why JSON responses weren't working with TimelineJS Wordpress plugin
-    MultiJson.use :yajl
-    MultiJson.dump_options = {pretty: true}
+      # This unnecessary configuration was part of debugging why JSON responses weren't working with TimelineJS Wordpress plugin
+      MultiJson.use :yajl
+      MultiJson.dump_options = {pretty: true}
 
-    # Reduce XSS support to get TimelineJS to work with this site.
-    config.action_dispatch.default_headers.merge!("Access-Control-Allow-Origin" => "*")
+      # Reduce XSS support to get TimelineJS to work with this site.
+      config.action_dispatch.default_headers.merge!("Access-Control-Allow-Origin" => "*")
+    end
   end
 end
 
