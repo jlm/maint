@@ -47,30 +47,28 @@ jobs:
     needs: [ audit, tests ]
     steps:
       -
-        name: Checkout
-        uses: actions/checkout@v3
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
       -
-        name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v3
-        with:
-          images: jmessenger/maint-autobuild-lax
-      -
-        name: Login to DockerHub
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@v1
+        name: Login to Docker Hub
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Get Ruby version
         id: ruby
-        run: echo "::set-output name=ruby-version::`cat .ruby-version`"
+        run: echo "ruby-version=`cat .ruby-version`" >> $GITHUB_OUTPUT
+      -
+        name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: jmessenger/maint-autobuild-lax
       -
         name: Build and push
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v5
         with:
-          context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
