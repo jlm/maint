@@ -28,12 +28,6 @@ on:
       - 'rails-6'
 
 jobs:
-  print-options:
-    runs-on: ubuntu-latest
-    if:  ${{ inputs.run_brakeman }}
-    steps:
-      - name: Report the job options
-        run: echo  The inputs are ${{ inputs }} so we are going to run brakeman.
   audit:
     name: Selective Audit
     uses: ./.github/workflows/rubyonrails-lint.yml
