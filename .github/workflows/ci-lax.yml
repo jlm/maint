@@ -58,7 +58,10 @@ jobs:
       -
         name: Get Ruby version
         id: ruby
-        run: echo "ruby-version=`cat .ruby-version`" >> $GITHUB_OUTPUT
+        run: |
+          echo "GRB working directory: `pwd`"
+          echo "GRB directory listing: `ls -l`"
+          echo "ruby-version=`cat .ruby-version`" >> $GITHUB_OUTPUT
       -
         name: Docker meta
         id: meta
