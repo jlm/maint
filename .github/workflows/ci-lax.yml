@@ -47,6 +47,9 @@ jobs:
     needs: [ audit, tests ]
     steps:
       -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       -
@@ -58,8 +61,6 @@ jobs:
       -
         name: Get Ruby version
         id: ruby
-        with:
-          context: .
         run: |
           echo "GRB working directory: `pwd`"
           echo "GRB directory listing: `ls -l`"
@@ -74,6 +75,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v5
         with:
+          context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
