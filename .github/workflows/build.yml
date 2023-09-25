@@ -9,7 +9,7 @@ on:
         description: 'Image name to push'
         required: true
         type: string
-    secrets: inherit
+#    secrets: inherit
 
 jobs:
   docker:
