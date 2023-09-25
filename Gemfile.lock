@@ -207,8 +207,8 @@ GEM
       net-ssh (>= 2.6.5, < 8.0.0)
     net-ssh (7.0.1)
     nio4r (2.5.9)
-    nokogiri (1.13.10)
-      mini_portile2 (~> 2.8.0)
+    nokogiri (1.15.4)
+      mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     parallel (1.23.0)
@@ -238,7 +238,7 @@ GEM
     public_suffix (5.0.0)
     puma (5.6.5)
       nio4r (~> 2.0)
-    racc (1.6.2)
+    racc (1.7.1)
     rack (2.2.8)
     rack-pjax (1.1.0)
       nokogiri (~> 1.5)
@@ -466,7 +466,7 @@ DEPENDENCIES
   json (>= 2.3.0)
   listen
   multi_json
-  nokogiri (~> 1.13)
+  nokogiri (~> 1.15)
   passenger
   pg
   postmark-rails
