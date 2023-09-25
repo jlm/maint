@@ -4,34 +4,34 @@ name: BuildLax
 on:
   workflow_dispatch:
     inputs:
-      run_lint:
+      run-lint:
         description: 'Lint with RuboCop?'
         required: true
         type: boolean
         default: false
-      run_brakeman:
+      run-brakeman:
         description: 'Audit app with Brakeman?'
         required: true
         type: boolean
         default: true
-      run_bundle_audit:
+      run-bundle-audit:
         description: 'Audit dependencies with bundle-audit?'
         required: true
         type: boolean
         default: false
   workflow_call:
     inputs:
-      run_lint:
+      run-lint:
         description: 'Lint with RuboCop?'
         required: false
         type: boolean
         default: false
-      run_brakeman:
+      run-brakeman:
         description: 'Audit app with Brakeman?'
         required: false
         type: boolean
         default: true
-      run_bundle_audit:
+      run-bundle-audit:
         description: 'Audit dependencies with bundle-audit?'
         required: false
         type: boolean
@@ -43,6 +43,6 @@ jobs:
     uses: ./.github/workflows/rubyonrails-lint.yml
     with:
       # Only run each audit if the user has specified to do so.
-      skip-lint: ${{ ! inputs.run_lint }}
-      skip-deps-audit: ${{ ! inputs.run_bundle_audit }}
-      skip-app-audit: ${{ ! inputs.run_brakeman }}
+      skip-lint: ${{ ! inputs.run-lint }}
+      skip-deps-audit: ${{ ! inputs.run-bundle-audit }}
+      skip-app-audit: ${{ ! inputs.run-brakeman }}

@@ -13,9 +13,9 @@ jobs:
     name: Run selective audit
     uses: ./.github/workflows/audit-lax.yml
     with:
-      run_bundle_audit: false
-      run_lint: false
-      run_brakeman: true
+      run-bundle-audit: false
+      run-lint: false
+      run-brakeman: true
 
   tests:
     name: Run tests

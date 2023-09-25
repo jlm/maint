@@ -1,5 +1,5 @@
 # Extract metadata, ruby version, build and push to Docker Hub
-# called from ci_caller.yml
+# called from ci.yml
 name: Build and push
 
 on:
