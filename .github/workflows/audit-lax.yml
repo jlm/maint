@@ -23,17 +23,17 @@ on:
     inputs:
       run_lint:
         description: 'Lint with RuboCop?'
-        required: true
+        required: false
         type: boolean
         default: false
       run_brakeman:
         description: 'Audit app with Brakeman?'
-        required: true
+        required: false
         type: boolean
         default: true
       run_bundle_audit:
         description: 'Audit dependencies with bundle-audit?'
-        required: true
+        required: false
         type: boolean
         default: false
 
