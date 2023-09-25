@@ -1,29 +1,20 @@
-# Continuous integration to Docker Hub
-name: Build a bit laxer
+# Extract metadata, ruby version, build and push to Docker Hub
+# called from ci_caller.yml
+name: Build and push
 
 on:
-  push:
-    branches:
-      - 'rails-6'
-  pull_request:
-    branches:
-      - 'rails-6'
+  workflow_call:
+    inputs:
+      image:
+        description: 'Image name to push'
+        required: true
+        type: string
+    secrets: inherit
 
 jobs:
-  audit:
-    name: Run selective audit
-    uses: ./.github/workflows/audit-lax.yml
-#    with:
-#      run_bundle_audit: true
-
-  tests:
-    name: Run tests
-    uses: ./.github/workflows/run-tests.yml
-
   docker:
     name: 'Extract metadata, Build and push to Docker Hub'
     runs-on: ubuntu-latest
-    needs: [ audit, tests ]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -42,7 +33,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: jmessenger/maint-autobuild-lax
+          images: ${{ inputs.image }}
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
