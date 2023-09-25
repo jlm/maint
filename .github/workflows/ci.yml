@@ -35,16 +35,8 @@ jobs:
 
   build:
     name: Build and push
-    needs: [ audit, tests, image_name, abort ]
+    needs: [ audit, tests, image_name ]
     uses: ./.github/workflows/build.yml
     with:
       image: ${{ needs.image_name.outputs.image }}
     secrets: inherit
-
-  abort:
-    name: Abort
-    runs-on: ubuntu-latest
-    steps:
-      - name: Exit
-        run: |
-          exit 1
