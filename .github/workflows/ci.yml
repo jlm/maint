@@ -13,30 +13,6 @@ on:
       - '[vt]*'
 
 jobs:
-  image_name:
-    name: Parse reference to determine image name
-    uses: ./.github/workflows/choose-image.yml
-    with:
-      ref_name: ${{ github.ref_name }}
-      ref_type: ${{ github.ref_type }}
-
-  log_image_name:
-    name: Log image name
-    runs-on: ubuntu-latest
-    needs: image_name
-    steps:
-      - name: Report
-        run: |
-          echo "::notice::Chose: ${{needs.image_name.outputs.image}}"
-
-  abort:
-    name: Abort
-    runs-on: ubuntu-latest
-    steps:
-      - name: Exit
-        run: |
-          exit 1
-
   audit:
     name: Run selective audit
     uses: ./.github/workflows/audit-lax.yml
@@ -49,10 +25,26 @@ jobs:
     name: Run tests
     uses: ./.github/workflows/run-tests.yml
 
+  image_name:
+    name: Parse reference to determine image name
+    uses: ./.github/workflows/choose-image.yml
+    with:
+      ref_name: ${{ github.ref_name }}
+      ref_type: ${{ github.ref_type }}
+      log: true
+
   build:
     name: Build and push
-    needs: [ audit, tests, log_image_name, abort ]
+    needs: [ audit, tests, image_name, abort ]
     uses: ./.github/workflows/build.yml
     with:
-      image: jmessenger/maint-autobuild-lax
+      image: ${{ needs.image_name.outputs.image }}
     secrets: inherit
+
+  abort:
+    name: Abort
+    runs-on: ubuntu-latest
+    steps:
+      - name: Exit
+        run: |
+          exit 1

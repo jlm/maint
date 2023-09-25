@@ -11,6 +11,11 @@ on:
         description: 'Ref type'
         required: true
         type: string
+      log:
+        description: 'Log result?'
+        required: false
+        type: boolean
+        default: false
     outputs:
       image:
         description: The chosen image name
@@ -40,3 +45,13 @@ jobs:
         #          echo "::notice::Image name: $Image"
         env:
           Image: jmessenger/maint-autobuild-lax
+
+  log_image_name:
+    name: Log image name
+    runs-on: ubuntu-latest
+    needs: parse
+    if: ${{ inputs.log }}
+    steps:
+      - name: Report
+        run: |
+          echo "::notice::Chose: ${{needs.parse.outputs.image}}"
