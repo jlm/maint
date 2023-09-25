@@ -25,7 +25,7 @@ jobs:
 
   build:
     name: Build and push
-    needs: [ audit, tests, image_name ]
+    needs: [ audit, tests ]
     uses: ./.github/workflows/build.yml
     with:
       image: jmessenger/maint-autobuild
