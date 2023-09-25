@@ -6,7 +6,7 @@ on:
     branches:
       - 'master'
     tags:
-      - '[tv]*'
+      - '[v]*'
   pull_request:
     branches:
       - 'master'
