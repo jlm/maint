@@ -3,12 +3,25 @@ name: Build with selective audit
 on:
   push:
     branches:
+      - 'master'
       - 'rails-6'
   pull_request:
     branches:
+      - 'master'
       - 'rails-6'
+    tags:
+      - '[vt]*'
 
 jobs:
+  choose_image:
+    name: Parse reference to determine image name
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print reference
+        run: |
+          echo "::notice title=Triggering ref_name::${{ github.ref_name }}
+          exit 1
+
   audit:
     name: Run selective audit
     uses: ./.github/workflows/audit-lax.yml
