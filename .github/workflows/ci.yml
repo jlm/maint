@@ -16,11 +16,14 @@ jobs:
   image_name:
     name: Parse reference to determine image name
     runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.master.outputs.image }} ${{ steps.test.outputs.image }}
     steps:
       - name: Print reference
         run: |
           echo "::notice::Ref_name: ${{ github.ref_name }}"
       - name: Choose master image
+        id: master
         if: ${{ github.ref_name == 'master' || ( github.ref_type == 'tag' && startsWith(github.ref_name, 'v') ) }}
         run: |
           echo "image=$Image" >> $GITHUB_OUTPUTS
@@ -28,15 +31,21 @@ jobs:
         env:
           Image: jmessenger/maint-autobuild
       - name: Choose test image
+        id: test
         if: ${{ github.ref_name != 'master' || ( github.ref_type == 'tag' && startsWith(github.ref_name, 't') ) }}
         run: |
           echo "image=$Image" >> $GITHUB_OUTPUTS
           echo "::notice::Image name: $Image"
         env:
           Image: jmessenger/maint-autobuild-lax
-      - name: abort
+  log_image_name:
+    name: Log image name
+    runs-on: ubuntu-latest
+    needs: image_name
+    steps:
+      - name: report and abort
         run: |
-          echo "::notice::Chose: ${{image_name.outputs.image}}"
+          echo "::notice::Chose: ${{needs.image_name.outputs.image}}"
           exit 1
 
   audit:
