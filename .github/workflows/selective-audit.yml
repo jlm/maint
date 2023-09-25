@@ -1,5 +1,5 @@
-# Continuous integration to Docker Hub, with selectable auditing.
-name: BuildLax
+# Selectable auditing.
+name: Selective audit
 
 on:
   workflow_dispatch:
