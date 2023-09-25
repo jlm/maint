@@ -36,7 +36,7 @@ jobs:
           Image: jmessenger/maint-autobuild-lax
       - name: abort
         run: |
-          echo "::notice::Chose: ${{jobs.image_name.outputs.image}}"
+          echo "::notice::Chose: ${{image_name.outputs.image}}"
           exit 1
 
   audit:
