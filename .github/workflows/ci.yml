@@ -21,14 +21,14 @@ jobs:
         run: |
           echo "::notice::Ref_name: ${{ github.ref_name }}"
       - name: Choose master image
-        if: ${{ github.ref_name == "master" || ( github.ref_type == "tag" && startsWith(github.ref_name, "v") }}
+        if: ${{ github.ref_name == 'master' || ( github.ref_type == 'tag' && startsWith(github.ref_name, 'v') }}
         run: |
           echo "image=$Image" >> $GITHUB_OUTPUTS
           echo "::notice::Image name: $Image"
         env:
           Image: jmessenger/maint-autobuild
       - name: Choose test image
-        if: ${{ github.ref_name != "master" || ( github.ref_type == "tag" && startsWith(github.ref_name, "t") }}
+        if: ${{ github.ref_name != 'master' || ( github.ref_type == 'tag' && startsWith(github.ref_name, 't') }}
         run: |
           echo "image=$Image" >> $GITHUB_OUTPUTS
           echo "::notice::Image name: $Image"
