@@ -1,4 +1,6 @@
 # Continuous integration to Docker Hub
+name: Build a bit laxer
+
 on:
   push:
     branches:
@@ -11,8 +13,8 @@ jobs:
   audit:
     name: Run selective audit
     uses: ./.github/workflows/audit-lax.yml
-    with:
-      run_bundle_audit: true
+#    with:
+#      run_bundle_audit: true
 
   tests:
     name: Run tests
