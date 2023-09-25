@@ -15,7 +15,7 @@ jobs:
     with:
       run_bundle_audit: false
       run_lint: false
-      run_brakeman: false
+      run_brakeman: true
 
   tests:
     name: Run tests
@@ -27,3 +27,4 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       image: jmessenger/maint-autobuild-lax
+    secrets: inherit
