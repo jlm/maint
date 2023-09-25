@@ -13,13 +13,13 @@ on:
       - '[vt]*'
 
 jobs:
-  choose_image:
+  image_name:
     name: Parse reference to determine image name
     runs-on: ubuntu-latest
     steps:
       - name: Print reference
         run: |
-          echo "::notice title=Triggering ref_name::${{ github.ref_name }}
+          echo "::notice title=Triggering ref_name::${{ github.ref_name }}"
           exit 1
 
   audit:
@@ -36,7 +36,7 @@ jobs:
 
   build:
     name: Build and push
-    needs: [ audit, tests ]
+    needs: [ audit, tests, image_name ]
     uses: ./.github/workflows/build.yml
     with:
       image: jmessenger/maint-autobuild-lax
