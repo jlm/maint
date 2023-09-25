@@ -15,29 +15,10 @@ on:
 jobs:
   image_name:
     name: Parse reference to determine image name
-    runs-on: ubuntu-latest
-    outputs:
-      image: ${{ steps.master.outputs.image }} ${{ steps.test.outputs.image }}
-    steps:
-      - name: Print reference
-        run: |
-#          echo "::notice::Ref_name: ${{ github.ref_name }}"
-      - name: Choose master image
-        id: master
-        if: ${{ github.ref_name == 'master' || ( github.ref_type == 'tag' && startsWith(github.ref_name, 'v') ) }}
-        run: |
-          echo "image=$Image" >> $GITHUB_OUTPUT
-#          echo "::notice::Image name: $Image"
-        env:
-          Image: jmessenger/maint-autobuild
-      - name: Choose test image
-        id: test
-        if: ${{ github.ref_name != 'master' || ( github.ref_type == 'tag' && startsWith(github.ref_name, 't') ) }}
-        run: |
-          echo "image=$Image" >> $GITHUB_OUTPUT
-#          echo "::notice::Image name: $Image"
-        env:
-          Image: jmessenger/maint-autobuild-lax
+    uses: ./.github/workflows/choose-image.yml
+    with:
+      ref_name: ${{ github.ref_name }}
+      ref_type: ${{ github.ref_type }}
 
   log_image_name:
     name: Log image name

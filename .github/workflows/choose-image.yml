@@ -1,0 +1,42 @@
+# Parse a reference and choose an image name from it
+name: Choose image based on ref
+on:
+  workflow_call:
+    inputs:
+      ref_name:
+        description: 'Ref name to parse'
+        required: true
+        type: string
+      ref_type:
+        description: 'Ref type'
+        required: true
+        type: string
+    outputs:
+      image:
+        description: The chosen image name
+        value: ${{ jobs.parse.outputs.image }}
+jobs:
+  parse:
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.master.outputs.image }} ${{ steps.test.outputs.image }}
+    steps:
+      - name: Print reference
+        run: |
+          echo "::notice::Ref_name: ${{ inputs.ref_name }} Ref_type: ${{ inputs.ref_type }}"
+      - name: Choose master image
+        id: master
+        if: ${{ inputs.ref_name == 'master' || ( inputs.ref_type == 'tag' && startsWith(inputs.ref_name, 'v') ) }}
+        run: |
+          echo "image=$Image" >> $GITHUB_OUTPUT
+        #          echo "::notice::Image name: $Image"
+        env:
+          Image: jmessenger/maint-autobuild
+      - name: Choose test image
+        id: test
+        if: ${{ inputs.ref_name != 'master' || ( inputs.ref_type == 'tag' && startsWith(inputs.ref_name, 't') ) }}
+        run: |
+          echo "image=$Image" >> $GITHUB_OUTPUT
+        #          echo "::notice::Image name: $Image"
+        env:
+          Image: jmessenger/maint-autobuild-lax
