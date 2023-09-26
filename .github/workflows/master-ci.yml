@@ -1,0 +1,32 @@
+# Continuous integration to Docker Hub
+name: Build production images with selective audit
+on:
+  push:
+    branches:
+      - 'master'
+    tags:
+      - '[v]*'
+  pull_request:
+    branches:
+      - 'master'
+
+jobs:
+  audit:
+    name: Run selective audit
+    uses: ./.github/workflows/selective-audit.yml
+    with:
+      run-bundle-audit: true
+      run-lint: true
+      run-brakeman: true
+
+  tests:
+    name: Run tests
+    uses: ./.github/workflows/run-tests.yml
+
+  build:
+    name: Build and push
+    needs: [ audit, tests ]
+    uses: ./.github/workflows/build.yml
+    with:
+      image: jmessenger/maint-autobuild
+    secrets: inherit

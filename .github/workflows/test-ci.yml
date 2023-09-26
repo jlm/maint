@@ -1,23 +1,21 @@
 # Continuous integration to Docker Hub
-name: Build with selective audit
+name: Build test images with selective audit
 on:
   push:
     branches:
-      - 'master'
-      - 'rails-6'
-  pull_request:
-    branches:
-      - 'master'
       - 'rails-6'
     tags:
-      - '[vt]*'
+      - '[t]*'
+  pull_request:
+    branches:
+      - 'rails-6'
 
 jobs:
   audit:
     name: Run selective audit
     uses: ./.github/workflows/selective-audit.yml
     with:
-      run-bundle-audit: false
+      run-bundle-audit: true
       run-lint: false
       run-brakeman: true
 
@@ -25,18 +23,10 @@ jobs:
     name: Run tests
     uses: ./.github/workflows/run-tests.yml
 
-  image_name:
-    name: Parse reference to determine image name
-    uses: ./.github/workflows/choose-image.yml
-    with:
-      ref_name: ${{ github.ref_name }}
-      ref_type: ${{ github.ref_type }}
-      log: true
-
   build:
     name: Build and push
-    needs: [ audit, tests, image_name ]
+    needs: [ audit, tests ]
     uses: ./.github/workflows/build.yml
     with:
-      image: ${{ needs.image_name.outputs.image }}
+      image: jmessenger/maint-autobuild-test
     secrets: inherit

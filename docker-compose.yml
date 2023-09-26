@@ -9,7 +9,7 @@ services:
   web:
   # The build line causes an image to be created based on the Dockerfile and directory contents.
     build: .
-  # Imoort environment variable settings from the .env file in the directory compose is being run on.
+  # Import environment variable settings from the .env file in the directory compose is being run on.
     env_file: .env
     environment:
       - DB_SERVICE_HOST=db_1

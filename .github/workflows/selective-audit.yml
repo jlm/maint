@@ -1,0 +1,48 @@
+# Selectable auditing.
+name: Selective audit
+
+on:
+  workflow_dispatch:
+    inputs:
+      run-lint:
+        description: 'Lint with RuboCop?'
+        required: true
+        type: boolean
+        default: false
+      run-brakeman:
+        description: 'Audit app with Brakeman?'
+        required: true
+        type: boolean
+        default: true
+      run-bundle-audit:
+        description: 'Audit dependencies with bundle-audit?'
+        required: true
+        type: boolean
+        default: false
+  workflow_call:
+    inputs:
+      run-lint:
+        description: 'Lint with RuboCop?'
+        required: false
+        type: boolean
+        default: false
+      run-brakeman:
+        description: 'Audit app with Brakeman?'
+        required: false
+        type: boolean
+        default: true
+      run-bundle-audit:
+        description: 'Audit dependencies with bundle-audit?'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  audit:
+    name: Selective Audit
+    uses: ./.github/workflows/rubyonrails-lint.yml
+    with:
+      # Only run each audit if the user has specified to do so.
+      skip-lint: ${{ ! inputs.run-lint }}
+      skip-deps-audit: ${{ ! inputs.run-bundle-audit }}
+      skip-app-audit: ${{ ! inputs.run-brakeman }}

@@ -10,10 +10,12 @@ RSpec.describe "Item system", type: :system do
 
   before do
     log_in_as_admin
+    FactoryBot.create(:minst)
   end
 
   after do
     clean_up
+    # Pointless comment
   end
 
   context "Given a chair" do

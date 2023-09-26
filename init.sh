@@ -11,4 +11,4 @@ echo Waiting around
 sleep 5
 bundle exec rake db:create db:migrate
 bundle exec rake assets:precompile
-bundle exec rails s Puma -p 3000 -b '0.0.0.0'
+bundle exec rails server -u puma -p 3000 -b '0.0.0.0'
