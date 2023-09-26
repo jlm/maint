@@ -53,7 +53,7 @@ gem "devise", ">= 4.6.0"
 gem "rails_admin"
 gem "rails_admin_import", "~> 2.1"
 
-gem "nokogiri", "~> 1.13"
+gem "nokogiri", "~> 1.14"
 gem "postmark-rails"
 gem "rubyXL", "~> 3.4.0"
 
