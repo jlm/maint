@@ -1,4 +1,5 @@
 RailsAdmin.config do |config|
+  config.asset_source = :sprockets
   config.main_app_name = [ENV["COMMITTEE"], "Maintenance Database"]
 
   config.parent_controller = "ApplicationController"
