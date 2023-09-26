@@ -3,7 +3,7 @@ FactoryBot.define do
     date { Faker::Date.backward(days: 14) }
     name { Faker::Name.name }
     company { Faker::Company.name }
-    email { Faker::Internet.safe_email }
+    email { Faker::Internet.email }
     standard { "#{Faker::Number.number(digits: 3)}.#{Faker::Number.number(digits: 2)}#{("a".."z").to_a.sample}" }
     clauseno { Faker::Number.decimal(l_digits: 2).to_s }
     clausetitle { Faker::Lorem.sentence(word_count: 3, supplemental: true)[..-1] }
