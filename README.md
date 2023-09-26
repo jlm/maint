@@ -1,5 +1,5 @@
 [![Tests](https://github.com/jlm/maint/actions/workflows/run-tests.yml/badge.svg)](https://github.com/jlm/maint/actions/workflows/run-tests.yml)
-[![Build](https://github.com/jlm/maint/actions/workflows/ci.yml/badge.svg)](https://github.com/jlm/maint/actions/workflows/ci.yml)
+[![Build](https://github.com/jlm/maint/actions/workflows/master-ci.yml/badge.svg)](https://github.com/jlm/maint/actions/workflows/master-ci.yml)
 
 Introduction
 ============
