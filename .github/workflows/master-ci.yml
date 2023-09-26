@@ -1,5 +1,5 @@
 # Continuous integration to Docker Hub
-name: Build production images with selective audit
+name: Build
 on:
   push:
     branches:
