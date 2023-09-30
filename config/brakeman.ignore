@@ -1,0 +1,154 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Path Traversal",
+      "warning_code": 125,
+      "fingerprint": "2751215475b453a4d8664bc4190728ec54e586e1c97bff1d7ca3ab143b28aec4",
+      "check_name": "Pathname",
+      "message": "Absolute paths in `Pathname#join` cause the entire path to be relative to the absolute path, ignoring any prior values",
+      "file": "app/controllers/imports_controller.rb",
+      "line": 50,
+      "link": "https://brakemanscanner.org/docs/warning_types/path_traversal/",
+      "code": "Rails.root.join(\"public\", \"uploads\", params[:import][:filename].original_filename)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ImportsController",
+        "method": "create"
+      },
+      "user_input": "params[:import][:filename].original_filename",
+      "confidence": "High",
+      "cwe_id": [
+        22
+      ],
+      "note": "import is an admin action and is trusted"
+    },
+    {
+      "warning_type": "Dynamic Render Path",
+      "warning_code": 15,
+      "fingerprint": "476b65377c5d821b3b69c270f5049e8a87f05027e23ab94427e7e69264e6bcde",
+      "check_name": "Render",
+      "message": "Render path contains parameter value",
+      "file": "app/views/projects/show.html.erb",
+      "line": 30,
+      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
+      "code": "render(action => (Project.find(params[:id]) or TaskGroup.find(params[:task_group_id]).projects.find(params[:id])), { :firstflag => true })",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "ProjectsController",
+          "method": "show",
+          "line": 37,
+          "file": "app/controllers/projects_controller.rb",
+          "rendered": {
+            "name": "projects/show",
+            "file": "app/views/projects/show.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "projects/show"
+      },
+      "user_input": "params[:id]",
+      "confidence": "Weak",
+      "cwe_id": [
+        22
+      ],
+      "note": "seems OK"
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 4,
+      "fingerprint": "4f3914cd30d0f4a92189bf3568b9407e3faf3f406a39aa6b4fcd735b88e013ac",
+      "check_name": "LinkToHref",
+      "message": "Potentially unsafe model attribute in `link_to` href",
+      "file": "app/views/events/index.html.erb",
+      "line": 24,
+      "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
+      "code": "link_to((Unresolved Model).new.name, (Unresolved Model).new.url)",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "EventsController",
+          "method": "index",
+          "line": 19,
+          "file": "app/controllers/events_controller.rb",
+          "rendered": {
+            "name": "events/index",
+            "file": "app/views/events/index.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "events/index"
+      },
+      "user_input": "(Unresolved Model).new.url",
+      "confidence": "Weak",
+      "cwe_id": [
+        79
+      ],
+      "note": "It's the event model. Need RBS declaration?"
+    },
+    {
+      "warning_type": "File Access",
+      "warning_code": 16,
+      "fingerprint": "b1b4a11b26d6d27dd9a067e09beac6f29988ec5e6f76b39add60d620a87bd0a1",
+      "check_name": "FileAccess",
+      "message": "Parameter value used in file name",
+      "file": "app/controllers/imports_controller.rb",
+      "line": 54,
+      "link": "https://brakemanscanner.org/docs/warning_types/file_access/",
+      "code": "File.open(Rails.root.join(\"public\", \"uploads\", params[:import][:filename].original_filename), \"wb\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ImportsController",
+        "method": "create"
+      },
+      "user_input": "params[:import][:filename].original_filename",
+      "confidence": "Weak",
+      "cwe_id": [
+        22
+      ],
+      "note": "import is an admin action and is trusted"
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 4,
+      "fingerprint": "e18e62ff3d2cea858ec2821cc52c1299b8f35f1fc9753bf62635b122c4af2efe",
+      "check_name": "LinkToHref",
+      "message": "Potentially unsafe model attribute in `link_to` href",
+      "file": "app/views/meetings/show.html.erb",
+      "line": 10,
+      "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
+      "code": "link_to(\"Minutes\", Meeting.find(params[:id]).minutes_url, :class => \"btn btn-primary\")",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "MeetingsController",
+          "method": "show",
+          "line": 27,
+          "file": "app/controllers/meetings_controller.rb",
+          "rendered": {
+            "name": "meetings/show",
+            "file": "app/views/meetings/show.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "meetings/show"
+      },
+      "user_input": "Meeting.find(params[:id]).minutes_url",
+      "confidence": "Weak",
+      "cwe_id": [
+        79
+      ],
+      "note": "Nope"
+    }
+  ],
+  "updated": "2023-09-30 08:55:41 +0100",
+  "brakeman_version": "6.0.1"
+}
