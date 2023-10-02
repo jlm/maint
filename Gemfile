@@ -62,6 +62,8 @@ gem "rubyXL", "~> 3.4.0"
 
 # Use Unicorn as the app server
 # gem 'unicorn'
+# Use Puma as the app server
+gem "puma", ">= 4.3.2"
 
 group :development, :docker do
   gem "dalli"
@@ -91,8 +93,6 @@ group :development, :test, :dockertest do
   gem "faker"
   gem "pry-rescue"
   gem "pry-stack_explorer"
-  # Use Puma as the app server
-  gem "puma", ">= 4.3.2", "< 6.0"
   gem "rspec-rails"
   gem "rubocop", "~> 1.23"
   gem "selenium-webdriver"
