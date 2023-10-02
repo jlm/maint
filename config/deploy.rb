@@ -1,5 +1,5 @@
 # config valid only for current version of Capistrano
-lock "3.4.0"
+lock "3.17.3"
 
 set :application, "maint"
 set :repo_url, "https://github.com/jlm/maint.git"
@@ -34,7 +34,7 @@ set :linked_dirs, fetch(:linked_dirs, []).push("log", "tmp/pids", "tmp/cache", "
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
-set :rbenv_ruby, "2.2.2"
+set :rbenv_ruby, "3.0.6"
 
 namespace :deploy do
   after :restart, :clear_cache do

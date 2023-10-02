@@ -78,7 +78,7 @@ group :production do
   gem "passenger"
 
   # Use Capistrano for deployment
-  gem "capistrano", "~> 3.4.0"
+  gem "capistrano", "~> 3.4"
   gem "capistrano-passenger"
   gem "capistrano-rails"
   gem "capistrano-rbenv"
