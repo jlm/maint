@@ -27,7 +27,7 @@ gem "rinku"
 # Use Uglifier as compressor for JavaScript assets
 gem "uglifier", "~> 4"
 # Use CoffeeScript for .coffee assets and views
-gem "coffee-rails", "~> 4"
+gem "coffee-rails"
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem "execjs"
 # gem 'therubyracer', platforms: :ruby     # This gem is no longer supported.
@@ -51,7 +51,7 @@ gem "dotenv-rails"
 gem "cancancan"
 gem "devise", ">= 4.6.0"
 gem "rails_admin"
-gem "rails_admin_import", "~> 2.1"
+gem "rails_admin_import", "~> 3.0"
 
 gem "nokogiri", "~> 1.15"
 gem "postmark-rails"
