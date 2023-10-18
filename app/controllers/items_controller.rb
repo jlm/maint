@@ -42,7 +42,7 @@ class ItemsController < ApplicationController
   # GET /items/1
   # GET /items/1.json
   def show
-    @minutes = @item.minutes.where("minutes.DATE is not null").joins(:meeting)
+    @minutes = @item.minutes.date_valid.joins(:meeting)
       .order(:date, :id).paginate(page: params[:page], per_page: 10)
     @request = @item.request
   end

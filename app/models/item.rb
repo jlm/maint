@@ -9,7 +9,7 @@ class Item < ApplicationRecord
   validates :standard, presence: true, length: {in: 3..50}
   validates :subject, presence: true, length: {maximum: 200}, unless: -> { Rails.application.config.importing }
   before_save {
-    lastminst = minutes.blank? ? nil : minutes.order(:date, :id).last.minst
+    lastminst = minutes.blank? ? nil : minutes.date_valid.order(:date, :id).last.minst
     self.minst = lastminst unless lastminst.nil?
   }
 
