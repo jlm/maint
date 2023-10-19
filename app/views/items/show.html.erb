@@ -1,4 +1,8 @@
 <% provide(:title, "Item #{@item.number}") %>
+<ol class="breadcrumb">
+  <li><%= link_to 'Maintenance Items', items_path %></li>
+  <li class="active"><%= "#{@item.number}" %></li>
+</ol>
 <h1>Minutes for 
     <%= itemlink(@item.number, @item.id)%>: <%= @item.subject %></h1>
 <p id="notice"><%= notice %></p>
@@ -9,7 +13,16 @@
       <td><strong>Standard:</strong> <%= @item.standard %></td>
       <td><strong>Clause:</strong> <%= @item.clause %></td>
       <td><strong>Draft with fix:</strong> <%= @item.draft %></td>
-      <td><strong>Submitted:</strong> <%= @item.date %></td>
+      <td><strong>Status:</strong> <%= @item.minst.name %></td>
+    </tr>
+    <tr>
+      <td><strong>Submitter:</strong> <%= mail_to(@item.request&.email, @item.request&.name) %></td>
+      <td><strong>Date:</strong> <%= @item.date %></td>
+      <td colspan="2">
+        <strong>Rationale:</strong>
+        <%= link_to(@item.request&.rationale[..75] + "...", item_request_path(@item, @request),
+                    data: { modal: true, toggle: :tooltip }, title: @item.request&.rationale) %>
+      </td>
     </tr>
     <tr>
       <td colspan="4">
