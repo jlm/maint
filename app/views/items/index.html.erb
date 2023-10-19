@@ -1,4 +1,7 @@
 <% provide(:title, "Items") %>
+<ol class="breadcrumb">
+  <li class="active"><%= @qualifier + " " + ENV["COMMITTEE"] + " Maintenance Items" %></li>
+</ol>
 <h1><%= @qualifier + " " + ENV["COMMITTEE"] + " Maintenance Items" %></h1>
 
 <table class="table table-hover">

@@ -1,4 +1,9 @@
 <% provide(:title, "#{@request.item.subject}") %>
+<ol class="breadcrumb">
+  <li><%= link_to 'Maintenance Items', items_path %></li>
+  <li><%= link_to "#{@item.number}", item_path(@item) %></li>
+  <li class="active"><%= "Request" %></li>
+</ol>
 
   <div class="modal-body">
     <div class="panel panel-default">

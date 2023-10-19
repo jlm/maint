@@ -1,17 +1,17 @@
       <tr>
-        <td><%= item.number %>
-            <% if item.is_closed? %>
-                <br>
-                <small class="status">Closed</small>
-            <% end %>
+        <td><%= link_to(item.number, item_path(item), class: "btn btn-default") %></td>
+        <td><%= item.minst&.name %>
+          <% if item.is_closed? %>
+            <br>
+            <small class="status">Closed</small>
+          <% end %>
         </td>
-        <td><%= item.minst&.name %></td>
         <td><%= item.date %></td>
         <td><%= item.standard %></td>
         <td><%= item.clause %></td>
         <td><%= item.subject %></td>
         <td><%= item.draft %></td>
-        <td><%= link_to 'Show', item, class: "btn btn-default" %></td>
+        <td><%#= link_to 'Show', item, class: "btn btn-default" %></td>
         <% if can? :update, item %>
             <td><%= link_to 'Edit', edit_item_path(item), class: "btn btn-warning", data: { modal: true } %></td>
         <% end %>
