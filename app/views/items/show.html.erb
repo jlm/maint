@@ -20,8 +20,8 @@
       <td><strong>Date:</strong> <%= @item.date %></td>
       <td colspan="2">
         <strong>Rationale:</strong>
-        <%= link_to(@item.request&.rationale[..75] + "...", item_request_path(@item, @request),
-                    data: { modal: true, toggle: :tooltip }, title: @item.request&.rationale) %>
+        <%= link_to((@item.request&.rationale || "").truncate(75), item_request_path(@item, @request),
+                    data: { modal: true, toggle: :tooltip }, title: @item.request&.rationale) if @request %>
       </td>
     </tr>
     <tr>
