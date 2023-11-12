@@ -40,6 +40,7 @@ class MinutesController < ApplicationController
     @item = Item.find(params[:item_id])
     @minute = @item.minutes.create(minute_params)
     @item.save
+    flash[:notice] = "Minute successfully created" if @minute.save
     respond_modal_with(@minute, location: item_url(@item))
   end
 

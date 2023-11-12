@@ -15,12 +15,16 @@ class ModalResponder < ActionController::Responder
     render(*args)
   end
 
-  # It appears that responders-3.1 changes the parameters for redirect_to, somehow.
-  def redirect_to(thing_array, status_hash)
+  # It appears that responders-3.1 changes the parameters for redirect_to, somehow.  This is an awful hack.
+  def redirect_to(thing, status_hash)
     if request.xhr?
-      head :ok, location: controller.url_for(thing_array.first)
+      if thing.class == Array
+        head :ok, location: controller.url_for(thing.first)
+      elsif thing.class == String
+        head :ok, location: controller.url_for(thing)
+      end
     else
-      controller.redirect_to(thing_array.first, status_hash)
+      controller.redirect_to(thing.first, status_hash)
     end
   end
 end

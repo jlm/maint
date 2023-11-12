@@ -30,5 +30,18 @@ RSpec.describe "Item system", type: :system do
 
       expect(page).to have_text("Item successfully created") # Item successfully created.
     end
+
+    it "allows me to create a minute for an existing item" do
+      myitem = FactoryBot.create(:item)
+      mymeeting = FactoryBot.create(:meeting)
+      visit "/items/#{myitem.id}"
+      click_on "New Minute"
+      #fill_in "Date", with: Date.today
+      fill_in "Text", with: "This is the text of a minute."
+      #fill_in "Status", with: "Published"
+      click_button "Create Minute"
+
+      expect(page).to have_text("Minute successfully created")
+    end
   end
 end
