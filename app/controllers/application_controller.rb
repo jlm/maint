@@ -35,15 +35,6 @@ class ApplicationController < ActionController::Base
     redirect_to edit_import_path
   end
 
-  def after_sign_in_path_for(_resource)
-    # return the path based on resource
-    "#{root_path}home"
-  end
-
-  def after_sign_out_path_for(_resource)
-    # return the path based on resource
-    "#{root_path}home"
-  end
 end
 
 # rubocop:enable all
