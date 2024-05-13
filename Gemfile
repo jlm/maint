@@ -4,7 +4,7 @@ source "https://rubygems.org"
 
 gem "bootsnap", ">= 1.1.0"
 gem "bundler", "~> 2.0"
-gem "rails", "~> 6.0"
+gem "rails", "~> 6.1"
 
 # Use postgresql as the database for Active Record
 gem "pg"
