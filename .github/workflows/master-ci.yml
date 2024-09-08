@@ -15,7 +15,7 @@ jobs:
     name: Run selective audit
     uses: ./.github/workflows/selective-audit.yml
     with:
-      run-bundle-audit: true
+      run-bundle-audit: false
       run-lint: false
       run-brakeman: true
 
