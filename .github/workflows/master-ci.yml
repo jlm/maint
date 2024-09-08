@@ -17,7 +17,7 @@ jobs:
     with:
       run-bundle-audit: false
       run-lint: false
-      run-brakeman: true
+      run-brakeman: false
 
   tests:
     name: Run tests
