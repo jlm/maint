@@ -75,7 +75,7 @@ group :development do
 end
 
 group :production do
-  gem "passenger"
+  gem "passenger", "6.0.18"
 
   # Use Capistrano for deployment
   gem "capistrano", "~> 3.4"
@@ -99,5 +99,5 @@ group :development, :test, :dockertest do
   gem "solargraph", "~> 0.44"
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem "spring"
-  gem "standard"
+  gem "standard", ">= 1.35.1"
 end
