@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_03_140134) do
-
+ActiveRecord::Schema[7.2].define(version: 2024_09_09_130024) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -28,8 +27,8 @@ ActiveRecord::Schema.define(version: 2022_11_03_140134) do
   create_table "imports", id: :serial, force: :cascade do |t|
     t.string "filename"
     t.boolean "imported"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "content_type"
   end
 
@@ -40,8 +39,8 @@ ActiveRecord::Schema.define(version: 2022_11_03_140134) do
     t.string "clause"
     t.text "subject"
     t.string "draft"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "latest_status"
     t.integer "minst_id"
   end
@@ -50,16 +49,16 @@ ActiveRecord::Schema.define(version: 2022_11_03_140134) do
     t.date "date"
     t.string "meetingtype"
     t.string "location"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "minutes_url"
   end
 
   create_table "minsts", id: :serial, force: :cascade do |t|
     t.string "code"
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["code"], name: "index_minsts_on_code"
     t.index ["name"], name: "index_minsts_on_name"
   end
@@ -68,8 +67,8 @@ ActiveRecord::Schema.define(version: 2022_11_03_140134) do
     t.date "date"
     t.text "text"
     t.string "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "item_id"
     t.integer "meeting_id"
     t.integer "minst_id"
@@ -82,8 +81,8 @@ ActiveRecord::Schema.define(version: 2022_11_03_140134) do
     t.integer "project_id"
     t.string "motion_text"
     t.integer "number"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["meeting_id"], name: "index_motions_on_meeting_id"
     t.index ["project_id"], name: "index_motions_on_project_id"
   end
@@ -94,8 +93,8 @@ ActiveRecord::Schema.define(version: 2022_11_03_140134) do
     t.string "last_name"
     t.string "email"
     t.string "affiliation"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "task_group_id"
   end
 
@@ -118,8 +117,8 @@ ActiveRecord::Schema.define(version: 2022_11_03_140134) do
     t.date "par_expiry"
     t.date "standard_approval"
     t.date "published"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "award"
     t.string "files_url"
     t.string "draft_url"
@@ -132,8 +131,8 @@ ActiveRecord::Schema.define(version: 2022_11_03_140134) do
   create_table "requests", id: :serial, force: :cascade do |t|
     t.text "reqtxt"
     t.integer "item_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.date "date"
     t.string "name"
     t.string "company"
@@ -149,8 +148,8 @@ ActiveRecord::Schema.define(version: 2022_11_03_140134) do
 
   create_table "task_groups", id: :serial, force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "person_id"
     t.integer "chair_id"
     t.string "abbrev"
@@ -163,21 +162,21 @@ ActiveRecord::Schema.define(version: 2022_11_03_140134) do
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
     t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
+    t.datetime "confirmed_at", precision: nil
+    t.datetime "confirmation_sent_at", precision: nil
     t.integer "failed_attempts", default: 0
     t.string "unlock_token"
-    t.datetime "locked_at"
+    t.datetime "locked_at", precision: nil
     t.string "unconfirmed_email"
     t.boolean "admin", default: false
     t.boolean "debugger", default: false

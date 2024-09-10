@@ -4,7 +4,7 @@ source "https://rubygems.org"
 
 gem "bootsnap", ">= 1.1.0"
 gem "bundler", "~> 2.0"
-gem "rails", "~> 6.1"
+gem "rails", "~> 7.2"
 
 # Use postgresql as the database for Active Record
 gem "pg"
@@ -93,7 +93,7 @@ group :development, :test, :dockertest do
   gem "faker"
   gem "pry-rescue"
   gem "pry-stack_explorer"
-  gem "rspec-rails"
+  gem "rspec-rails", '~> 7.0.0'
   gem "rubocop", "~> 1.23"
   gem "selenium-webdriver"
   gem "solargraph", "~> 0.44"
