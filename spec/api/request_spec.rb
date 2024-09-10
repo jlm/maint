@@ -26,15 +26,17 @@ RSpec.describe "/items/id/requests API", type: :request do
     let!(:myd_item) { FactoryBot.create(:item) }
     let!(:myd_request) { FactoryBot.create(:request, item_id: myd_item.id) }
 
+    context "when deleting a non-existent request" do
+      it "returns an HTTP Not Found status" do
+        delete "/items/#{myd_item.id}/requests/98765", as: :json
+        expect(response).to have_http_status(:not_found)
+        #expect { delete "/items/#{myd_item.id}/requests/98765", as: :json }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
     it "deletes a request from an existing item" do
       delete "/items/#{myd_item.id}/requests/#{myd_request.id}", as: :json
       expect(response).to have_http_status(:success)
-    end
-
-    context "when deleting a non-existent request" do
-      it "raises RequestNotFound error" do
-        expect { delete "/items/#{myd_item.id}/requests/98765", as: :json }.to raise_error(ActiveRecord::RecordNotFound)
-      end
     end
   end
 end
