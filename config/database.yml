@@ -56,7 +56,7 @@ development:
 test:
   <<: *default
   database: maint_test
-  username: deploy
+  username: jlm
   password: enter-your-password-here
 
 # As with config/secrets.yml, you never want to store sensitive information,
