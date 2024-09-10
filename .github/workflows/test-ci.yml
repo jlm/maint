@@ -3,12 +3,12 @@ name: Build test images with selective audit
 on:
   push:
     branches:
-      - 'bu1'
+      - 'rails-7'
     tags:
       - '[t]*'
   pull_request:
     branches:
-      - 'bu1'
+      - 'rails-7'
 
 jobs:
   audit:
