@@ -44,9 +44,16 @@ class RequestsController < ApplicationController
   # POST /items/1/requests.json
   def create
     @item = Item.find(params[:item_id])
-    @request = Request.create(request_params)
-    @item.request = @request
-    @item.save
+    @request = Request.new(request_params)
+    @request.item = @item
+    if @request.save
+      flash[:success] = "Request successfully created"
+      #@item.request = @request
+      @item.save
+    else
+      flash[:error] = @request.errors.full_messages.to_sentence
+      puts @request.errors.full_messages.to_sentence
+    end
     respond_modal_with(@request, location: item_url(@item))
   end
 
@@ -62,9 +69,11 @@ class RequestsController < ApplicationController
   # DELETE /items/1/requests/1.json
   def destroy
     @item = Item.find(params[:item_id])
-    @request.destroy
+    #@request.destroy
+    @item.request= nil
+    @item.save
     respond_to do |format|
-      format.html { redirect_to item_url(@item), notice: "Request was successfully destroyed." }
+      format.html { redirect_to item_url(@item), notice: "Unset item #{@item.id}'s request'." }
       format.json { head :no_content }
     end
   end
